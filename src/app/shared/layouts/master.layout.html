@@ -1,0 +1,130 @@
+﻿<div class="master-layout" [ngClass]="{'blur-content':isLoading}">
+  <header class="header">
+    <button type="button" class="navbar-toggle">
+      <span class="fa fa-bars"></span>
+    </button>
+    <app-breadcrumbs></app-breadcrumbs>
+    <div class="actions">
+      <ul>
+        <li class="sign-out-button" (click)="BtnClick_LogOut()" title="خروج از برنامه">
+          <i class="fa fa-power-off"></i>
+        </li>
+        <!-- <li class="notification-button d-none d-sm-block" title="تنظیمات برنامه">
+          <i class="fa fa-gear"></i>
+        </li>
+        <li class="notification-button" (click)="navigationDrawer2()" title="تغییر ظاهر برنامه">
+          <i class="fa fa-paint-brush"></i>
+        </li> -->
+        <!-- <li class="d-none d-sm-block" (click)="navigationDrawer()" title="لیست اعلانات">
+          <span class="notification-number">4</span>
+          <i class="fa fa-bell" aria-hidden="true"></i>
+        </li> -->
+        <li class="d-none d-sm-block" (click)="toggleScreen()" title="عریض کردن صفحه">
+          <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <div class="side-nav">
+    <side-menu></side-menu>
+  </div>
+  <div class="master-content" id="master">
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="row">
+      <div class="col-sm-9 col-xs-12">
+        <!-- <div class="loading-container" [hidden]="!isLoading">
+          <img src="../../../assets/img/loading-indicator.gif" />
+          <span>{{ 'ADM_IS_LOADING' | translate }}</span>
+        </div> -->
+        <div [hidden]="isLoading">
+          <a *ngFor="let item of config.items;let isLast=last" title="{{item.Title}}" class="footer-config" (click)='gotoUserConfig(item.Key)'>
+            <span *ngIf='item.Icon'>
+              <i class="{{item.Icon}}"></i>&nbsp;{{item.Value}}
+            </span>
+            <span *ngIf='!item.Icon'>
+              <b>{{item.Title}}:</b>&nbsp;{{item.Value}}
+              <span *ngIf='!isLast'>&nbsp;-&nbsp;</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div class="copyright"> {{ 'ADM_COPY_RIGHT' | translate }} v{{version}}</div>
+      </div>
+    </div>
+  </footer>
+
+    <!-- Drawer Change Theme -->
+    <div class="drawer-notification">
+      <div class="overlay" [@showOverlay]="showOverlay2" (click)="navigationDrawer2()"></div>
+      <div class="navigation" [@navigation]="navigation2">
+        <div class="notification-header">
+          <div class="close-nav" (click)="navigationDrawer2()">
+            <i class="fa fa-times"></i>
+          </div>
+          <span class="text-center">تغییر ظاهر برنامه</span>
+        </div>
+        <ul>
+          <li class="border-left-blue" style="cursor: pointer;background-color: #f7f7f7;color: #101010;padding-left: 15px;font-size: 14px;"
+              (click)="LightTheme()"
+              >
+            <span title="ظاهر روشن">ظاهر روشن</span>
+          </li>
+          <li class="border-left-blue" style="cursor: pointer;background-color: #2e3942;color: white;padding-left: 15px;font-size: 14px;"
+              (click)="DarkTheme()">
+            <span title="ظاهر تاریک">ظاهر تاریک</span>
+          </li>
+          <li class="border-left-blue" style="cursor: pointer;background-color: #d5eafc;color: #2b2b2b;padding-left: 15px;font-size: 14px;"
+              (click)="LightMaterialTheme()">
+            <span title="ظاهر روشن متریال">ظاهر روشن متریال</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  <!-- Drawer Notification -->
+  <div class="drawer-notification">
+    <div class="overlay" [@showOverlay]="showOverlay" (click)="navigationDrawer()"></div>
+    <div class="navigation" [@navigation]="navigation">
+      <div class="notification-header">
+        <div class="close-nav" (click)="navigationDrawer()">
+          <i class="fa fa-times"></i>
+        </div>
+        <span class="text-center">لیست اعلان ها</span>
+      </div>
+      <ul>
+        <li class="border-left-red">
+          <span>درخواست مدیریت</span>
+          <i class="fa fa-times"></i>
+          <i class="fa fa-retweet"></i>
+        </li>
+        <li class="border-left-green">
+          <span>اطلاعیه انبار</span>
+          <i class="fa fa-times"></i>
+          <i class="fa fa-retweet"></i>
+        </li>
+        <li class="border-left-blue">
+          <span>رمز عبور شما ضعیف است</span>
+          <i class="fa fa-times"></i>
+          <i class="fa fa-retweet"></i>
+        </li>
+        <li class="border-left-yellow">
+          <span>پیغام از مدیریت</span>
+          <i class="fa fa-times"></i>
+          <i class="fa fa-retweet"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class='loading'>
+    <img src="../../../assets/img/loading-indicator.gif" />
+    <div>در حال بارگذاری | لطفا کمی صبر کنید</div>
+  </div>
+</div>

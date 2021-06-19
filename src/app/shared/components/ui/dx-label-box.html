@@ -1,0 +1,11 @@
+<div class="dx-texteditor dx-widget dx-textbox">
+  <div class="dx-label-box-container" id="{{_uid}}" *ngIf="visible" (mouseenter)="toggleHint()" (mouseleave)="toggleHint()">
+    <span class="dx-labelbox-span">{{text}}</span>
+  </div>
+
+  <dx-popover [width]="300" target="#{{_uid}}" position="bottom" [visible]="_tooltipVisible" *ngIf="_tooltipVisible">
+    <div *dxTemplate="let data = data of 'content'">
+      {{text}}
+    </div>
+  </dx-popover>
+</div>

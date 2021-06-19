@@ -1,16 +1,48 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule, Injector } from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+//import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { RouterModule } from "@angular/router";
+import { AppComponent } from "./shared/app.component";
+import { SlickModule } from 'ngx-slick';
+// Modules
+import { SharedModule } from "./shared/shared.module";
+import { ADMModule } from "./adm/adm.module";
+import { msgModule } from "./msg/msg.module";
+import { DemisInjector } from "./shared/util/Injector";
+import { CoreModule } from "./shared/util/Core.module";
 
-import { AppComponent } from './app.component';
+// Routes
+export const ROUTES: any = [
+  // Base
+  { path: '', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule) },
+  { path: '', loadChildren: () => import('./adm/adm.module').then(m => m.ADMModule) },
+  { path: '', loadChildren: () => import('./ofa/ofa.module').then(m => m.ofaModule) },
+  { path: '', loadChildren: () => import('./msg/msg.module').then(m => m.msgModule) },
+
+];
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule
+    BrowserModule,
+    SharedModule.forRoot(),
+    CoreModule.forRoot({ storage: {} }),
+    ADMModule,
+    //TODO sm-edit: Module factory sharing
+    RouterModule.forRoot(ROUTES, { useHash: true }),
+    // RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    BrowserAnimationsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  static injector: Injector;
+
+  constructor(injector: Injector) {
+    DemisInjector.injector = injector;
+  }
+
+}

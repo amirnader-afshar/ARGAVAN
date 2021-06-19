@@ -1,0 +1,63 @@
+<div [ngSwitch]="displayMode">
+  <div *ngSwitchCase="displayModeEnum[displayModeEnum.Popup]" class="dx-lov-container">
+    <div class="dx-lov-textbox-container" [hidden]="!visible">
+      <dx-text-box [(value)]="text" [readOnly]="readOnly" [placeholder]="placeholder" [showClearButton]="allowClear" (onValueChanged)="onTextChange($event)"
+        (onKeyDown)="onKeyDown($event)" #textBox>
+        <dx-validator #textBoxValidator>
+        </dx-validator>
+      </dx-text-box>
+    </div>
+    <div class="dx-lov-button-container" [hidden]="!visible">
+      <button (click)="onButtonClick()" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div>
+      <dx-popup #popup [width]="popupWidth" [height]="popupHeight" #popup showTitle="true" [title]="title" showCloseButton="true" dragEnabled="true"
+        (onShown)="onShown($event)" (onHiding)="onHiding($event)" (onShowing)="onShowing($event)"  [(visible)]="popupVisible" *ngIf="popupVisible">
+        <div *dxTemplate="let data of 'content'">
+          <div class="row">
+            <div class="col-sm-12">
+              <dx-text-box mode="search" [(value)]="search" #searchBox (onKeyDown)="onSearchKeyDown($event)" placeholder="جست و جو کنید ...">
+              </dx-text-box>
+            </div>
+          </div>
+          <div class="margin-10"></div>
+          <div class="row">
+            <div class="col-sm-12">
+              <grid-toolbar (onRowDbClick)="onRowDbClick($event)" [ToggleHeight]="65">
+                <dx-data-grid [noDataText]="noDataText" #grid [dataSource]="dataSource" [(selectedRowKeys)]="selectedKeys" (onSelectionChanged)="selectionChangedHandler()"
+                   >
+                  <dxo-scrolling mode="virtual"></dxo-scrolling>
+                  <dxo-selection [mode]="selectionMode" allowSelectAll="false" selectAllMode="page"></dxo-selection>
+                  <dxi-column dataField="ID"></dxi-column>
+                  <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+                  <dxo-remote-operations [sorting]="true" [paging]="true" [filtering]="true">
+                  </dxo-remote-operations>
+                  <dxo-pager [showInfo]="true">
+                  </dxo-pager>
+                </dx-data-grid>
+              </grid-toolbar>
+            </div>
+          </div>
+          <div class="footer-popup" *ngIf="selectable">
+            <div class="pull-right">
+              <dx-button icon="fa fa-check-circle" text="{{ 'PUB_SELECT' | translate  }}" type="success" (click)="onOkayClick()" type="success"></dx-button>
+              <dx-button icon="fa fa-ban" text="{{ 'PUB_CANCEL' | translate  }}" type="danger" (click)="onCancelClick()"></dx-button>
+            </div>
+            <div class="pull-left">
+              <dx-button icon="fa fa-refresh" text="{{ 'PUB_REFRESH' | translate  }}" type="default" (click)="onRefreshClick()"></dx-button>
+            </div>
+          </div>
+        </div>
+      </dx-popup>
+    </div>
+  </div>
+  <div *ngSwitchCase="displayModeEnum[displayModeEnum.ComboBox]">
+    <dx-select-box [searchEnabled]="true" #comboBox [dataSource]="localData" [displayExpr]="comboDisplayExpr" [valueExpr]="valueField"
+      [(value)]="value" [placeholder]="placeholder" [readOnly]="readOnly" [showClearButton]="allowClear"  (onContentReady)="onComboInit($event)">
+      <dx-validator #comboBoxValidator>
+      </dx-validator>
+    </dx-select-box>
+  </div>
+</div>

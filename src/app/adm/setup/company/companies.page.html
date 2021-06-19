@@ -1,0 +1,44 @@
+﻿<page>
+  <page-toolbar  [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <div class="row">
+      <div class="col-sm-12">
+        <grid-toolbar (onMenuItemClick)="onGridItemClick($event)" [rowMenuItems]="gridItems">
+          <dx-data-grid  
+                        #grid
+                        keyExpr="ID"
+                        [dataSource]="dataSource"
+                        [hoverStateEnabled]="true"
+                        [(selectedRowKeys)]="selectedKeys"
+                        (onSelectionChanged)="selectionChangedHandler()"
+                        [columnAutoWidth]="true"
+                        [rowAlternationEnabled]="true"
+                        [showBorders]="true"
+                        [showRowLines]="true"
+                        [height]="620">
+            <dxo-editing mode="row"
+                         [allowUpdating]="true"
+                         [allowDeleting]="true"
+                         [allowAdding]="true">
+            </dxo-editing>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxi-column dataField="CompanyName" caption="{{'نام شرکت'| translate}}" [width]="250"></dxi-column>
+            <dxi-column dataField="CompanyType" caption="{{'نوع شرکت'| translate}}"></dxi-column>
+            <!--<dxi-column dataField="Groups" caption="{{'ADM_GROUPS'| translate}}"></dxi-column>-->
+            <dxi-column dataField="EconomyCode" caption="{{'کد اقتصادی'| translate}}"></dxi-column>
+            <dxi-column dataField="locationName" caption="{{'محل'| translate}}"></dxi-column>
+            <dxi-column dataField="ManagerName" caption="{{'مدیریت'| translate}}"></dxi-column>
+            <dxi-column dataField="NumberRange" caption="{{'شماره'| translate}}"></dxi-column>
+            <dxi-column dataField="Phone1" caption="{{'تلفن 1'| translate}}"></dxi-column>
+            <dxi-column dataField="Phone2" caption="{{'تلفن 2'| translate}}"></dxi-column>
+            
+          </dx-data-grid>
+        </grid-toolbar>
+      </div>
+    </div>
+  </page-content>
+</page>
+
+

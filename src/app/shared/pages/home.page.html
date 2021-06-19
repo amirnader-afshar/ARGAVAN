@@ -1,0 +1,24 @@
+<page>
+  <page-content>
+    <div class="home-page">
+      <div class="margin-10"></div>
+      <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12" *ngFor="let item of list">
+          <div class="system-card" (click)="selectSystem(item)" [style.background]="item.Color">
+            <div class="system-card-bk">
+              <i class="fa {{item.Icon}}"></i>
+            </div>
+            <i class="fa {{item.Icon}} hidden-lg-down"></i>
+            <h1>
+              {{item.Title}}
+            </h1>
+            <div class="collapse-card" *ngIf="item.Items" (click)="selectSystem(item)">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </page-content>
+</page>

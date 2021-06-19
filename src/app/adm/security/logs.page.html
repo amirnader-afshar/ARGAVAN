@@ -1,0 +1,68 @@
+<page>
+    <page-toolbar showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+        <panel-box caption="{{ 'PUB_SEARCH' | translate }}" >
+            <div class="row">
+                <div class="col-md-2">
+                    <dx-label text="{{ 'PUB_DAT_FROM' | translate }}">
+                        <dx-date showToday="true" [(value)]="filterItem.FromDate" allowClear="true">
+                        </dx-date>
+                    </dx-label>
+                </div>
+                <div class="col-md-2">
+                    <dx-label text="{{ 'PUB_DAT_TO' | translate }}">
+                        <dx-date showToday="true" [(value)]="filterItem.ToDate" allowClear="true">
+                        </dx-date>
+                    </dx-label>
+                </div>
+                <div class="col-md-6">
+                    <dx-label text="{{ 'PUB_SEARCH_EXP' | translate }}">
+                        <dx-text-box mode="search" [(value)]="filterItem.SearchQuery" placeholder="جست و جو کنید ..." showClearButton="true">
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-md-2">
+                    <dx-button text="{{ 'PUB_SEARCH' | translate  }}" icon="fa fa-search" type="default" (click)="onRefreshClick($event)" width="100%">
+                    </dx-button>
+                </div>
+            </div>
+
+        </panel-box>
+        <div class="row">
+            <div class="col-sm-12">
+                <grid-toolbar >
+                    <gt-datasource loadUrl="/ADM/Log/List" [loadParams]="filterItem">
+                    </gt-datasource>
+                    <dx-data-grid #grid keyExpr="ID" [height]="500">
+                        <dxo-editing mode="row" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false"></dxo-editing>
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxo-search-panel [visible]="false"></dxo-search-panel>
+                        <dxo-paging [enabled]="true" [pageSize]="100"></dxo-paging>
+                        <dxo-remote-operations [paging]="true">
+                        </dxo-remote-operations>
+                        <dxi-column dataField="Time" caption="{{ 'PUB_DATE' | translate }}" dataType="date" width="100"></dxi-column>
+                        <dxi-column dataField="Time" caption="{{ 'PUB_TIME' | translate }}" dataType="time" width="50"></dxi-column>
+                        <dxi-column dataField="Type" caption="{{ 'PUB_TYPE' | translate }}" width="150"></dxi-column>
+                        <dxi-column dataField="User" caption="{{ 'PUB_USER' | translate }}"></dxi-column>
+                        <dxi-column dataField="Message" caption="{{ 'PUB_MESSAGE' | translate }}" cellTemplate="cell1" width="300">
+                            <div *dxTemplate="let cell of 'cell1'">
+                                <a [routerLink]="" (click)="openTab(cell.data.Message)">
+                                    {{trimText(cell.data.Message)}}
+                                </a>
+                            </div>
+                        </dxi-column>
+                        <dxi-column dataField="Details" caption="{{ 'PUB_DETAILS' | translate }}" cellTemplate="cell2" width="300">
+                            <div *dxTemplate="let cell of 'cell2'" class="text-nowrap">
+                                <a [routerLink]="" (click)="openTab(cell.data.Details)" class="text-nowrap">
+                                    {{trimText(cell.data.Details)}}
+                                </a>
+                            </div>
+                        </dxi-column>
+                    </dx-data-grid>
+                </grid-toolbar>
+            </div>
+        </div>
+    </page-content>
+</page>

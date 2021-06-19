@@ -1,0 +1,32 @@
+﻿<page>
+  <page-toolbar showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    <div class="padding-5">
+      <div class="filter-bar">
+        <div class="row">
+          <div class="col-sm-4">
+            <dx-label text="{{ 'PUB_COMPANY' | translate }}">
+              <dx-lov formCode="LOV-ADM-223" (dataChange)="onCompanyChange($event)"></dx-lov>
+            </dx-label>
+          </div>
+          <div class="col-md-4">
+              <dx-button  icon="fa fa-refresh blue" (click)="onRefreshClick()">
+              </dx-button>&nbsp;
+            <dx-button icon="fa fa-hand-pointer-o green" text="اعمال سطح دسترسی" (click)="onApplyClick()">
+            </dx-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </page-toolbar>
+  <page-content>
+
+    <!-- لیست منو -->
+    <div class="row">
+      <div class="col-sm-12">
+       <adm-privileges #prv level="company" [itemId]="companyId" height="600">
+       </adm-privileges>
+      </div>
+    </div>
+
+  </page-content>
+</page>

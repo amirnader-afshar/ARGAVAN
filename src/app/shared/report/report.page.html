@@ -1,0 +1,86 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <!-- <div class="row">
+      <div class="col-sm-4">
+        <dx-label text="انتخاب گزارش">
+          <dx-lov formCode="LOV-ADM-022" [(value)]="insertitem.ID" [(text)]="insertitem.Title" [(data)]="reportData" selectedField="Code"
+            [selectedValue]="Currentreport" [readOnly]=true (dataChange)="onlovreport($event)" ></dx-lov>
+        </dx-label>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-sm-12">
+        <dx-tabs #tabs [dataSource]="tabItems" [selectedIndex]="0" (onItemClick)="selectTab($event)">
+        </dx-tabs>
+        <div [hidden]="selectedTab != 0">
+        <dx-validation-group #form>
+          <ng-template ngFor let-gp [ngForOf]="groupDataSource" let-i="index">
+            <panel-box caption="{{ gp.Group | translate }}" [isParent]="true">
+              <div class="row">
+                <ng-template ngFor let-item [ngForOf]="gp.items" let-j="index">
+                  <div class="col-md-6 col-sm-12" [attr.data-index]="j" *ngIf="!item.IsDeleted" style="margin-bottom: 10px;">
+                    <div class="form-group">
+                
+                        <div class="col-sm-4 pl0">
+                          <dx-label-box [text]="item.Title">
+                          </dx-label-box>
+                          <!-- <dx-lov [(text)]="item.Title"   formCode="LOV-ADM-021" (dataChange)="onLovChange($event,i,j,item)" [(params)]="FilterCondition"></dx-lov> -->
+                        </div>
+                        <div class="col-sm-3 pl0 pr0">
+                          <dx-select-box *ngIf="item.selectedCondition" [dataSource]="Conditions" (onItemClick)="changeSelect($event,item)"  [value]="item.selectedCondition.ID"
+                            displayExpr="Title" valueExpr="ID">
+                            <div *dxTemplate="let data of 'dropDownButton'">
+                              <div *ngIf="!selectedItem" class="dx-dropdowneditor-icon"></div>
+                            </div>
+                            <div *dxTemplate="let data of 'tt'">
+                              <div>
+                                {{data.Title | translate}}
+                              </div>
+                            </div>
+                          </dx-select-box>
+                        </div>
+
+                        <div class="col-sm-4 p-0" *ngIf="item.Type==3">
+                          <dx-text-box [(value)]="item.Value">
+                            <dx-validator [validationRules]="getValidation(item.Required)" ></dx-validator>
+                          </dx-text-box>
+                        </div>
+                        <div class="col-sm-4 p-0" *ngIf="item.Type==2">
+                          <dx-number-box [(value)]="item.Value">
+                            <dx-validator [validationRules]="getValidation(item.Required)"></dx-validator>
+                          </dx-number-box>
+                        </div>
+                        <div class="col-sm-4 p-0" *ngIf="item.Type==21">
+                          <dx-date [(value)]="item.Value" [required]="item.Required">
+                          </dx-date>
+                        </div>
+                        <div class="col-sm-4 p-0" *ngIf="item.Type==5">
+                          <dx-lov [(value)]="item.Value" [formCode]="item.LovName" [required]="item.Required">
+                          </dx-lov>
+                        </div>
+
+                        <div class="col-sm-1 p-0">
+                          <span class="delete-button-inline" (click)="delete(item,i)">
+                            <i class="fa fa-minus-circle"></i>
+                          </span>
+                        </div>
+                     
+                    </div>
+                    <div class="margin-10"></div>
+                  </div>
+                </ng-template>
+           
+              </div>
+            </panel-box>
+          </ng-template>
+        </dx-validation-group>
+        </div>
+        <div [hidden]="selectedTab != 1">
+          <iframe id="iframeViewer" width="100%" height="700px"></iframe>
+        </div>
+      </div>
+    </div>
+  </page-content>
+</page>

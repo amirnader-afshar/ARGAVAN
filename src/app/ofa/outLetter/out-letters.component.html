@@ -1,0 +1,28 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <div class="row">
+        <div class="col-sm-12">
+          <grid-toolbar>
+            <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+              [columnAutoWidth]="true" [height]="400">              
+              <dxo-sorting mode="multiple"></dxo-sorting>
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-scrolling mode="virtual"></dxo-scrolling>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>
+            
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_CMPN_NAM"  caption="{{'OFA_LETTER_SENDER_CMPN'| translate}}" [width]="200"></dxi-column>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_SUSR_NAM_USR"   caption="{{'OFA_LETTER_SENDER_USER'| translate}}" [width]="200"></dxi-column>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="200"></dxi-column>
+              <dxi-column  dataField="LETTER_AM_I_ERJA"  dataType="boolean" caption="{{'LETTER_AM_I_ERJA'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_IS_READED"  dataType="boolean" caption="{{'LETTER_IS_READED'| translate}}" [width]="150"></dxi-column>
+            </dx-data-grid>
+          </grid-toolbar>
+        </div>
+      </div>
+    </page-content>
+  </page>

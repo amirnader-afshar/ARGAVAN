@@ -1,0 +1,60 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" showHelp="false">
+        <div class="padding-5">
+            <div class="filter-bar">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <dx-label text="{{ 'PUB_COMPANY' | translate }}">
+                            <dx-lov [(value)]="filterItem.CompanyId" formCode="LOV-ADM-223" (dataChange)="onDataChange($event)">
+                            </dx-lov>
+                        </dx-label>
+                    </div>
+                    <div class="col-sm-4">
+                        <dx-label text="{{ 'PUB_SYSTEM' | translate }}">
+                            <dx-lov [(value)]="filterItem.SystemName" formCode="LOV-ADM-012" [displayMode]="'ComboBox'" (dataChange)="onDataChange($event)">
+                            </dx-lov>
+                        </dx-label>
+                    </div>
+                    <div class="col-md-4">
+                        <dx-button icon="fa fa-refresh blue" (click)="onRefreshClick($event)">
+                        </dx-button>&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </page-toolbar>
+    <page-content>
+        <div class="row">
+            <div class="col-sm-12">
+                <grid-toolbar>
+                    <gt-datasource loadUrl="/ADM/Setup/Tables/Company/Access/List" [loadParams]="filterItem" [saveParams]="filterItem" updateUrl="/ADM/Setup/Tables/Company/Access/Save">
+                    </gt-datasource>
+                    <dx-data-grid #grid keyExpr="ID" [height]="600">
+                        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false"></dxo-editing>
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxi-column dataField="TableName" caption="{{'نام جدول'| translate}}" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="ViewAccessId" caption="{{'نمایش'| translate}}" width="180">
+                            <dxo-lookup [dataSource]="Action" valueExpr="ID" displayExpr="Title">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="InsertAccessId" caption="{{'درج'| translate}}" width="180">
+                            <dxo-lookup [dataSource]="Action" valueExpr="ID" displayExpr="Title">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="DeleteAccessId" caption="{{'حذف'| translate}}" width="180">
+                            <dxo-lookup [dataSource]="Action" valueExpr="ID" displayExpr="Title">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="UpdateAccessId" caption="{{'ویرایش'| translate}}" width="180">
+                            <dxo-lookup [dataSource]="Action" valueExpr="ID" displayExpr="Title">
+                            </dxo-lookup>
+                        </dxi-column>
+
+                    </dx-data-grid>
+                </grid-toolbar>
+            </div>
+        </div>
+
+    </page-content>
+</page>

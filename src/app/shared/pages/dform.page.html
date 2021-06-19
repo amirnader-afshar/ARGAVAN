@@ -1,0 +1,43 @@
+﻿<page>
+  <page-toolbar helpUrl="http://google.com" [showHelp]='false'  [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <div class="row">
+      <div [hidden]="!Is_Tree ? false : true" class="col-sm-12"  >
+        <grid-toolbar (onMenuItemClick)="onGridMenuItemClick($event)">
+          <dx-data-grid id="gridContainer" #grid keyExpr="ID" [dataSource]="dataSource" (onContentReady)="onContentReady($event)" (onEditingStart)="onEditingStart($event)"
+             [columnAutoWidth]="true" [rowAlternationEnabled]="true" [height]="600">
+            <dxo-search-panel [visible]="true" [width]="240" placeholder="{{ 'PUB_SERACH' | translate}}...">
+            </dxo-search-panel>
+            <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+            </dxo-editing>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-selection mode="multiple"></dxo-selection>
+
+            <dxi-column dataField="ID" ></dxi-column>
+
+          </dx-data-grid>
+        </grid-toolbar>
+      </div>
+
+      
+      <div  [hidden]="Is_Tree ? false : true" class="col-sm-12"     >
+          <tree-toolbar (onMenuItemClick)="onGridMenuItemClick($event)" [ToggleHeight]="75">
+            <dx-tree-list #TreeGrid [dataSource]="dataSource"  keyExpr="ID" [parentIdExpr]="Parent_Id_Field_Name"
+              [columnAutoWidth]="true" [rowAlternationEnabled]="true"  [hoverStateEnabled]="true"
+              (onEditingStart)="onEditingStart($event)"   >
+  
+              <dxo-search-panel [visible]="true"  placeholder="{{ 'PUB_SERACH' | translate}}..."></dxo-search-panel>
+              <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-scrolling mode="standard" [showScrollbar]="true" [useNative]="true"></dxo-scrolling>
+
+              <!-- اگر این فیلد نباشد گزینه های اضافه-ویرایش - حذف را جلوی هر سطر نمیارد -->
+              <!-- <dxi-column dataField="ID"></dxi-column> -->
+            </dx-tree-list>
+          </tree-toolbar>
+
+        </div>
+    </div>
+  </page-content>
+</page>

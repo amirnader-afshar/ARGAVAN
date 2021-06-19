@@ -1,0 +1,115 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)"></page-toolbar>
+  <page-content>
+    <dx-validation-group #form>
+      <div class="margin-20"></div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12 ">
+            <dx-label text="{{'گروه گزارش '|translate}}">
+                <dx-lov formCode="LOV-ADM-225" [(value)]="editItem.GroupId" [text]="editItem.Group" [displayMode]="'ComboBox'"
+                  (dataChange)="onDataChange($event)" required="true"></dx-lov>
+              </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <dx-label text="{{'نام گزارش'|translate}}">
+              <dx-text-box [(value)]="editItem.Name">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4 col-xs-12">
+              <dx-label text="{{'مسیر فایل'|translate}}">
+                <dx-text-box [(value)]="editItem.Path">
+                  <dx-validator>
+                    <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </dx-label>
+            </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12 ">
+          <dx-label text="{{'نوع گزارش '|translate}}">
+            <dx-lov formCode="LOV-ADM-002" [(value)]="editItem.SourceTypeId" [text]="editItem.SourceType" [displayMode]="'ComboBox'"
+              (dataChange)="onDataChange($event)" required="true"></dx-lov>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'کد گزارش'|translate}}">
+            <dx-text-box [(value)]="editItem.Code">
+              <dx-validator>
+                <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+              </dx-validator>
+            </dx-text-box>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{' منبع'|translate}}">
+            <dx-lov formCode="LOV-ADM-010" [(value)]="editItem.Source" [(text)]="editItem.Source" [(params)]="lovFilter" required="true"></dx-lov>
+          </dx-label>
+        </div>
+      </div>
+      <div class="margin-10"></div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'شرح '|translate}}">
+            <dx-text-box [(value)]="editItem.Description">
+        
+            </dx-text-box>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'عبارت شرطی جستجو'|translate}}">
+            <dx-text-box [(value)]="editItem.Query">
+            </dx-text-box>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'پارامتر ترتیب'|translate}}">
+            <dx-text-box [(value)]="editItem.Order">
+            </dx-text-box>
+          </dx-label>
+        </div>
+      </div>
+
+    </dx-validation-group>
+    <div class="margin-10"></div>
+    <grid-toolbar >
+      <dx-data-grid keyExpr="ID" [dataSource]="dataSource" [height]="320">
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+        </dxo-editing>
+        <dxo-scrolling mode="virtual"></dxo-scrolling>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxi-column dataField="Sequence" caption="{{'ترتیب'| translate}}" [width]="50">
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="Name" caption="{{'نام فیلد db'| translate}}">
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="DisplayName" caption="{{'نام فیلد API'| translate}}">
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="Title" caption="{{'عنوان (دیکشنری)'| translate}}">
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+
+        <dxi-column dataField="ControlTypeId" caption="{{'نوع کنترل'| translate}}" [width]="150">
+          <dxo-lookup [dataSource]="ControlTypDataSource" valueExpr="ID" displayExpr="Title" allowClearing="true">
+          </dxo-lookup>
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="DataTypeId" caption="{{'نوع داده'| translate}}" [width]="150">
+          <dxo-lookup [dataSource]="DataTypeDataSource" valueExpr="ID" displayExpr="Title" allowClearing="true">
+          </dxo-lookup>
+          <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="LovSource" caption="{{'آدرس LOV'| translate}}" [width]="150"></dxi-column>
+        <dxi-column dataType="boolean" dataField="Required" caption="{{'PUB_ACTIVE'| translate}}" [width]="80"></dxi-column>
+ 
+
+      </dx-data-grid>
+    </grid-toolbar>
+  </page-content>
+</page>

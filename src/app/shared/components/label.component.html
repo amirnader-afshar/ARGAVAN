@@ -1,0 +1,16 @@
+<div class="ax-widget ax-texteditor-container" *ngIf="visible" (mouseenter)="toggleHint()" (mouseleave)="toggleHint()" id="{{_uid}}">
+  <div class="row">
+    <div [ngClass]="{'col-sm-11': icon!=null, 'col-sm-12': icon==null}">
+      <ng-content></ng-content>
+    </div>
+    <div class="col-sm-1 inline-button-input" *ngIf="icon" (click)="onClick()">
+      <i [class]="icon"></i>
+    </div>
+  </div>
+  <label class="ax-texteditor-label" title="{{_text_hint}}">{{_text}}</label>
+  <dx-popover [width]="200" target="#{{_uid}}" position="bottom" [visible]="_hintVisible" *ngIf="_hintVisible">
+    <div *dxTemplate="let data = data of 'content'">
+      {{hintText}}
+    </div>
+  </dx-popover>
+</div>

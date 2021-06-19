@@ -1,0 +1,25 @@
+<div class="page-toolbar">
+  <div class="row">
+    <div class="col-md-10">
+      <dx-menu #menu
+               [(items)]="items"
+               (onItemClick)="onMenuItemClick($event)"
+               adaptivityEnabled="true"
+               displayExpr="text"
+               >
+      </dx-menu>
+      <ng-content></ng-content>
+    </div>
+    <div class="col-md-2 hidden-sm hidden-xs">
+      <div class="pull-left left-menu">
+        <dx-menu #info
+                 [(items)]="infoItems"
+                 adaptivityEnabled="true"
+                 (onItemClick)="onInfoItemsMenuItemClick($event)"
+                 displayExpr="text">
+        </dx-menu>
+      </div>
+    </div>
+  </div>
+</div>
+

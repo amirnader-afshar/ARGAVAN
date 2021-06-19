@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -50,12 +53,41 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
+             
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/css/fonts.scss",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devexpress-diagram/dist/dx-diagram.css", 
+              "node_modules/metismenu/dist/metisMenu.min.css",
+              "src/assets/vendor/bootstrap/css/bootstrap.min.css",
+              "src/assets/css/slick.css",
+              "src/assets/css/theme-rtl.scss",
+              "src/assets/css/Rak.scss",
+              "src/assets/css/ax.controls.scss",
+              "src/assets/css/sla/factor.scss",
+              "src/assets/css/rpa/rpa-forms.scss",
+              "src/assets/css/file-explorer.scss", 
+              "src/assets/css/wfm/startProcess.scss"  
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/vendor/jquery/jquery.js",
+              "src/assets/vendor/popper/popper.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.min.js",
+              "node_modules/metismenu/dist/metisMenu.min.js",              
+              "src/assets/js/slick.js",
+              "src/assets/js/theme.js",
+              "src/assets/js/home.js" ,
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf-2.7.684.min.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/viewer-2.7.684.js"
+              ]
           },
           "configurations": {
             "production": {
@@ -75,8 +107,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "16mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -116,9 +148,30 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/css/fonts.scss",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/metismenu/dist/metisMenu.min.css",
+              "src/assets/vendor/bootstrap/css/bootstrap.min.css",
+              "src/assets/css/slick.css",
+              "src/assets/css/theme-rtl.scss",
+              "src/assets/css/Rak.scss",
+              "src/assets/css/ax.controls.scss",
+              "src/assets/css/sla/factor.scss",
+              "src/assets/css/rpa/cheque.scss",
+              "src/assets/css/wfm/startProcess.scss"              
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/vendor/jquery/jquery.js",
+              "src/assets/vendor/popper/popper.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.min.js",
+              "node_modules/metismenu/dist/metisMenu.min.js",
+              "src/assets/js/slick.js",
+              "src/assets/js/theme.js",
+              "src/assets/js/home.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf-2.7.684.min.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/viewer.js"
+            ]
           }
         },
         "lint": {
@@ -151,3 +204,4 @@
   },
   "defaultProject": "ARGAVAN"
 }
+

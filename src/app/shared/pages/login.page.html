@@ -1,0 +1,60 @@
+<div class="container-fluid login-container">
+  <div class="login-header">
+    {{ 'ADM_APP_NAME' | translate }}
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="login-form">
+        <dx-validation-group #form>
+          <div class="login-box animated fadeInDown">
+            <div class="form-group">
+              <div class="col-md-12">
+                <dx-label text="">
+                  <dx-text-box [(value)]="username" placeholder="{{ 'ADM_USERNAME' | translate }}">
+                    <dx-validator [validationRules]="usernameRules"></dx-validator>
+                  </dx-text-box>
+                </dx-label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12">
+                <dx-label text="">
+                  <dx-text-box [(value)]="password" placeholder="{{ 'ADM_PASSWORD' | translate }}" mode="password">
+                    <dx-validator [validationRules]="passswordRules"></dx-validator>
+                  </dx-text-box>
+                </dx-label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12">
+                <a href="#">
+                  {{ 'ADM_FORGET_PASS' | translate }}
+                </a>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <div class="col-md-12">
+                <div class="margin-20"></div>
+                <button (click)="login()" class="btn btn-primary btn-lg btn-block">
+                  <span *ngIf="isLoading">
+                    <i class='fa fa-spinner fa-spin'></i>&nbsp;
+                  </span>
+                  <span>{{ 'PUB_LOGIN' | translate }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </dx-validation-group>
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <div class="login-footer">
+    <div class="text-center">
+      {{ 'ADM_COPY_RIGHT' | translate }}
+    </div>
+  </div>
+
+</div>

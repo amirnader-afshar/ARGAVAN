@@ -1,0 +1,53 @@
+<div class="menu-header">
+  <div class="logo">
+    <span>{{authService.companyName}}</span>
+  </div>
+  <div class="user">
+    <img src="../../../../assets/img/avatar.png" />
+    <h1>
+      {{authService.displayName}}
+    </h1>
+    <small>
+      {{authService.description}}
+    </small>
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <lang-selector ></lang-selector>
+    </div>
+</div>
+<div *ngIf="selected" title="{{selected.Title}}" class="menu-header-title">
+  <!-- <span class="fa {{selected.Icon}}"></span> -->
+  {{selected.Title}}
+</div>
+<div class="menu-container">
+  <ul class="metismenu">
+    <li *ngIf="backItem==null && selected" title="{{'PUB_BACK' | translate}}" class="menu-item">
+      <a routerLink="/home">
+        <i class="fa fa-chevron-right fa-lg"></i>
+        {{'بازگشت' | translate}}
+      </a>
+    </li>
+    <li *ngIf="backItem" title="{{'PUB_BACK' | translate}}" class="menu-item">
+      <a (click)="navigateTo(backItem)" href="javascript:void(0)">
+        <i class="fa fa-chevron-right fa-lg"></i>
+        {{'بازگشت' | translate}}
+      </a>
+    </li>
+
+    <ng-template #recursiveList let-list>
+      <ng-container *ngFor="let item of list">
+        <li *ngIf="item.IsMenu" [ngClass]="{'has-arrow':  item.hasArrow,'active': url==item.Path  }" class="menu-item" title="{{item.Title}}">
+          <a (click)="navigateTo(item)" href="#{{item.Path}}">
+            <i class="fa {{item.Icon}} fa-lg"></i>
+            {{item.Title}}
+          </a>
+          <ul *ngIf="item.Items && item.Items.length > 0 ">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.Items }"></ng-container>
+          </ul>
+        </li>
+      </ng-container>
+
+    </ng-template>
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
+  </ul>
+</div>

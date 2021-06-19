@@ -1,0 +1,18 @@
+<page>
+  <page-content>
+    <div class="row">
+      <div class="col-md-12">
+        <adm-privileges #prv [level]="level" [itemId]="itemId" height="450">
+        </adm-privileges>
+      </div>
+    </div>
+    <div class="footer-popup">
+      <div class="col-md-12 col-sm-12">
+        <dx-button (onClick)="onApplyClick($event)" type="success" text="اعمال سطح دسترسی" [width]="180"></dx-button>
+        &nbsp;
+        <!-- <dx-button type="danger" (onClick)="onCloseClick()" text="{{ 'PUB_RETURN' | translate }}" [width]="150">
+        </dx-button> -->
+      </div>
+    </div>
+  </page-content>
+</page>

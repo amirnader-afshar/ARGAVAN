@@ -1,0 +1,74 @@
+<page>
+  <page-toolbar showHelp="false" [items]="menuItems">
+    <div class="padding-5">
+      <div class="filter-bar">
+        <div class="row">
+          <div class="col-sm-4 col-xs-12">
+            <dx-label text="{{'نوع اسکیما'|translate}}">
+              <dx-lov formCode="LOV-ADM-012" [(value)]="searchItem.SubSystem" [displayMode]="'ComboBox'" (dataChange)="onDataChange($event)"
+                allowClear="true"></dx-lov>
+            </dx-label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </page-toolbar>
+  <page-content>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <grid-toolbar>
+          <dx-data-grid #grid keyExpr="ID" [(selectedRowKeys)]="selectedKeys" (onSelectionChanged)="selectionChangedHandler()" [dataSource]="dataSource"
+            height="630">
+            <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+            </dxo-editing>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+            <!-- <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping> -->
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-paging enabled="true"></dxo-paging>
+
+
+            <!-- <dxi-column dataField="SchemaName" caption="{{'سیستم'| translate}}" [groupIndex]="0">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column> -->
+            <dxi-column dataField="ConfigKey" caption="{{'کلمه ی اختصاری'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="ConfigName" caption="{{'عنوان'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="ConfigGroup" caption="{{'گروه تنظیمات'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="LevelTypeCode" caption="{{'نوع سطح تنظیمات'| translate}}" width="125">
+              <dxo-lookup [dataSource]="levelTypDataSource" valueExpr="ID" displayExpr="Title">
+              </dxo-lookup>
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="ControlTypeCode" caption="{{'نوع کنترل'| translate}}" width="130">
+              <dxo-lookup [dataSource]="controlTypDataSource" valueExpr="ID" displayExpr="Title">
+              </dxo-lookup>
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="DataTypeCode" caption="{{'نوع دیتا'| translate}}" width="100">
+              <dxo-lookup [dataSource]="dataTypeDataSource" valueExpr="ID" displayExpr="Title">
+              </dxo-lookup>
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="ConfigValue" caption="{{'مقدار پیشفرض'| translate}}"></dxi-column>
+            <dxi-column dataField="ConfigSequence" caption="{{'ترتیب نمایش'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="SubjectDes" caption="{{'نام منو'| translate}}" editCellTemplate="celLovSubject" width="180">
+              <div *dxTemplate="let cell of 'celLovSubject'">
+                <dx-lov formCode="LOV-ADM-023" [(value)]="cell.data.SubjectID" [text]="cell.data.SubjectDes" (dataChange)="onCellSubjectChanged($event,cell)"></dx-lov>
+              </div>
+            </dxi-column>
+            <dxi-column dataField="LovName" caption="{{'آدرس LOV'| translate}}" width="110"></dxi-column>
+          </dx-data-grid>
+        </grid-toolbar>
+      </div>
+    </div>
+  </page-content>
+</page>

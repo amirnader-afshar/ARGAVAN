@@ -1,0 +1,89 @@
+<!-- <page #testPage>
+    <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-button type="default" (onClick)="openDialog()" text="openDialog" [width]="400" [height]="37"></dx-button>
+      <div #dynamic></div>
+
+      <ng-template #popup let-data>
+        <h1>
+          Hello World! {{data.name}}
+        </h1>
+        <dx-button type="default" (onClick)="openDialog2()" text="openDialog" [width]="400" [height]="37"></dx-button>
+      </ng-template>
+      <ng-template #popup2 let-data>
+
+        <test-page></test-page>
+      </ng-template>
+    </page-content>
+  </page> -->
+<!-- <page>
+  <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+      <dx-button type="default" (onClick)="openDialog()" text="openDialog" [width]="400" [height]="37"></dx-button>
+      <dx-button type="default" (onClick)="openDialog2()" text="openDialog2" [width]="400" [height]="37"></dx-button>
+
+    <ng-template #popup let-data>
+      <h1>
+        Hello World! {{data.name}}
+      </h1>
+      <dx-button type="default" (onClick)="openDialog2()" text="openDialog" [width]="400" [height]="37"></dx-button>
+    </ng-template>
+    <ng-template #popup2 let-data>
+
+      <test-page></test-page>
+    </ng-template>
+    <dx-validation-group #form>
+      <dx-label text="تست">
+        <dx-lov formCode="LOV-PUR-009" #lov [(value)]="lovData" (valueChange)="onLovValueChanged($event)" (dataChange)="onDataChange($event)"
+          [(params)]="lovParams">
+        </dx-lov>
+      </dx-label>
+      <br>
+      <dx-date #date mode="date" [(value)]="dateObject.date" [showToday]="false" [required]="true">
+      </dx-date>
+      <span>{{dateObject.date | date:'yyyy/MM/dd' }}</span>
+      <br>
+    </dx-validation-group>
+    <dx-button (onClick)="clearDate()" type="success" text="ClearDate" [width]="180"></dx-button>
+    <gt-datasource insertUrl="/WAM/Movement/Save" updateUrl="/WAM/Movement/Save" loadUrl="/WAM/Movement/List" removeUrl="/WAM/Movement/Delete">
+    </gt-datasource>
+    <dx-data-grid #gridMaster keyExpr="ID" [hoverStateEnabled]="true" [columnAutoWidth]="true" [rowAlternationEnabled]="true"
+      [showBorders]="true" [showRowLines]="true" [height]="250">
+      <dxo-scrolling mode="virtual"></dxo-scrolling>
+      <dxo-selection mode="multiple"></dxo-selection>
+      <dxi-column dataField="Number" caption="{{ 'MVMN_NUM' | translate }}"></dxi-column>
+      <dxi-column dataField="Date" caption="{{ 'MVMN_DAT' | translate }}"></dxi-column>
+      <dxi-column dataField="TextNote" caption="{{ 'MVMN_TXT_NOTE' | translate }}"></dxi-column>
+      <dxi-column dataField="WarehouseCode" caption="{{ 'WRHS_Code' | translate }}"></dxi-column>
+      <dxi-column dataField="WarehouseDescription" caption="{{ 'WRHS_DES' | translate }}"></dxi-column>
+    </dx-data-grid>
+  </page-content>
+
+
+  <dx-popup [width]="1000" [height]="600" [showTitle]="true" [showCloseButton]="true" [dragEnabled]="true" [closeOnOutsideClick]="true">
+    <div *dxTemplate="let data of 'content'">
+
+    </div>
+  </dx-popup>
+
+</page> -->
+<page>
+  <page-content>
+      <dx-button type="default" (onClick)="openDialog2()" text="openDialog" [width]="400" [height]="37"></dx-button>
+
+    <div class="row">
+      <div class="col-md-12">
+        <dx-label text="{{'نام منبع'|translate}}">
+          <dx-lov #lov [(value)]="lovValue" formCode="ADM-TEST-001"   (dataChange)="onDataChange($event)" (valueChange)="onLovValueChanged($event)" [allowClear]="true" ></dx-lov>
+        </dx-label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        {{lov.data.Date}} 
+      </div>
+    </div>
+  </page-content>
+</page>

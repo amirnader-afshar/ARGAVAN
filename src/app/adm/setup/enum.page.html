@@ -1,0 +1,71 @@
+﻿<page>
+  <page-toolbar helpUrl="http://google.com"
+                showHelp="false"
+                [items]="menuItems"
+                (onItemClick)="onMenuItemClick($event)"></page-toolbar>
+  <page-content>
+    <dx-validation-group #form>
+      <div class="margin-20"></div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12 ">
+          <dx-label text="{{'نوع اسکیما'|translate}}">
+            <dx-lov formCode="LOV-ADM-012"
+                    [(value)]="editItem.SubSystem"
+                    [(text)]="editItem.SubSystem"
+                    [displayMode]="'ComboBox'"
+                    required="true"></dx-lov>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'نام فیلددر API'|translate}}">
+            <dx-text-box [(value)]="editItem.Field">
+              <dx-validator>
+                <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+              </dx-validator>
+            </dx-text-box>
+          </dx-label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <dx-label text="{{'نام اینام'|translate}}">
+            <dx-text-box [(value)]="editItem.EnumName">
+              <dx-validator>
+                <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+              </dx-validator>
+            </dx-text-box>
+          </dx-label>
+        </div>
+      </div>
+    </dx-validation-group>
+      <div class="margin-10"></div>
+      <grid-toolbar (onMenuItemClick)="onGridItemClick($event)" [rowMenuItems]="gridItems">
+        <dx-data-grid keyExpr="ID"
+                      [dataSource]="dataSource"
+                      [(selectedRowKeys)]="selectedKeys"
+                      [height]="450">
+          <dxo-editing mode="row"
+                       [allowUpdating]="true"
+                       [allowDeleting]="true"
+                       [allowAdding]="true">
+          </dxo-editing>
+          <dxo-scrolling mode="virtual"></dxo-scrolling>
+          <dxo-selection mode="single"></dxo-selection>
+          <dxi-column dataField="ItemName" caption="{{'نام آیتم '| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="ItemDictionary" caption="{{' معادل در دیکشنری '| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="Value" caption="{{' مقدار'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="Sequence" caption="{{'ترتیب'| translate}}">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+          </dxi-column>
+        </dx-data-grid>
+      </grid-toolbar>
+   
+  </page-content>
+</page>
+
+
+

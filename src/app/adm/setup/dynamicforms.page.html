@@ -1,0 +1,63 @@
+﻿<page>
+  <page-toolbar helpUrl="http://google.com"
+                showHelp="false"
+                [items]="menuItems"
+                (onItemClick)="onMenuItemClick($event)"></page-toolbar>
+  <page-content>
+
+    <div class="row" [hidden]="lessMode">
+      <div class="col-sm-3 col-xs-12">
+        <dx-label text="{{'نوع منبع داده'|translate}}">
+          <dx-lov formCode="LOV-ADM-002"
+                  [(value)]="searchitem.SourceTypeId"
+                  [displayMode]="'ComboBox'"
+                  (dataChange)="onDataChange($event)"
+                  allowClear="true"></dx-lov>
+        </dx-label>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <dx-label text="{{'کد منبع'|translate}}">
+          <dx-text-box [(value)]="searchitem.Code">
+          </dx-text-box>
+        </dx-label>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <dx-label text="{{'نام منبع'|translate}}">
+          <dx-lov formCode="LOV-ADM-010"
+                  [(value)]="searchitem.Source"
+                  [(params)]="lovFilter"
+                  allowClear="true"></dx-lov>
+
+        </dx-label>
+      </div>
+      <div class="col-sm-3  col-xs-12">
+        <dx-button type="default" (onClick)="onSearchClick()" text="واکشی اطلاعات" [width]="400" [height]="37"></dx-button>
+      </div>
+    </div>
+    <div class="margin-10"></div>
+    <div class="row">
+      <div class="col-sm-12">
+        <grid-toolbar>
+          <gt-datasource loadUrl="/ADM/Setup/DynamicForm/List"
+                         [(loadParams)]="loadParams">
+          </gt-datasource>
+          <dx-data-grid #grid
+                        keyExpr="ID"
+                        [height]="500"
+                        (onSelectionChanged)="selectionChangedHandler()"
+                        [(selectedRowKeys)]="selectedKeys">
+            <!--<dxo-remote-operations [paging]="true">
+      </dxo-remote-operations>-->
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-paging enabled="true"></dxo-paging>
+            <dxi-column dataField="Code" caption="{{' کد منبع'| translate}}" width="150" ></dxi-column>
+            <dxi-column dataField="SourceType" caption="{{'نوع منبع'| translate}}" width="150"></dxi-column>
+            <dxi-column dataField="Source" caption="{{'نام منبع'| translate}}" ></dxi-column>
+            <dxi-column dataField="Description" caption="{{'منبع نمایش شرح'| translate}}" width="300"></dxi-column>
+          </dx-data-grid>
+        </grid-toolbar>
+      </div>
+    </div>
+  </page-content>
+</page>

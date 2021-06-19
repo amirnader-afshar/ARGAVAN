@@ -1,0 +1,332 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+        <div class="search-container" *ngIf="lessMode">
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ ' نام' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'نام خانوادگی' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'کد ملی' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'نام پدر' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+            </div>
+
+            <div class="row search-footer">
+                <div class="col-sm-3 col-xs-12"></div>
+                <div class="col-sm-3 col-xs-12"></div>
+                <div class="col-sm-3 col-xs-12"></div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <dx-button icon="fa fa-check-square" text="واکشی اطلاعات" type="success" [width]="280" [height]="37">
+                            </dx-button>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <dx-button [text]="moreText" [width]="200" [height]="37" (onClick)="advancedSearch()">
+                            </dx-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="header-title">
+            اطلاعات شناسنامه
+        </h1>
+        <hr class="hr-line">
+        <h2 class="header-title">
+            اطلاعات شناسنامه
+        </h2>
+        <h3 class="header-title">
+            اطلاعات شناسنامه
+        </h3>
+        <h4 class="header-title">
+            اطلاعات شناسنامه
+        </h4>
+        <h5 class="header-title">
+            اطلاعات شناسنامه
+        </h5>
+        <h6 class="header-title">
+            اطلاعات شناسنامه
+        </h6>
+        <popup [items]="popupItems" [(visible)]="popupVisible" [width]="1000" [height]="600" title="عنوان" (onClosing)="onPopupClose()"
+            (onOpening)="onPopupOpen()" [isFullScreen]="false" [showConfirm]="true" (onSubmitClick)="confimClick()" submitText="تایید"
+            [showNext]="false" (onSubmitNextClick)="ClickAndNext()">
+        </popup>
+
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+                <dx-label hintText="فیلد نام باید فارسی باشد و از کاراکتر های مجازی استفاده شود.نام میتواند تکراری باشد" text="{{ 'شسیننمشستینتشسیئدشسوئیدوشسئدیوئشسدویئدشسوئدی' | translate }}">
+                    <dx-text-box>
+                    </dx-text-box>
+                </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <dx-label text="{{ 'نام خانوادگی' | translate }}">
+                    <dx-text-box>
+                    </dx-text-box>
+                </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <dx-label text="{{ 'تاریخ تولد' | translate }}">
+                    <dx-date></dx-date>
+                </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <dx-label class="ltr" text="{{ 'شماره تلفن' | translate }}">
+                    <dx-text-box mask="0000 0 00 00 00">
+                    </dx-text-box>
+                </dx-label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+                <dx-label hintText="فقط در موارد خاص استفاده کنید" text="{{ 'ورودی به همراه کلید' | translate }}">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <dx-text-box>
+                            </dx-text-box>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="inline-button-input">
+                                <i class="fa fa-eye"></i>
+                            </div>
+                        </div>
+                    </div>
+                </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <input-group label="اینپوت گروپ" hintText="تست" (onButtonClick)="clicked()" icon="fa fa-check-circle green">
+                    <dx-text-box>
+                    </dx-text-box>
+                </input-group>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <dx-label text="{{ 'LOV' | translate }}">
+                    <dx-lov formCode="LOV-PUR-008" displayMode="ComboBox" [readOnly]="true">
+                    </dx-lov>
+                </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <dx-label text="{{ 'LOV' | translate }}">
+                    <dx-lov formCode="LOV-PUR-008" displayMode="ComboBox">
+                    </dx-lov>
+                </dx-label>
+            </div>
+        </div>
+        <div class="panel-box">
+            <h5>عنوان پنل </h5>
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'نام' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'نام خانوادگی' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'تاریخ تولد' | translate }}">
+                        <dx-date></dx-date>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label class="ltr" text="{{ 'شماره تلفن' | translate }}">
+                        <dx-text-box mask="0000 0 00 00 00">
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+            </div>
+        </div>
+        <search [(visible)]="searchVisible" title="عنوان" [scrollHeight]="100" [showSearch]="true" [showSelect]="true" (onClickSearch)="search()"
+            (onClickSelect)="selectSearch()">
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'شماره شناسنامه' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'محل صدور' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'سریال شناسنامه' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <dx-label text="{{ 'شماره تلفن' | translate }}">
+                        <dx-text-box>
+                        </dx-text-box>
+                    </dx-label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <dx-data-grid #gridMaster keyExpr="ID" [hoverStateEnabled]="true" [columnAutoWidth]="true" [rowAlternationEnabled]="true"
+                        [showBorders]="true" [showRowLines]="true" [height]="250">
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="multiple"></dxo-selection>
+                        <dxi-column dataField="Number" caption="{{ 'MVMN_NUM' | translate }}"></dxi-column>
+                        <dxi-column dataField="Date" caption="{{ 'MVMN_DAT' | translate }}"></dxi-column>
+                        <dxi-column dataField="TextNote" caption="{{ 'MVMN_TXT_NOTE' | translate }}"></dxi-column>
+                        <dxi-column dataField="WarehouseCode" caption="{{ 'WRHS_Code' | translate }}"></dxi-column>
+                        <dxi-column dataField="WarehouseDescription" caption="{{ 'WRHS_DES' | translate }}"></dxi-column>
+                    </dx-data-grid>
+                </div>
+            </div>
+        </search>
+        <div class="row">
+            <div class="col-sm-12">
+                <dx-tabs #apiTabs [dataSource]="tabs" [selectedIndex]="0"></dx-tabs>
+            </div>
+
+        </div>
+        <div class="margin-30"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <textview [height]="100">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta amet asperiores quisquam voluptatem delectus provident,
+                    aperiam reprehenderit velit modi est labore nulla consectetur magnam veritatis laudantium debitis, officia
+                    deleniti? Provident! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio
+                    expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt
+                    esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum
+                    distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam
+                    vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam
+                    magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing
+                    elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias
+                    quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius
+                    molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis
+                    officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem
+                    ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione
+                    blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor
+                    ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate
+                    rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita
+                    soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse
+                    cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio
+                    expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt
+                    esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum
+                    distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam
+                    vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias quibusdam
+                    magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing
+                    elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius molestias
+                    quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis officiis hic eius
+                    molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione blanditiis
+                    officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore. Lorem
+                    ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor ratione
+                    blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate rerum dolore.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita soluta dolor
+                    ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse cupiditate
+                    rerum dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ipsa, harum distinctio expedita
+                    soluta dolor ratione blanditiis officiis hic eius molestias quibusdam magnam aperiam vel? Deserunt esse
+                    cupiditate rerum dolore.
+
+
+                </textview>
+
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <file-explorer-popup [(visible)]="fileExplorerVisible"></file-explorer-popup>
+
+    </page-content>
+</page>

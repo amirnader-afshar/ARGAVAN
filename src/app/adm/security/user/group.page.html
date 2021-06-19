@@ -1,0 +1,54 @@
+﻿<page>
+  <page-toolbar  [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <div class="row">
+      <div class="col-sm-12">
+        <tree-toolbar (onMenuItemClick)="onTreeItemClick($event)" [rowMenuItems]="treeItems" >
+          <dx-tree-list #Treegrid [dataSource]="dataSource" keyExpr="ID" [(selectedRowKeys)]="selectedKeys" (onSelectionChanged)="selectionChangedHandler()"
+            parentIdExpr="ParentGroupId" [columnAutoWidth]="true" [wordWrapEnabled]="true" [height]="600">
+            <dxo-editing mode="row" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
+            </dxo-editing>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxi-column dataField="GroupName" caption="{{'نام گروه'| translate}}">
+            </dxi-column>
+            <dxi-column dataField="FlagActive" caption="{{'فعال'| translate}}" dataType="boolean" [width]="80">
+            </dxi-column>
+          </dx-tree-list>
+        </tree-toolbar>
+      </div>
+    </div>
+  </page-content>
+</page>
+
+<!--Select User -->
+<dx-popup class="popup" width="400" height="600" showTitle="true" showCloseButton="true" 
+  dragEnabled="true" closeOnOutsideClick="true" [(visible)]="AddUserPopup">
+  <div *dxTemplate="let data of 'content'">
+    <div class="row">
+      <div class="col-sm-12">
+        <dx-list #lists [dataSource]="userList" keyExpr="ID" height="450" searchEnabled="true" showSelectionControls="true" pageLoadMode="scrollBottom"
+          searchExpr="User" searchMode="contains" [(selectedItemKeys)]="selectedUserkeys"  selectionMode="multiple"
+          selectAllMode="page">
+          <div *dxTemplate="let data of 'item'">
+            <div>{{data.User}}</div>
+          </div>
+        </dx-list>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 popupFooterControl">
+        <dx-button (onClick)="onOkClick()" type="success" text="تخصیص کاربر به گروه" width="100%"></dx-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
+
+<!--Select Privilages -->
+<dx-popup class="popup" width="800" height="800" showTitle="true" showCloseButton="true" 
+  dragEnabled="true" closeOnOutsideClick="true" [(visible)]="AddPrivilagesPopup">
+
+  <adm-privileges-afshar [level]="'group'" [itemId]="selectedRowId"></adm-privileges-afshar>
+  
+</dx-popup>
+

@@ -1,0 +1,45 @@
+<page>
+    <page-content>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="login-form">
+                    <dx-validation-group #form>
+                        <div class="login-box animated fadeInDown">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <dx-label text="">
+                                        <dx-text-box [(value)]="username" placeholder="{{ 'ADM_USERNAME' | translate }}" readOnly="true">
+                                            <dx-validator [validationRules]="usernameRules"></dx-validator>
+                                        </dx-text-box>
+                                    </dx-label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <dx-label text="">
+                                        <dx-text-box [(value)]="password" placeholder="{{ 'ADM_PASSWORD' | translate }}" mode="password">
+                                            <dx-validator [validationRules]="passswordRules"></dx-validator>
+                                        </dx-text-box>
+                                    </dx-label>
+                                </div>
+                            </div>
+                      
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="margin-20"></div>
+                                    <button (click)="login()" class="btn btn-primary btn-lg btn-block">
+                                        <span *ngIf="isLoading">
+                                            <i class='fa fa-spinner fa-spin'></i>&nbsp;
+                                        </span>
+                                        <span>{{ 'PUB_LOGIN' | translate }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </dx-validation-group>
+                </div>
+
+            </div>
+        </div>
+    </page-content>
+</page>

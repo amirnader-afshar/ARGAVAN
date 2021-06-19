@@ -1,0 +1,35 @@
+﻿<page>
+  <page-toolbar  [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <div class="row">
+      <div class="col-sm-12">
+        <grid-toolbar (onMenuItemClick)="onGridItemClick($event)" [rowMenuItems]="gridItems">
+          <gt-datasource loadUrl="/ADM/Security/User/List" deleteUrl="/ADM/Security/User/Delete">
+          </gt-datasource>
+          <dx-data-grid #grid keyExpr="ID" [height]="600" [(selectedRowKeys)]="selectedKeys" (onSelectionChanged)="selectionChangedHandler()">
+            <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="false">
+            </dxo-editing>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxi-column dataField="Username" caption="{{'ADM_USERNAME'| translate}}"></dxi-column>
+            <dxi-column dataField="DisplayName" caption="{{'PUB_TITLE'| translate}}"></dxi-column>
+            <dxi-column dataField="Groups" caption="{{'ADM_GROUPS'| translate}}"></dxi-column>
+            <dxi-column dataField="Email" caption="{{'PUB_EMAIL'| translate}}" [width]="250"></dxi-column>
+            <dxi-column dataField="Mobile" caption="{{'PUB_MOBILE'| translate}}" [width]="200"></dxi-column>
+            <dxi-column dataField="Enabled" caption="{{'PUB_ENABLED'| translate}}" [width]="90"></dxi-column>
+          </dx-data-grid>
+        </grid-toolbar>
+      </div>
+    </div>
+  </page-content>
+</page>
+
+<!--Select Privilages -->
+<dx-popup class="popup" width="800" height="800" showTitle="true" showCloseButton="true" 
+  dragEnabled="true" closeOnOutsideClick="true" [(visible)]="AddPrivilagesPopup">
+
+  <adm-privileges-afshar [level]="'user'" [itemId]="selectedRowId"></adm-privileges-afshar>
+  
+</dx-popup>
+

@@ -1,0 +1,90 @@
+﻿@import 'variable.scss';
+
+
+@mixin label-background() {
+    // -webkit-gradient(linear, left top, left bottom, color-stop(40%, #ffffff00), color-stop(50%, white), to(rgba(255, 255, 255, 0)))
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+21,ffffff+100&1+50,0+100 */
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 40%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 40%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+.ax-texteditor-container {
+  position: relative !important;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0);
+
+  .ax-texteditor-label {
+    padding: 0px 10px !important;
+    color: #111 !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    z-index: 1 !important;
+    position: absolute !important;
+    top: -8px !important;
+    right: 5px;
+    @include label-background();
+  }
+}
+
+.ax-texteditor-container.focus {
+    .ax-texteditor-label {
+        color: $primary !important;
+    }
+
+    .dx-texteditor {
+        border: 1px solid $primary !important;
+    }
+}
+
+.dx-toolbar.dx-widget.dx-rtl.dx-visibility-change-handler.dx-collection {
+    background: #e2e2e2;
+    border-bottom: 0px;
+    margin: 10px 0 0 0;
+    padding: 3px 10px;
+    border: 1px solid #fff;
+    border-bottom: 0;
+
+    /* border-style: solid; */
+}
+
+.dx-toolbar.dx-widget.dx-rtl.dx-visibility-change-handler.dx-collection input {
+    min-height: 26px !important;
+    line-height: 26px;
+    text-align: center;
+    -webkit-border-radius: 20px !important;
+    -moz-border-radius: 20px !important;
+    border-radius: 20px !important;
+    padding: 0px 10px;
+}
+
+.ax-datagrid-caption {
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+
+    .fa {
+        vertical-align: sub;
+    }
+}
+
+.ax-radiogroup-container {
+    position: relative !important;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 7px 10px;
+
+    .ax-radiogroup-label {
+        padding: 0px 10px !important;
+        color: #111 !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        z-index: 1 !important;
+        position: absolute !important;
+        top: -10px !important;
+        right: 5px;
+        @include label-background();
+    }
+}
+

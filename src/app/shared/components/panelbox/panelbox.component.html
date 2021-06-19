@@ -1,0 +1,28 @@
+<div class="panel-box">
+    <div class="row title-bar" *ngIf="!isParent">
+        <div class="col-md-11 caption">
+            {{caption}}
+        </div>
+        <div class="col-md-1 toggle" *ngIf="allowCollapse">
+            <a class="pull-left" href="javascript:void(0);" (click)="toggle()" >
+                <i class="fa fa-chevron-down" [hidden]="!collapsed"></i>
+                <i class="fa fa-chevron-up" [hidden]="collapsed"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row title-bar-main" *ngIf="isParent">
+        <div class="col-md-11 caption">
+            {{caption}}
+        </div>
+        <div class="col-md-1 toggle" *ngIf="allowCollapse">
+            <a class="pull-left" href="javascript:void(0);" (click)="toggle()" >
+                <i class="fa fa-chevron-down" [hidden]="!collapsed"></i>
+                <i class="fa fa-chevron-up" [hidden]="collapsed"></i>
+            </a>
+        </div>
+    </div>
+    <div [@visibilityChanged]="visiblityState">
+        <ng-content>
+        </ng-content>
+    </div>
+</div>

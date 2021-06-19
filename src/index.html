@@ -1,13 +1,53 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="rtl">
+
 <head>
   <meta charset="utf-8">
-  <title>ARGAVAN</title>
+  <title></title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- <script src="https://cdn.ckeditor.com/4.5.11/full-all/ckeditor.js"></script> -->
 </head>
+
 <body>
-  <app-root></app-root>
+  <app-root>
+    <style>
+      app-root {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #757575;
+        text-transform: uppercase;
+        font-size: 16px;
+      }
+
+      body {
+        background: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      .app-loading {
+        position: absolute;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+      }
+
+      .app-loading img {
+        width: 50px;
+        display: block;
+        margin: auto;
+      }
+    </style>
+    <div class="app-loading">
+      <img src="assets/img/loading-indicator.gif" />
+      <p>در حال بارگذاری | لطفا کمی صبر کنید</p>
+    </div>
+  </app-root>
 </body>
+
 </html>

@@ -1,0 +1,22 @@
+<page>
+    <page-content>
+        <div class="row">
+            <div class="col-sm-12">
+                <dx-label text="{{'EDM_FLD_PARENT'| translate}}">
+                    <dx-lov [(value)]="folder.parentFolderId" [(text)]="folder.name" formCode="LOV-EDM-001" [displayMode]="'ComboBox'"></dx-lov>
+                </dx-label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <dx-label text="{{'EDM_FLD_NAME'| translate}}">
+                    <dx-text-box maxLength="200" [(value)]="folder.name"></dx-text-box>
+                </dx-label>
+            </div>
+        </div>
+        <div class="footer-popup">
+            <dx-button type="success" text="{{ 'PUB_SAVE' | translate }}" (onClick)="CreateFolder()"></dx-button>
+            <dx-button type="danger" text="{{ 'PUB_CANCEL' | translate }}" (onClick)="closeFolder()"></dx-button>
+        </div>
+    </page-content>
+</page>

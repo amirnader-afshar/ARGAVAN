@@ -1,0 +1,42 @@
+@mixin full-bk-grey($image) {
+    background-size: cover;
+    background-position: top center;
+    background: -moz-linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%,rgba(0, 0, 0, 0.5) 100%),url($image);
+    background: -webkit-linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%,rgba(0, 0, 0, 0.5) 100%),url($image);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%,rgba(0, 0, 0, 0.5) 100%),url($image);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f44336', endColorstr='#00f44336',GradientType=1 );
+}
+
+$default: #1565c0;
+
+$primary: #2196f3;
+$primaryLight: #03a9f4;
+
+$secondary: #2a3e4c;
+$secondaryLight: #445c6c;
+
+
+$black:#000;
+$gray: #333;
+
+$red: #f44336;
+$green: #4caf50;
+$blue: #2196f3;
+$yellow: #ffc107;
+$orange: #EBAC1F;
+$teal: #00897b;
+$white: #FFFFFF;
+$purple: #6A186C;
+$brown: #794D1E;
+
+$veryLightGray:rgb(202, 202, 202);
+$lightGray:#b6b6b6;
+$lightRed: #E68080;
+$lightGreen: #B5D4A7;
+$lightBlue: #9EC2E3;
+$lightyellow: #FFD966;
+$lightOrange: #F3CB51;
+$lightTeal: #93D3CD;
+
+
+

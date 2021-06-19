@@ -1,0 +1,158 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <dx-validation-group #form>
+      <div class="row">
+
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-12">
+              <dx-label text="{{ 'OFA_LETTER_TITEL' | translate }}">
+                <dx-text-box [(value)]="editItem.LETTER_TITEL">
+                  <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </dx-label>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col-sm-2" >
+              <dx-label text="{{ 'OFA_LETTER_BOOK_NUMBER' | translate }}">
+                <dx-text-box [readOnly]="OFA_AUTO_BOOK_NO" [(value)]="editItem.LETTER_BOOK_NUMBER"></dx-text-box>
+              </dx-label>
+            </div>
+
+
+            <div class="col-sm-2">
+              <dx-label text="{{ 'OFA_LETTER_BOOK_DATE' | translate }}">
+                <sun_popup_datepicker  
+                    [(ngModel)]="editItem.LETTER_BOOK_DATE"  
+                    [name]="'Person_Acnfl_Ide_Date'" 
+                    [required]="true" 
+                    [showToday] ="true" > 
+                 </sun_popup_datepicker>
+              </dx-label>
+            </div>
+             
+            <div class="col-sm-1" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+              <dx-label text="{{ 'OFA_LETTER_NUMBER' | translate }}">
+                <dx-text-box  [(value)]="editItem.LETTER_NUMBER"></dx-text-box>
+              </dx-label>
+            </div>
+
+            <div class="col-sm-2" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+              <dx-label text="{{ 'OFA_LETTER_DATE' | translate }}">
+                <sun_popup_datepicker  
+                    [(ngModel)]="editItem.LETTER_DATE"  
+                    [name]="'Person_Acnfl_Ide_Date'" 
+                    [required]="true" 
+                    [showToday] ="true" > 
+                 </sun_popup_datepicker>
+              </dx-label>
+            </div>
+
+            <div class="col-sm-3" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+              <dx-label text="{{ 'OFA_LETTER_SENDER_CMPN' | translate }}">
+                <dx-lov formCode="LOV-ADM-223" 
+                        [displayMode]="'ComboBox'"
+                        [(value)]="editItem.LETTER_SENDER_CMPN_ID" 
+                        [(text)]="editItem.LETTER_SENDER_CMPN_NAM"                       
+                       [required]="true"></dx-lov>
+              </dx-label>
+            </div>
+                
+            <div class="col-sm-3">
+              <dx-label text="{{ 'OFA_LETTER_RECIVER_CMPN' | translate }}">
+                <dx-lov formCode="LOV-ADM-223" 
+                        [displayMode]="'ComboBox'"
+                        [(value)]="editItem.LETTER_RECIVER_CMPN_ID" 
+                        [(text)]="editItem.LETTER_RECIVER_CMPN_NAM"
+                       (dataChange)="onCompanyChange($event)"
+                       [required]="true"></dx-lov>
+              </dx-label>
+            </div>
+            <div class="col-sm-3">
+              <dx-label text="{{ 'OFA_LETTER_RECIVER_USER' | translate }}">            
+                <dx-lov [(value)]="editItem.LETTER_RECIVER_USER_ID" 
+                      [(text)]="editItem.LETTER_RECIVER_SUSR_NAM_USR" formCode="lov-ofa-001"
+                  [required]="true" [displayMode]="'ComboBox'" [(params)]="FilterCompanyCondition"></dx-lov>
+              </dx-label>
+            </div>                
+    
+          </div>
+          <div class="row">
+            <div class="col-sm-12">              
+                <dx-text-area
+                  [height]="90"
+                  [(value)]="editItem.LETTER_DESC"
+                  placeholder="{{ 'DESCRIPTION' | translate }}">
+                </dx-text-area>              
+            </div>        
+          </div>        
+          <div class="row" >
+            <div class="col-sm-6">
+              <div class="row"></div>
+              <dx-button text=" بارگزاری فایل " (click)="uploadfile($event)"></dx-button>
+            </div>        
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="row" >
+            <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">  
+                <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;">پیوستها</span>
+                <span *ngIf="editItem.count_Attach" style="margin: 2px;" class="notification-number">{{editItem.count_Attach}}</span>
+              </div>  
+          </dx-button>
+          </div>
+          <div class="row" >            
+            <dx-button [width]="120" (click)="showNote($event)" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                <span class="fa fa-sticky-note" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;">یاداشتها</span>
+                  <span *ngIf="editItem.count_Notes" style="margin: 2px;" class="notification-number">{{editItem.count_Notes}}</span>
+              </div>  
+            </dx-button>  
+          </div>
+          
+          <div class="row" >            
+            <dx-button [width]="120" (click)="showErjaat($event)" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                <span class="fa fa-random" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;font-size: 11px;">لیست ارجاعات</span>                  
+              </div>  
+            </dx-button>  
+          </div>
+
+          <div class="row">        
+            <dx-button [width]="120"  (click)="showGrafErjaat()" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                <span class="fa fa-recycle" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;font-size: 11px;"> گراف ارجاعات</span>                  
+              </div>  
+            </dx-button>  
+          </div>
+          
+        </div>
+      </div>
+      <div class="row"  >
+        <div class="col-sm-12">   
+              <ngx-extended-pdf-viewer 
+                [base64Src]="editItem.FILE_BASE64STRING"   backgroundColor="#ffffff"
+                [height]="'90vh'"
+                [useBrowserLocale]="true"
+                *ngIf="!hidePdfViewer"
+                [language]="language"
+                textLayer="true"                
+              >
+              </ngx-extended-pdf-viewer>              
+        </div>
+      </div>
+
+    </dx-validation-group>
+  </page-content>
+</page>
+

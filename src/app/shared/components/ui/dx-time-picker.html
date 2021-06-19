@@ -1,0 +1,13 @@
+﻿<div class="ltr">
+  <dx-text-box [(value)]="textValue" [maskRules]="maskRules" [readOnly]="readOnly" useMaskedValue="true" #textbox (valueChange)="onTextChange($event)">
+    <dx-validator #textboxvalidator></dx-validator>
+  </dx-text-box>
+</div>
+
+<!-- 
+  <dx-text-box  [(ngModel)]="selectedDate" [mode]="mode" theme="dp-material" [dpDayPicker]="datePickerConfig" [(value)]="textValue" [maskRules]="maskRules" [readOnly]="readOnly" useMaskedValue="true" #textbox (valueChange)="onTextChange($event)">
+<div>
+  <dp-date-picker [minTime]="minTime" [maxTime]="maxTime" [config]="datePickerConfig"
+    dir="rtl" [(ngModel)]="selectedDate" mode="time" theme="dp-material" (onChange)="onTextChange()">
+  </dp-date-picker>
+</div> -->

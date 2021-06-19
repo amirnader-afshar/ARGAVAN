@@ -1,0 +1,40 @@
+<div id ="{{name}}" class='row'>
+    <div class="col-10 pl-1 " >
+        <!-- <input   placeholder="yyyy-mm-dd" [(ngModel)]="DDD"   [disabled]="true"  class="w-100 form-control" style="margin-bottom: 0 !important;">    -->
+        <dx-text-box  placeholder="{{'yyyy-mm-dd' | translate }}" [(value)]="DDD"    [readOnly]="true"  >
+                <dx-validator >
+                        <dxi-validation-rule *ngIf="required" type="required" message="{{ 'PUB_REQUIRED' | translate }}">
+                        </dxi-validation-rule>
+                </dx-validator>
+        </dx-text-box>
+    </div>
+    <div class="col-2 pr-0 text-right">
+        <i  id="calBtn" [style.color]="readOnly ? 'gray' : '#228e5c'"   class="fa fa-calendar"  (click)="OnIconClick($event)"  type="button"style="position: relative;top: 2px;font-size: 30px;"></i>               
+    </div>  
+</div>
+
+<dx-popup  title="{{ 'PUP_CHOSE_DATE' | translate }}" class="text-center " [width]="280" [height]="370" [visible]="popup_visible" [closeOnOutsideClick]="true">
+        <dxo-position
+        my="Top"
+        at="Bottom"
+        of="#{{name}}">
+    </dxo-position>  
+        <ngb-datepicker  #dp  [dayTemplate]="customDay" [minDate]="config_minDate" [maxDate]="config_maxDate" 
+        (dateSelect)="onDateSelect($event)" 
+        [(ngModel)]="model" [footerTemplate]="footerTemplate"></ngb-datepicker>   
+</dx-popup>
+
+
+<ng-template #customDay let-date let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+        <span class="custom-day" [class.weekend]="isWeekend(date)" [class.focused]="focused"
+              [class.bg-primary]="selected" [class.hidden]="date.month !== currentMonth" [class.text-muted]="disabled">
+          {{ date.day }}
+        </span>
+</ng-template>
+
+<ng-template #footerTemplate>
+        <hr class="my-0">
+        <button class="btn btn-primary btn-sm m-2 float-left" (click)="today_click()">{{ 'PUP_TODAY' | translate }}</button>
+        <button class="btn btn-secondary btn-sm m-2 float-right" (click)="popup_visible=false;">{{ 'PUP_CLOSE' | translate }}</button>
+</ng-template>
+      

@@ -1,0 +1,13 @@
+﻿<div class="dx-lov-container">
+  <div class="dx-lov-textbox-container ltr text-right">
+    <dx-text-box [mask]="mask" [showClearButton]="allowClear" showMaskMode="onFocus" [readOnly]="readOnly" #textbox useMaskedValue="true" (valueChange)="onTextChange($event)"
+      (onFocusOut)="onFocusOut($event)" [rtlEnabled]="false" (onKeyDown)="onKeyDown($event)">
+      <dx-validator #textboxValidator></dx-validator>
+    </dx-text-box>
+  </div>
+  <div class="dx-lov-button-container">
+    <button type="button" style="cursor: pointer;" (click)="setToday()">
+      <i class="fa fa-calendar"></i>
+    </button>
+  </div>
+</div>

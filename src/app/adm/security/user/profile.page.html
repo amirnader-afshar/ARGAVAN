@@ -1,0 +1,102 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+        <dx-validation-group #form>
+            <div class="row">
+                <div class="col-sm-2 col-xs-12">
+                    <dx-button class="btn-block" id="info" icon="fa fa-user" text="اطلاعات" (onClick)="onTabClick($event)">
+                    </dx-button>
+                    <dx-button class="btn-block" id="setting" icon="fa fa-wrench" text="تنظیمات" (onClick)="onTabClick($event)">
+                    </dx-button>
+                    <dx-button class="btn-block" id="history" icon="fa fa-history" text="تاریخچه" (onClick)="onTabClick($event)">
+                    </dx-button>
+                </div>
+                <div class="col-sm-10 col-xs-12">
+                    <div *ngIf="informationVisible">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-12"></div>
+                            <div class="col-sm-4 col-xs-12">
+                                <div class="user-profile-avatar">
+                                    <img src="./../../../../assets/img/avatar.png" />
+                                    <!-- <div class="upload-profile">
+                                        <i class="fa fa-camera" aria-hidden="true"></i>
+                                    </div> -->
+                                </div>
+                                <dx-label text="نام کاربری">
+                                    <dx-text-box [(value)]="editItem.Username" [readOnly]="readOnlyUsername">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-text-box>
+                                </dx-label>
+                                <dx-label text="عنوان">
+                                    <dx-text-box [(value)]="editItem.DisplayName">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-text-box>
+                                </dx-label>
+                                <dx-label text="شماره همراه">
+                                    <dx-text-box [(value)]="editItem.Mobile"></dx-text-box>
+                                </dx-label>
+                                <dx-label text="پست الکترونیک">
+                                    <dx-text-box [(value)]="editItem.Email"></dx-text-box>
+                                </dx-label>
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <dx-label text="پسورد">
+                                            <dx-text-box [(value)]="editItem.Password" mode="password"></dx-text-box>
+                                        </dx-label>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <dx-label text="تکرار پسورد">
+                                            <dx-text-box [(value)]="editItem.RepeatPassword" mode="password"></dx-text-box>
+                                        </dx-label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-xs-12"></div>
+                        </div>
+                    </div>
+                    <div *ngIf="settingVisible">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-12"></div>
+                            <div class="col-sm-4 col-xs-12">
+                                <div class="margin-20"></div>
+                                <dx-label text="انتخاب پوسته">
+                                    <dx-select-box #themeSelected [items]="themeItem" [(value)]="editItem.theme" displayExpr="text" valueExpr="mode" (onValueChanged)="onThemeChanged($event)">
+                                    </dx-select-box>
+                                </dx-label>
+                                <dx-label text="انتخاب رنگ">
+                                    <dx-select-box #themeSelected [items]="themeItem" [(value)]="editItem.theme" displayExpr="text" valueExpr="id">
+                                    </dx-select-box>
+                                </dx-label>
+                                <dx-label text="انتخاب فونت">
+                                    <dx-select-box #themeSelected [items]="themeItem" [(value)]="editItem.theme" displayExpr="text" valueExpr="id">
+                                    </dx-select-box>
+                                </dx-label>
+                                <dx-label text="انتخاب اندازه فونت">
+                                    <dx-select-box #themeSelected [items]="themeItem" [(value)]="editItem.theme" displayExpr="text" valueExpr="id">
+                                    </dx-select-box>
+                                </dx-label>
+
+                            </div>
+                            <div class="col-sm-4 col-xs-12"></div>
+                        </div>
+                    </div>
+                    <div *ngIf="historyVisible">
+                        <div class="row">
+                            <div class="col-sm-3 col-xs-12">history</div>
+                            <div class="col-sm-3 col-xs-12"></div>
+                            <div class="col-sm-3 col-xs-12"></div>
+                            <div class="col-sm-3 col-xs-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dx-validation-group>
+    </page-content>
+
+
+</page>

@@ -1,0 +1,41 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)" >
+    </page-toolbar>
+    <page-content>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <dx-box
+              direction="row"
+              width="100%"
+              [height]="35">
+              <dxi-item
+              class="rect demo-dark"
+              [ratio]="1">
+              لیست تغیرات
+          </dxi-item>               
+          </dx-box>
+        </div>
+        
+    </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <grid-toolbar>
+            <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+              [columnAutoWidth]="true" [height]="400">
+              <dxo-sorting mode="multiple"></dxo-sorting>
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-scrolling mode="virtual"></dxo-scrolling>
+              <dxi-column dataField="Log_Date_Time"    dataType="date" caption="{{'PUB_CREATE_DATE'| translate}}" [width]="100"></dxi-column>
+              <dxi-column dataField="Log_Date_Time"    dataType="time" caption="{{'PUB_CREATE_TIME'| translate}}" [width]="100"></dxi-column>
+              <dxi-column dataField="SUSR_NAM_USR"  caption="{{'PUB_USER'| translate}}" [width]="100"></dxi-column>              
+              <dxi-column dataField="CMPN_NAM"  caption="{{'PUB_COMPANY_NAME'| translate}}" [width]="150"></dxi-column>
+              <dxi-column dataField="Log_Action_Name"  caption="{{'PUB_ACTION_NAME'| translate}}" [width]="150"></dxi-column>
+            </dx-data-grid>
+          </grid-toolbar>
+        </div>
+      </div>
+
+
+    </page-content>
+  </page>

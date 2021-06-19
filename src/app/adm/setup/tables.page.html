@@ -1,0 +1,39 @@
+<page>
+    <page-toolbar showHelp="false">
+        <div class="padding-5">
+            <div class="filter-bar">
+                <div class="row">
+                    <div class="col-md-2">
+                        <dx-label text="{{ 'PUB_SYSTEM' | translate }}">
+                            <dx-lov [(value)]="filterItem.SchemaName" formCode="LOV-ADM-012" [displayMode]="'ComboBox'" (dataChange)="onDataChange($event)" [allowClear]="true" >
+                            </dx-lov>
+                        </dx-label>
+                    </div>
+                    <div class="col-md-8">
+                        <dx-button  icon="fa fa-refresh blue" (click)="onRefreshClick($event)">
+                        </dx-button>&nbsp;
+                        <dx-button  icon="fa fa-gear green" text="{{ 'PUB_APPLY' | translate }}" (click)="onApplyClick($event)">
+                        </dx-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </page-toolbar>
+    <page-content>
+        <div class="margin-10"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <grid-toolbar (onMenuItemClick)="onGridItemClick($event)">
+                    <gt-datasource  formCode="FRM-ADM-005" [loadParams]="filterItem">
+                    </gt-datasource>
+                    <dx-data-grid #grid keyExpr="ID" [height]="600">
+                        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false"></dxo-editing>
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxi-column dataField="ID"></dxi-column>
+                    </dx-data-grid>
+                </grid-toolbar>
+            </div>
+        </div>
+    </page-content>
+</page>

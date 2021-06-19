@@ -1,0 +1,83 @@
+.metisFolder {
+  padding-right: 0;
+  margin-top: 10px;
+}
+  .metisFolder, .metisFolder ul {
+    list-style: none;
+  }
+  .metisFolder li {
+    position: relative;
+  }
+
+  ul.metisFolder li {
+    list-style: none;
+}
+
+  .metisFolder li a {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #333;
+    text-decoration: none;
+    outline: 0 none;
+  }
+  .metisFolder ul:before {
+    position: absolute;
+    border-right: 1px dotted #333;
+    content: "";
+    width: 30px;
+    top: 25px;
+    right: 5px;
+    bottom: 17px;
+  }
+  .metisFolder ul > li:before {
+    position: absolute;
+    border-top: 1px dotted #333;
+    content: "";
+    width: 30px;
+    top: 13px;
+    right: -33px;
+  }
+  li.active > a > span.fa-folder-o:before {
+    content: "\f115" !important;
+  }
+
+  .file-breadcrumb {
+    .breadcrumb li, .breadcrumb li a:hover,
+    .breadcrumb li, .breadcrumb li a:focus {
+        text-decoration: none !important;
+    }
+    .breadcrumb-item + .breadcrumb-item:before {
+        color: #2196f3;
+    }
+    .breadcrumb-item:active, 
+    .breadcrumb-item:focus,
+    .breadcrumb-item:hover,
+    .breadcrumb-item:visited {
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+    }
+  }
+
+.file-explorer {
+  .dx-popup-content {
+    padding: 20px 15px;
+  }
+
+    .file-explorer-toolbar{
+    margin: -20px -20px 0;
+    padding: 10px 0 0 20px;
+    background: #eeeeee;
+    border-bottom: 1px solid #33333324;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.18), 0px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.file-explorer-container {
+  height: 55.5vh;
+  border-left: 1px solid #ebebeb;
+}
+.breadcrumb {
+  margin: 0;
+}
+}

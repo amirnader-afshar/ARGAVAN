@@ -1,0 +1,81 @@
+﻿<page>
+  <page-toolbar [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <div class="margin-10">
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <dx-label text="{{'PUB_SEARCH'|translate}}">
+          <dx-text-box mode="search" (onValueChanged)="onSearchChanged($event)">
+          </dx-text-box>
+        </dx-label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <tree-toolbar (onMenuItemClick)="onTreeItemClick($event)" [rowMenuItems]="treeItems" (onMenuItemPrepering)="onTreeItemPrepering($event)">
+          <dx-tree-list #Treegrid [dataSource]="dataSource" keyExpr="ID" [(selectedRowKeys)]="selectedKeys" (onEditorPreparing)="onGriddataSourceEditorPreparing($event)"
+            (onSelectionChanged)="selectionChangedHandler()" parentIdExpr="ParentId" height="580">
+            <dxo-editing mode="popup" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
+            </dxo-editing>
+            <dxo-scrolling mode="standard" showScrollbar="always"></dxo-scrolling>
+            <dxo-paging [enabled]="true" [pageSize]="10">
+            </dxo-paging>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxi-column dataField="TypeId" caption="{{'نوع'| translate}}" [width]="100">
+              <dxo-lookup [dataSource]="SubjectsTypDataSource" valueExpr="ID" displayExpr="Title">
+              </dxo-lookup>
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="Description" caption="{{'نام'| translate}}" [width]="200">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="Code" caption="{{'کد'| translate}}" [width]="200" cssClass="ltr" alignment='left'>
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+
+            <dxi-column dataField="Path" caption="{{'آدرس'| translate}}" cssClass="ltr" alignment='left' [width]="200">
+            </dxi-column>
+            <dxi-column dataField="Sequence" caption="{{'ترتیب'| translate}}" [width]="60">
+              <dxi-validation-rule type="required" message="{{'PUB_REQUIRED' | translate}}"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="Icon" caption="{{'نمایش'| translate}}" [width]="50" cssClass="ltr" cellTemplate="cell1">
+              <div *dxTemplate="let cell of 'cell1'" class="text-center">
+                <div [style.background-color]="cell.data.Color">
+                  <i class="{{cell.data.Icon}}"></i>
+                </div>
+              </div>
+            </dxi-column>
+            <dxi-column dataField="Public" caption="{{'عمومی'| translate}}" dataType="boolean" [width]="60">
+            </dxi-column>
+            <dxi-column dataField="Enabled" caption="{{'فعال'| translate}}" dataType="boolean" [width]="60">
+            </dxi-column>
+            <dxi-column dataField="IsMenu" caption="{{'منو'| translate}}" dataType="boolean" [width]="60">
+            </dxi-column>
+          </dx-tree-list>
+        </tree-toolbar>
+      </div>
+    </div>
+    <!--change parent -->
+    <dx-popup class="popup" [width]="400" [height]="500" [showTitle]="true" [showCloseButton]="true" [dragEnabled]="true" [closeOnOutsideClick]="true"
+      [(visible)]="ChangeParentPopup">
+      <div *dxTemplate="let data of 'content'">
+        <div class="row">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <dx-text-box #textBox placeholder="جستجو" [width]="auto" mode="search" valueChangeEvent="keyup" value=""></dx-text-box>
+            <dx-tree-view id="simple-treeview" [searchValue]="textBox.value" [dataSource]="TreeViewDataSource" dataStructure="tree" itemsExpr="Items"
+              keyExpr="ID" displayExpr="Title" [width]="auto" [height]="450" (onItemClick)="onItemClick($event)"></dx-tree-view>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 popupFooterControl">
+            <dx-button (onClick)="onOkClick()" type="success" text="تایید" [width]="100"></dx-button>
+          </div>
+        </div>
+      </div>
+    </dx-popup>
+  </page-content>
+</page>

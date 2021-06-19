@@ -1,0 +1,757 @@
+@import 'variable.scss';
+
+ 
+// ********* RAK Bar ********************
+.rak-gp-page {
+  //model 1,2,3
+  .rak-group-container {
+    padding-top: 10px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+    }
+
+    hr {
+      margin-top: 0px !important;
+      margin-bottom: 3px !important;
+    }
+  }
+
+  .rak-ver-group-container {
+    margin-left: 30px;
+    display: inline-block;
+    vertical-align: bottom;
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+
+    .ver-data {
+      min-height: 250px;
+
+      .wrapper {
+        display: grid;
+        grid-template-rows: repeat(8, 55px);
+        grid-gap: 10px;
+        grid-auto-flow: column;
+        grid-auto-columns: 100px 100px;
+      }
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    hr {
+      margin-bottom: 3px !important;
+    }
+
+    .rak-card-top {
+      height: 27px;
+      text-align: center;
+      display: inline-block;
+      color: #fff;
+      box-shadow: 0 1px 5px #b1b1b1;
+      position: relative;
+      display: block;
+      border-radius: 10px 10px 0px 0px;
+      width: 100px;
+
+      h6 {
+        line-height: 30px;
+      }
+    }
+
+    .rak-card-bottom {
+      height: 27px;
+      text-align: center;
+      display: inline-block;
+      box-shadow: rgb(177, 177, 177) 0px 1px 5px;
+      position: relative;
+      display: block;
+      border-radius: 0px 0px 10px 10px;
+      border-width: 1px;
+      border-style: solid;
+      margin-bottom: 10px;
+      width: 100px;
+
+      .mini-iconcol-list {
+        margin: 0;
+        padding: 5px;
+        list-style: none;
+        font-size: 13px;
+        bottom: 0px;
+        text-align: center;
+        display: block;
+        left: 0;
+        right: 0;
+
+        li {
+          display: inline-block;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .model4 {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    overflow-y: hidden
+  }
+
+  .model4::-webkit-scrollbar {
+    height: 10px;
+    cursor: pointer;
+  }
+
+  .model4::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 10px;
+  }
+
+  .rack-item .tiptext {
+    visibility: hidden;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    border: 1px dotted gray;
+    margin-top: -40px;
+  }
+
+
+
+  .rack-item .tiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 1%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  .rack-item:hover .tiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .rack-item .tiptext1 {
+    visibility: hidden;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    border: 1px dotted gray;
+    margin-top: 0px;
+  }
+
+  .rack-item .tiptext1::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 1%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  .rack-item:hover .tiptext1 {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .model1 {
+    width: 120px;
+    min-height: 100px;
+    margin: 0 8px;
+    float: left;
+    margin-bottom: 10px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgb(177, 177, 177);
+    position: relative;
+    display: block;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    h6 {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      top: 40%;
+      font-size: 26px;
+    }
+
+    .borderd {
+      width: 100%;
+      height: 25px;
+      line-height: 26px;
+      position: absolute;
+      font-size: 12px;
+      color: #fff;
+      text-align: center;
+      top: 0px;
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+
+      i {
+        color: #fff;
+        margin: 5px 5px;
+        display: inline-block;
+      }
+    }
+
+    ul.rak-detail-list {
+      margin: 0;
+      padding: 5px;
+      list-style: none;
+      font-size: 12px;
+      position: absolute;
+      bottom: 0px;
+      text-align: center;
+      display: block;
+      left: 0;
+      right: 0;
+
+      li {
+        display: inline-block;
+        color: #b7b7b7;
+        font-size: 14px;
+      }
+
+    }
+
+    .tiptext {
+      width: 120px;
+    }
+    .dx-checkbox-container{
+      margin: 2px 5px 0 0;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 20px;
+      width: 17px;
+      height: 17px;
+    }
+    .dx-checkbox-checked .dx-checkbox-icon:before {
+      position: absolute !important;
+      display: block !important;
+      width: 16px !important;
+      font-size: 12px !important;
+      top: 50% !important;
+      margin-top: -10px !important;
+      left: 50% !important;
+      margin-left: -6px !important;
+  }
+  }
+
+  .model2 {
+    .rak-card-row {
+      width: 100%;
+      height: 50px;
+      margin: 10px 0;
+      box-shadow: 0 5px 15px rgb(177, 177, 177);
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+
+      h3 {
+        line-height: 50px;
+        background: #f00;
+        color: #fff;
+        text-align: center;
+        -webkit-border-top-right-radius: 10px;
+        -webkit-border-bottom-right-radius: 10px;
+        -moz-border-radius-topright: 10px;
+        -moz-border-radius-bottomright: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+
+      .icon-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        float: left;
+        line-height: 55px;
+
+        li {
+          display: inline-block;
+          font-size: 20px;
+        }
+      }
+
+      span {
+        line-height: 52px;
+        font-size: 14px;
+        color: #000;
+      }
+    }
+  }
+
+  .model3 {
+    width: 100px;
+    float: right;
+
+    .rak-card-right {
+      box-shadow: 0 1px 5px rgb(177, 177, 177);
+      border: 1px solid;
+      width: 45px;
+      background-color: white;
+      float: left;
+      height: 65px;
+      border-radius: 0px 10px 10px 0px;
+
+      .mini-icon-list {
+        margin: 0;
+        padding: 5px;
+        list-style: none;
+        font-size: 13px;
+        bottom: 0px;
+        text-align: center;
+        display: block;
+        left: 0;
+        right: 0;
+
+        li {
+          display: inline-block;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .rak-card-left {
+      height: 65px;
+      text-align: center;
+      color: #fff;
+      float: left;
+      box-shadow: 0 1px 5px rgb(177, 177, 177);
+      position: relative;
+      display: block;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px 0px 0px 10px;
+      margin-bottom: 10px;
+      min-width: 42px;
+
+      h6 {
+        line-height: 65px;
+      }
+
+      i {
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        right: 0;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.32);
+      }
+    }
+
+    .tiptext {
+      margin-right: 10px;
+      width: 130px;
+    }
+  }
+
+  .model5 {
+    width: 60px;
+    float: right;
+    margin: 0px 2px;
+    .rak-card-only {
+      height: 50px;
+      text-align: center;
+      display: inline-block;
+      color: #fff;
+      box-shadow: 0 1px 5px rgb(177, 177, 177);
+      position: relative;
+      display: block;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      margin-bottom: 10px;
+      min-width: 50px;
+
+      h6 {
+        line-height: 50px;
+      }
+
+      i {
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        right: 0;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.32);
+      }
+    }
+
+    .tiptext {
+      width: 105px;
+    }
+  }
+
+  .model4Item .tiptext {
+    margin-top: -105px;
+    width: 100px;
+    white-space: pre-line;
+  }
+}
+
+.ul-help {
+
+  li {
+    display: inline-block;
+    line-height: 42px;
+    font-size: 15px;
+    height: 36px;
+    padding: 0px 5px;
+    color: white;
+
+    span {
+      unicode-bidi: plaintext;
+      font-size: 13px;
+    }
+  }
+}
+
+.information-bar {
+  background-color: #fff;
+  box-shadow: -1px -1px 20px 0px #b1b1b1;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+
+  .rak-detail-list-helper {
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-block;
+      line-height: 42px;
+      font-size: 15px;
+      height: 36px;
+      padding-left: 15px;
+
+      span {
+        unicode-bidi: plaintext;
+        font-size: 13px;
+      }
+    }
+  }
+
+  ul.color-help-list {
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      /*width: 36px;*/
+      height: 36px;
+      text-align: center;
+      line-height: 40px;
+      color: #fff;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      padding: 0px 3px;
+      font-size: 14px;
+    }
+  }
+}
+
+.rak-st-guide {
+  .fill {
+    background-color: #f4511e;
+    width: 40px;
+    color: white;
+    padding: 5px;
+    float: right;
+    text-align: center;
+  }
+
+  .empty {
+    background-color: #388e3c;
+    width: 40px;
+    color: white;
+    padding: 5px;
+    float: right;
+    text-align: center;
+  }
+}
+
+.rak-st-guide-ul {
+  display: inline-block;
+  line-height: 42px;
+  font-size: 13px;
+  height: 36px;
+  padding-left: 5px;
+
+  span {
+    font-size: 13px;
+  }
+}
+
+.rak-st-group {
+  padding-top: 10px;
+}
+
+.rak-st {
+  border-bottom: 1px solid lightgray;
+  .page-content{padding-bottom: 70px !important;}
+
+  .rak-st-date {
+    padding: 0;
+  }
+
+  .rak-st-date > span {
+    font-size: 13px;
+    color: black;
+    font-weight: bold;
+  }
+
+  .rak-st-room {
+    text-align: center;
+    width: 45px;
+    height: 130px;
+    background-color: #5cb85c;
+    border-radius: 0px 10px 10px 0px;
+    color: white;
+    padding-top: 4%;
+    padding-right: 2px;
+  }
+
+  .rak-st-mastertime {
+    width: 41px;
+    height: 125px;
+    text-align: center;
+  }
+
+  .rak-st-mastertime > div {
+    border-right: 5px;
+    border-radius: 5px 5px 0px 0px;
+  }
+
+  .rak-st-mastertime > div > span {
+    font-size: 12px;
+    color: white;
+  }
+
+  .rak-st-mastertime > ul {
+    margin: 0;
+    padding: 5px;
+    list-style: none;
+    font-size: 13px;
+    bottom: 0px;
+    text-align: center;
+    display: block;
+    left: 0;
+    right: 0;
+    border-left: 1px dashed black
+  }
+
+  .rak-st-mastertime > ul > li {
+    display: inline-block;
+    color: #b7b7b7;
+  }
+
+  .rak-st-mastertime .tiptext {
+    visibility: hidden;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    border: 1px dotted gray;
+    margin-top: -100px;
+    width: 50px;
+     
+    span{
+      color: black;
+    }
+  }
+
+  .rak-st-mastertime:hover .tiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.rak-daily {
+  padding-top: 5px;
+
+  .rak-daily-date-parent {
+    padding: 0
+  }
+
+  .rak-daily-room {
+    height: 45px;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0;
+    border-bottom: solid 1px;
+  }
+
+  .rak-daily-date {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    height: 100%;
+    overflow-y: hidden
+  }
+
+  .rak-daily-date-room {
+    height: 45px;
+
+    .rak-daily-date-room-div {
+      width: 194px;
+      height: 45px;
+      display: inline-block;
+      color: white;
+      text-align: center;
+
+      .rak-daily-date-room-status {
+        background-color: white;
+        width: 100%;
+        height: 20px;
+
+        ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          bottom: 0px;
+          text-align: center;
+          display: block;
+          left: 0;
+          right: 0;
+        }
+
+        ul > li {
+          display: inline-block;
+          color: #b7b7b7;
+        }
+      }
+
+      .rak-daily-date-room-div-sel {
+        padding: 10px 0;
+      }
+
+      .rak-daily-date-room-div-cell {
+        float: right;
+        width: 8px;
+        border-left: 1px dotted black;
+        height: 24px;
+        border-bottom: 1px solid black; //tooltip
+        position: relative;
+        border-bottom: 1px dotted black;
+      }
+
+      .rak-daily-date-room-div-cell .tiptext {
+        visibility: hidden;
+        background-color: #fff;
+        color: #000;
+        text-align: center;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+        border: 1px dotted gray;
+        margin-top: -40px;
+        width: 100px;
+        white-space: initial;
+      }
+      /*.rak-daily-date-room-div-cell .tiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 1%;
+        margin-right: -4px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+      }*/
+      .rak-daily-date-room-div-cell:hover .tiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.information-rakdaily-bar {
+  background-color: #fff;
+  box-shadow: -1px -1px 20px 0px #b1b1b1;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 10px;
+
+  .rak-detail-list-helper {
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-block;
+      line-height: 42px;
+      font-size: 20px;
+      height: 36px;
+      padding-left: 20px;
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+
+  ul.color-help-list {
+    margin: 0;
+    padding: 5px 0 0 20px;
+
+    li {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 40px;
+      color: #fff;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
+  }
+}

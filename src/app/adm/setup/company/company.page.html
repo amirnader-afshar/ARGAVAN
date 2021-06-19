@@ -1,0 +1,154 @@
+﻿<page>
+  <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <dx-validation-group #form>
+      <div class="margin-10"></div>
+      <div class="row">
+        <div class="col-sm-2">
+          <div class="user-profile-avatar">
+            <img src="./../../../../assets/img/avatar.png" />
+            <div class="upload-profile">
+              <i class="fa fa-camera" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-10">
+          <div class="margin-20"></div>
+          <div class="row">
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="نام شرکت">
+                <dx-text-box [(value)]="editItem.CompanyName" [readOnly]="readOnlyUsername">
+                  <dx-validator>
+                    <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="نوع شرکت">
+                <dx-text-box [(value)]="editItem.CompanyType">
+                  <dx-validator>
+                    <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="کد اقتصادی">
+                <dx-text-box [(value)]="editItem.EconomyCode"></dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="محل شرکت">
+                <dx-lov [(value)]="editItem.Location" [(text)]="editItem.locationName" formCode="LOV-ADM-227" [required]="true" [displayMode]="'ComboBox'" ></dx-lov>
+              </dx-label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="نام مدیریت">
+                <dx-text-box [(value)]="editItem.ManagerName"></dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="رنج شماره شرکت">
+                <dx-text-box [(value)]="editItem.NumberRange"></dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="شماره تلفن 1">
+                <dx-text-box [(value)]="editItem.Phone1"></dx-text-box>
+              </dx-label>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <dx-label text="شماره تلفن 2">
+                <dx-text-box [(value)]="editItem.Phone2"></dx-text-box>
+              </dx-label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="margin-20"></div>
+      <div class="row" *ngIf="tabVisible">
+        <div class="col-sm-12">
+          <dx-tabs #tabs [dataSource]="tabItems" [selectedIndex]="0" (onItemClick)="selectTab($event)">
+          </dx-tabs>
+
+          <div *ngIf="selectedTab == 0">
+            <div class="tabContent">
+              <div class="row">
+                <div class="col-sm-12">
+                    <dx-tree-list
+                    id="tasks"
+                    [dataSource]="listGroup"
+                    keyExpr="ID"
+                    parentIdExpr="ID"
+                    [columnAutoWidth]="true"
+                    [wordWrapEnabled]="true">
+                    <dxo-search-panel [visible]="false"></dxo-search-panel>
+                    <dxo-header-filter [visible]="false"></dxo-header-filter>
+                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxo-column-chooser [enabled]="false"></dxo-column-chooser>
+                    <dxi-column dataField="Group"  caption="عنوان"></dxi-column>
+                </dx-tree-list>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedTab == 1">
+            <div class="tabContent">
+              <div class="row">
+                <div class="col-sm-12">
+                  <dx-tree-list id="licenses" [dataSource]="licenses" dataStructure="tree" itemsExpr="Items" [showRowLines]="true" [columnAutoWidth]="true">
+                    <dxi-column dataField="Title" caption="عنوان"></dxi-column>
+                    <dxi-column dataField="Code" caption="کد"></dxi-column>
+                  </dx-tree-list>
+                    <tree-toolbar>
+                    <dx-tree-list #licenses
+                                  [dataSource]="licenses"
+                                  keyExpr="ID"
+                                  parentIdExpr="NodeParentID"
+                                  [height]="500">
+                      <dxo-editing mode="row"
+                                   [allowAdding]="false"
+                                   [allowUpdating]="false"
+                                   [allowDeleting]="false">
+                      </dxo-editing>
+                     
+                      <dxo-selection mode="single"></dxo-selection>
+                      <dxi-column dataField="Title" caption="عنوان"></dxi-column>
+                      <dxi-column dataField="Code" caption="کد"></dxi-column>
+                    </dx-tree-list>
+                  </tree-toolbar>  
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </dx-validation-group>
+  </page-content>
+</page>
+<!--Select Group -->
+<!-- <dx-popup class="popup" [width]="400" [height]="500" [showTitle]="true" [showCloseButton]="true" [dragEnabled]="true" [closeOnOutsideClick]="true"
+  [(visible)]="AddGroupPopup">
+  <div *dxTemplate="let data of 'content'">
+    <div class="row">
+      <div class="col-sm-12">
+        <dx-list #lists [dataSource]="listGroup" keyExpr="ID" [height]="350" [searchEnabled]="true" [showSelectionControls]="true"
+          (onSelectionChanged)="onChanged($event)" [selectedItemKeys]="ChkSelectedKeys" searchExpr="Group" searchMode="contains">
+          <div *dxTemplate="let data of 'item'">
+            <div>{{data.Group}}</div>
+          </div>
+        </dx-list>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 popupFooterControl">
+        <dx-button (onClick)="onOkClick()" type="success" text="تخصیص گروه به کاربر" [width]="180"></dx-button>
+      </div>
+    </div>
+  </div>
+</dx-popup> -->

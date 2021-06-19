@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <dx-text-box mode="search" [(text)]='searchValue'  placeholder="جست و جو کنید ...">
+    </dx-text-box>
+  </div>
+</div>
+<div class="padding-5">
+</div>
+<div class="row">
+    <div class="col-md-12">
+      <dx-tree-list #treeview [dataSource]="dataSource" keyExpr="ID" parentIdExpr="ParentID" [height]="height"  [showRowLines]="true"
+        [showColumnLines]="true" [columnAutoWidth]="false" rowAlternationEnabled="true">
+        <dxo-search-panel [visible]="false" [text]="searchValue"></dxo-search-panel>
+        <dxo-editing mode="cell" [allowAdding]="false" [allowUpdating]="true" [allowDeleting]="false">
+        </dxo-editing>
+        <dxo-scrolling mode="standard" showScrollbar="onHover"></dxo-scrolling>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxi-column dataField="Type" sortIndex="0" [allowEditing]="false" [width]="180" caption="{{ 'PUB_TYPE' | translate }}">
+        </dxi-column>
+        <dxi-column dataField="Title" sortIndex="1" [allowEditing]="false" [width]="380" caption="{{ 'PUB_TITLE' | translate }}">
+        </dxi-column>
+        <dxi-column dataField="InheritedState" caption="دسترسی" [width]="180" cellTemplate="cell1">
+          <dxo-lookup [dataSource]="privilagesType" valueExpr="Value" displayExpr="Title"></dxo-lookup>
+          <div *dxTemplate="let cell of 'cell1'">
+            <div class="padding-5 {{findColor(cell.data.InheritedState,cell.data.Value)}}">
+              <i class="fa {{findIcon(cell.data.InheritedState,cell.data.Value)}}"></i>&nbsp;
+              <span>{{findTitle(cell.data.InheritedState,cell.data.Value)}}</span>
+            </div>
+          </div>
+        </dxi-column>
+        <dxi-column>
+        </dxi-column>
+      </dx-tree-list>
+    </div>
+  </div>

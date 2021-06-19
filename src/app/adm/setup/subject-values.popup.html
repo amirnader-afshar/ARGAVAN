@@ -1,0 +1,40 @@
+<page>
+    <page-content>
+        <div class="row">
+            <div class="col-md-12">
+                <dx-label text="{{'نام منبع'|translate}}">
+                    <dx-lov formCode="LOV-ADM-011" [(value)]="searchItem.TableId" (dataChange)="onTableDataChange($event)" allowClear="true">
+                    </dx-lov>
+                </dx-label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <grid-toolbar>
+                    <dx-data-grid #grid keyExpr="ID" [height]="400" [dataSource]="dataSource"  columnAutoWidth="false" >
+                        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false"></dxo-editing>
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="single" ></dxo-selection>
+                        <dxi-column dataField="Allowed" caption="دسترسی" [width]="180" cellTemplate="cell1" visibleIndex="99">
+                            <dxo-lookup [dataSource]="privilagesType" valueExpr="Value" displayExpr="Title"></dxo-lookup>
+                            <div *dxTemplate="let cell of 'cell1'">
+                              <div class="padding-5 {{findColor(cell.data.Allowed)}}">
+                                <i class="fa {{findIcon(cell.data.Allowed)}}"></i>&nbsp;
+                                <span>{{findTitle(cell.data.Allowed)}}</span>
+                              </div>
+                            </div>
+                          </dxi-column>
+                    </dx-data-grid>
+                </grid-toolbar>
+            </div>
+        </div>
+        <div class="footer-popup">
+            <div class="col-md-12 col-sm-12">
+                <dx-button (onClick)="onApplyClick()" type="success" text="اعمال سطح دسترسی" [width]="180"></dx-button>
+                &nbsp;
+                <dx-button type="danger" (onClick)="onCloseClick()" text="{{ 'PUB_RETURN' | translate }}" [width]="150">
+                </dx-button>
+            </div>
+        </div>
+    </page-content>
+</page>

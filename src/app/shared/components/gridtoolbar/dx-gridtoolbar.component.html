@@ -1,0 +1,40 @@
+<div class="grid-toolbar">
+  <div class="row header" *ngIf="false">
+    <div class="col-sm-9 pr0">
+      <div>
+        <dx-button icon="fa fa-plus green fa-2x" (click)="onAddClick()" [visible]="showNew">
+        </dx-button>
+        <dx-button icon="fa fa-edit yellow fa-2x" (click)="onEditClick()" [visible]="showEdit">
+        </dx-button>
+        <dx-button icon="fa fa-trash red fa-2x" (click)="onDeleteClick()" [visible]="showDelete">
+        </dx-button>
+        <dx-button icon="fa fa-refresh blue fa-2x" (click)="onRefreshClick()" [visible]="showRefresh">
+        </dx-button>
+      </div>
+    </div>
+    <div class="col-sm-3 pl0">
+      <div class="pull-left">
+        <dx-button icon="fa fa-info blue fa-2x">
+        </dx-button>
+        <dx-button icon="fa fa-print blue fa-2x">
+        </dx-button>
+      </div>
+    </div>
+  </div>
+  <div class="row grid">
+    <div class="col-sm-12">
+        <dx-resizable 
+          #resizable (onResize)="onResizeableGrid($event)" [minHeight]="96" [handles]="'bottom'" id="dxresizable_{{ToggleHeightDisabled}}"
+          [elementAttr]="{class:'' ,style: 'border-bottom:10px; background-color: #aebecc;' }">
+          <ng-content></ng-content>
+          <i class="fa fa-chevron-down text-center text-white w-100 p-1"></i>
+        </dx-resizable>
+
+    </div>
+  </div>
+  <div class="row footer">
+    <div class="col-sm-12">
+    </div>
+  </div>
+</div>
+

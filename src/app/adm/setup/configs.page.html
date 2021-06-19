@@ -1,0 +1,58 @@
+<page>
+    <page-toolbar showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <panel-box caption="{{ 'سیستم ها' | translate }}" [allowCollapse]="false">
+                    <dx-label text="جستجو">
+                        <dx-text-box type="search" [(text)]='searchValue'>
+                        </dx-text-box>
+                    </dx-label>
+                    <dx-tree-view #treeview [dataSource]="treeDataSource" dataStructure="plain" parentIdExpr="ParentSubjectId" keyExpr="SubjectId"
+                        displayExpr="Subject" [searchEnabled]="false" [height]="450" (onItemClick)="onItemClick($event)" [searchValue]='searchValue'
+                        selectionMode='single' itemTemplate="itemTemplate">
+                        <div *dxTemplate="let itemObj of 'itemTemplate'">
+                            <i class='fa fa-gear'></i>
+                            {{itemObj.Subject}}
+                        </div>
+                    </dx-tree-view>
+                </panel-box>
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-6 col-sm-12">
+
+                <ng-template ngFor let-gp [ngForOf]="groupDataSource" let-i="index">
+                    <panel-box caption="{{ gp.Group | translate }}" [isParent]="true">
+                        <ng-template ngFor let-item [ngForOf]="gp.items" let-j="index">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12" [attr.data-index]="j">
+                                    <div class="form-group">
+                                        <dx-label text=" {{ item.Title | translate }}" *ngIf="item.Type==3">
+                                            <dx-text-box [value]="item.Value" (onValueChanged)="textValueChange($event,item)">
+                                            </dx-text-box>
+                                        </dx-label>
+
+                                        <dx-label text="{{ item.Title | translate }}" *ngIf="item.Type==2">
+                                            <dx-number-box [value]="item.Value" (onValueChange)="numberValueChange($event,item)">
+                                            </dx-number-box>
+                                        </dx-label>
+                                        <dx-label text="{{ item.Title | translate }}" *ngIf="item.Type==21">
+                                            <dx-date [value]="item.Value" (onValueChange)="dateValueChange($event,item)">
+                                            </dx-date>
+                                        </dx-label>
+                                        <dx-label text="{{ item.Title | translate }}" *ngIf="item.Type==5">
+                                            <dx-lov [value]="item.Value" [formCode]="item.LovName" (valueChange)="lovValueChange($event,item)" >
+                                            </dx-lov>
+                                        </dx-label>
+                                        <dx-check-box [value]="item.Value=='1'" text="{{ item.Title | translate }}" *ngIf="item.Type==1" (onValueChanged)="checkChange($event,item)"></dx-check-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </panel-box>
+                </ng-template>
+
+            </div>
+        </div>
+    </page-content>
+</page>

@@ -1,0 +1,10 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+<h6>حسن زاده</h6>
+ 
+        <file-explorer-popup [(visible)]="fileExplorerVisible"></file-explorer-popup>
+        
+    </page-content>
+</page>

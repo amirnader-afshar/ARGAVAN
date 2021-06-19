@@ -1,0 +1,81 @@
+﻿<page>
+  <page-toolbar showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <dx-validation-group #form>
+      <panel-box [caption]=" 'مشخصات کاربری' | translate">
+        <div class="row">
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="نام کاربری">
+              <dx-text-box [(value)]="editItem.Username" [readOnly]="readOnlyUsername" class="ltr text-left">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="عنوان">
+              <dx-text-box [(value)]="editItem.DisplayName">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="وارد کردن این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="پسورد">
+              <dx-text-box #tbxPass [(value)]="editItem.Password" mode="password" class="ltr text-left">
+                <dx-validator #tbxPassvalidator>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-md-3 col-sm-12">
+              <dx-check-box [(value)]="editItem.ForceChangePassword" [text]="'ADM_FORCE_RESET_PASS' | translate"></dx-check-box>
+            </div>
+        </div>
+      </panel-box>
+      <panel-box [caption]=" 'مشخصات تماس' | translate">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <dx-label text="{{ 'PUB_LANGUAGE' | translate }}">
+                    <dx-lov [(value)]="editItem.SUSR_Lang_ID" [(text)]="editItem.SUSR_Lang_Caption" formCode="LOV-ADM-226"
+                      [required]="true" [displayMode]="'ComboBox'"></dx-lov>
+                  </dx-label>
+              </div>          
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="پست الکترونیک">
+              <dx-text-box [(value)]="editItem.Email" class="ltr text-left"></dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="شماره همراه">
+              <dx-text-box [(value)]="editItem.Mobile" class="ltr text-left"></dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-md-3">
+            <dx-button text="تعریف امضا" (click)="onSignatureClick($event)"></dx-button>
+          </div>
+        </div>
+      </panel-box>
+      <panel-box [caption]=" 'وضعیت' | translate">
+        <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <dx-label [text]="'PUB_START_DATE' | translate">
+              <dx-date [(value)]="editItem.StartDate"></dx-date>
+            </dx-label>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <dx-label [text]="'PUB_EXPIRY_DATE' | translate">
+              <dx-date [(value)]="editItem.ExpiryDate"></dx-date>
+            </dx-label>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <dx-check-box [(value)]="editItem.Enabled" [text]="'PUB_ACTIVE' | translate"></dx-check-box>
+          </div>
+        </div>
+      </panel-box>
+    </dx-validation-group>
+  </page-content>
+</page>

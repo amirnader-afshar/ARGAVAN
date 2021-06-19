@@ -1,0 +1,16 @@
+<dx-popup [ngClass]="'dms-popup'" [width]="1000" [height]="height" [showTitle]="true" [title]="title" [dragEnabled]="true"
+    [closeOnOutsideClick]="false" [(visible)]="visible" [fullScreen]="isFullScreen" (onHiding)="onHiding()" (onShowing)="onShowing()">
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view #scrollView id="scrollview-search" [height]="scrollHeight">
+            <div class="margin-20"></div>
+            <ng-content></ng-content>
+
+        </dx-scroll-view>
+        <div class="footer-popup">
+            <dx-button icon="fa fa-search" text="جست و جو" [(visible)]="showSearch" (click)="onSearchClick()" type="default"></dx-button>
+            <dx-button icon="fa fa-check-circle" text="انتخاب" [(visible)]="showSelect" (click)="onSelectClick()" type="success"></dx-button>
+            <dx-button icon="fa fa-ban" text="انصراف" type="danger" (click)="onPopupCancelClick()"></dx-button>
+        </div>
+    </div>
+</dx-popup>

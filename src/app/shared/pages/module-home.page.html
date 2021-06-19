@@ -1,0 +1,38 @@
+<page>
+  <page-content>
+    <div class="module-home-page">
+      <div class="row">
+        <div class="header-title-module">
+          <div class="system-card-bk">
+            <i class="fa {{module.Icon}}"></i>
+          </div>
+
+          <h1>
+            {{module.Title}}
+          </h1>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+        <div class="col-xl-3 col-md-3 col-xs-12" *ngFor="let item of subs">
+          <div class="sub-system-card " (click)="selectSystem(item)">
+            <div>
+              <i class="fa {{item.Icon}}"></i>
+            </div>
+            <i class="fa {{item.Icon}} hidden-lg-down"></i>
+            <h1>
+              {{item.Title}}
+            </h1>
+           
+            
+          </div>
+          <i class="fa {{item.Icon}} sub-system-card-bk"></i>
+        </div>
+      </div>
+
+      <div class="icon-background">
+        <i class="fa {{module.Icon}} hidden-lg-down"></i>
+      </div>
+    </div>
+  </page-content>
+</page>

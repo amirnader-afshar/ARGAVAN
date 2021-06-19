@@ -1,0 +1,19 @@
+<span #inputText
+      class="border-box"
+      hintText="hintText"
+      (mouseenter)="toggleHint()"
+      (mouseleave)="toggleHint()"
+      (click)="selected($event)"
+      id="{{_uid}}">
+  <input />
+</span>
+
+<!--- Hint Box -->
+<dx-popover [width]="300"
+            target="#{{_uid}}"
+            position="bottom"
+            [visible]="_hintVisible">
+  <div *dxTemplate="let data = data of 'content'">
+    {{hintText}}
+  </div>
+</dx-popover>

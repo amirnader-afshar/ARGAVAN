@@ -1,0 +1,58 @@
+<page>
+    <page-content>
+        <dx-validation-group #form>
+            <div class="row">
+                <div class="col-sm-12" *ngIf="!config.multipleModeDisable">
+                    <dx-check-box [(value)]="useMultipleUpload" text="بارگذاری چند فایل همزمان">
+                    </dx-check-box>
+                    <dx-check-box *ngIf="useMultipleUpload" [(value)]="saveInfoForAll" style="margin-right: 15px" text=" ذخیره همه اطلاعات برای فایل های انتخاب شده">
+                    </dx-check-box>
+                    <dx-check-box [(value)]="config.isPublic" style="margin-right: 15px" text="فایل به صورت سیستمی ذخیره شود">
+                    </dx-check-box>
+                </div>
+            </div>
+            <div class="margin-20"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <dx-label text="{{'EMD_FILE'| translate}}">
+                            <input #mainfile type="file" [multiple]="useMultipleUpload" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
+                            />
+                        </dx-label>
+
+                    </div>
+                    <!-- <div class="col-sm-6" *ngIf="checkPreview() && saveForAll()">
+                        <dx-label text="{{'EDM_PREVIEW'| translate}}">
+                            <input type="file" (change)="onChangePreveiw($event)" accept="image/*" />
+                        </dx-label>
+                    </div> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <dx-label text="{{'PUB_TITLE'| translate}}">
+                        <dx-text-box [readOnly]="!saveForAll()" maxLength="200" [(value)]="file.title">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </dx-label>
+                    <dx-label text="{{'EMD_FILE_TYPE'| translate}}" *ngIf="config.enableSecurityMode">
+                        <dx-lov [(value)]="file.categoryid" [readOnly]="!saveForAll()" [(text)]="file.category" formCode="LOV-EDM-002" [displayMode]="'ComboBox'"></dx-lov>
+                    </dx-label>
+                    <dx-label text="{{'EMD_ALT'| translate}}">
+                        <dx-text-box maxLength="200" [readOnly]="!saveForAll()" [(value)]="file.alt" class="ltr text-left"></dx-text-box>
+                    </dx-label>
+                    <dx-label text="{{'PUB_TEXT'| translate}}">
+                        <dx-text-box maxLength="200" [readOnly]="!saveForAll()" [(value)]="file.alt"></dx-text-box>
+                    </dx-label>
+
+                </div>
+            </div>
+            <div class="footer-popup">
+                <dx-button type="success" text="{{ 'PUB_SAVE' | translate }}" (onClick)="upload()"></dx-button>
+                <dx-button type="danger" text="{{ 'PUB_CANCEL' | translate }}" (onClick)="close()"></dx-button>
+            </div>
+        </dx-validation-group>
+    </page-content>
+</page>

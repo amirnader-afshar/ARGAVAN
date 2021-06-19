@@ -1,0 +1,29 @@
+﻿<div class="">
+  <div [class.has-danger]="!getValidDate()" class="input-group" dir="ltr">
+    <a *ngIf="dir==='rtl'" class="input-group-addon" (click)="onMouseClick()">
+      <i class="fa fa-calendar" aria-hidden="true"></i>
+    </a>
+    <!-- remove this attribute for fix("expression changed on check edit")
+         before that we use this attr to input blur event
+      (onValueChanged)="inputBlur($event)" -->
+    <!-- <dx-text-box [(value)]="_dateTimeFormat" #textbox [mask]="'9999/99/99' + (disableTime ? '' :' 99:99')" 
+      [readOnly]="readOnly" (onEnterKey)="close()" (onFocusOut)="inputBlur($event)" (blur)="inputBlur($event)" name="dp" style="direction: ltr">
+      <dx-validator></dx-validator>
+    </dx-text-box> -->
+    <a *ngIf="dir==='ltr'" class="input-group-addon" (click)="onMouseClick()">
+      <i class="fa fa-calendar" aria-hidden="true"></i>
+    </a>
+  </div>
+  <div #datepicker [style.visibility]="!overlayVisible ? 'hidden' : 'visible'" class="d-inline-block rounded datetime" [ngClass]="{rtl: dir === 'rtl'}"
+    style="padding: 0;">
+
+    <ngb-datepicker #dp></ngb-datepicker>
+
+    <!-- <ngb-datepicker #dp (click)="_panelClick = true" [(ngModel)]="_date" [displayMonths]="displayMonths" (ngModelChange)="changedDate()"
+      [maxDate]="maxDate()" [minDate]="minDate()" [firstDayOfWeek]="6"></ngb-datepicker>
+    <div *ngIf="!disableTime" [class.has-danger]="!getValidTime()" class="time d-block d-flex justify-content-center" style="display: flex;"
+      dir="ltr">
+      <ngb-timepicker [(ngModel)]="_time" (ngModelChange)="changedTime()" dir="ltr"></ngb-timepicker>
+    </div> -->
+  </div>
+</div>

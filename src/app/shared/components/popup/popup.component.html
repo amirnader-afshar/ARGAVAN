@@ -1,0 +1,16 @@
+<dx-popup [ngClass]="'dms-popup'" [width]="width" [height]="height" [showTitle]="true" [title]="title" [dragEnabled]="true"
+    [closeOnOutsideClick]="false" [showCloseButton]="showClose" [(visible)]="visible" [fullScreen]="isFullScreen" (onHiding)="onHiding($event)" (onShowing)="onShowing($event)">
+    
+    <div *dxTemplate="let data of 'content'">
+        <div class="header-popup">
+            <dx-menu #popupMenu [items]="items" (onItemClick)="onPopupItemClick($event)" adaptivityEnabled="true" displayExpr="text">
+            </dx-menu>
+        </div>
+        <ng-content></ng-content>
+        <div class="footer-popup" *ngIf="showCancel">
+            <dx-button icon="fa fa-check-circle" [text]="submitText" [(visible)]="showConfirm" (click)="onClick(data)" type="success"></dx-button>
+            <dx-button icon="fa fa-arrow-right" [text]="submitNextText" [(visible)]="showNext" (click)="onClickNext()" type="default"></dx-button>
+            <dx-button icon="fa fa-ban" text="انصراف" type="danger" (click)="onPopupCancelClick()"></dx-button>
+        </div>
+    </div>
+</dx-popup>

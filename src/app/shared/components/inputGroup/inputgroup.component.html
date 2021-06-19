@@ -1,0 +1,12 @@
+<dx-label [hintText]="hintText" [text]="label" >
+    <div class="row">
+        <div class="col-sm-11 col-md-10 pl0">
+            <ng-content></ng-content>
+        </div>
+        <div class="col-sm-1 col-md-2 inline-button-input">
+            <div (click)="onClick()">
+                <i [class]="icon"></i>
+            </div>
+        </div>
+    </div>
+</dx-label>

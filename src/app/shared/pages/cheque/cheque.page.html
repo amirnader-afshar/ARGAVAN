@@ -1,0 +1,48 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" showHelp="false" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+
+  <page-content>
+    <div class="cheque-container">
+      <div class="cheque-area">
+        <div class="cheque-area-in" #container>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbox">
+      <div class="toggle-tool-box">
+        <i class="fa fa-angle-left"></i>
+      </div>
+      <div class="toolbox-container">
+        <ul>
+          <li (click)="appendComponentToBody($event)">
+            <i class="fa fa-usd"></i>
+          </li>
+          <li>
+            <i class="fa fa-pencil"></i>
+          </li>
+          <li>
+            <i class="fa fa-usd green"></i>
+          </li>
+          <li>
+            <i class="fa fa-pencil green"></i>
+          </li>
+          <li>
+            <i class="fa fa-calendar"></i>
+          </li>
+          <li>
+            <i class="fa fa-calendar-o"></i>
+          </li>
+          <li>
+            <i class="fa fa-briefcase"></i>
+          </li>
+          <li>
+            <i class="fa fa-commenting"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </page-content>
+
+</page>

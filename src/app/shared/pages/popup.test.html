@@ -1,0 +1,39 @@
+<dx-validation-group #form>
+    <div class="row">
+
+        <div class="col-sm-3">
+            <dx-label text="تاریخ تائید">
+                <dx-date [(value)]="filter.ConfirmDate" showToday="true">
+                </dx-date>
+            </dx-label>
+        </div>
+        <div class="col-sm-3">
+            <dx-label text="ساعت تائید">
+                <dx-time [(value)]="filter.ConfirmTime" showCurrent="true">
+                </dx-time>
+            </dx-label>
+        </div>
+        <div class="col-sm-3">
+            <dx-label text="تائید کننده">
+                <dx-lov [(value)]="filter.CleanerParentId" [(text)]="filter.CleanerParent" formCode="LOV-HTL-077" selectedField="ID" [selectedValue]="CurrentUser"></dx-lov>
+            </dx-label>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <dx-label text="شرح">
+                <dx-text-box [(value)]="filter.DescriptionHead">
+                </dx-text-box>
+            </dx-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="popupFooterControlignored">
+            <div class="col-sm-12 pull-left">
+                
+                <dx-button type="success" text="ثبت" [width]="100" (onClick)="close($event)"></dx-button>
+            </div>
+        </div>
+    </div>
+</dx-validation-group>

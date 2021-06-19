@@ -15,8 +15,7 @@ export const ROUTES: any = [
         component: MasterLayoutComponent,
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
-        children: [
-             
+        children: [             
             { path: 'msg/home', component: ModuleHomePage , data: { code: "msg" }}
             
         ]

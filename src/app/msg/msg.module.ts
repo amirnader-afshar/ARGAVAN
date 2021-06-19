@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ModuleHomePage } from "../shared/pages/module-home.page";
 import { AuthGuard } from "../shared/services/AuthGuard";
 import { MasterLayoutComponent } from "../shared/layouts/master.layout";
+import { MessageComponent } from './message/message.component';
 
 
 export const ROUTES: any = [
@@ -16,7 +17,8 @@ export const ROUTES: any = [
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         children: [             
-            { path: 'msg/home', component: ModuleHomePage , data: { code: "msg" }}
+            { path: 'msg/home', component: ModuleHomePage , data: { code: "msg" }},
+            { path: 'msg/msgs', component: MessageComponent }
             
         ]
     },
@@ -25,7 +27,9 @@ export const ROUTES: any = [
 @NgModule({
     declarations: [
       
-    ],
+    
+    MessageComponent
+  ],
     imports: [
         CommonModule,
         SharedModule.forRoot(),

@@ -1,0 +1,71 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+        <div class="row">
+  
+          <div class="col-sm-4">
+            <dx-label text="{{ 'MSG_SUBJECT' | translate }}">
+              <dx-text-box [(value)]="editItem.MSG_SUBJECT">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4" >
+            <dx-label text="{{ 'MSG_RECIVER_CMPN' | translate }}">
+              <dx-lov formCode="LOV-ADM-223" 
+                      [displayMode]="'ComboBox'"
+                      [(value)]="editItem.MSG_RECIVER_CMPN_ID" 
+                      [(text)]="editItem.MSG_RECIVER_CMPN_NAM" 
+                      (dataChange)="onCompanyChange($event)"                      
+                     [required]="true"></dx-lov>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'MSG_RECIVER_USER' | translate }}">            
+              <dx-lov [(value)]="editItem.MSG_RECIVER_USER_ID" 
+                    [(text)]="editItem.MSG_RECIVER_SUSR_NAM_USR" formCode="lov-ofa-001"
+                [required]="true" [displayMode]="'ComboBox'" [(params)]="FilterCompanyCondition"></dx-lov>
+            </dx-label>
+          </div>  
+        </div>  
+        <div class="row">
+  
+            <div class="col-sm-12">
+                <dx-html-editor  (valueChange)="valueChange($event)" height="400px">
+                  <dxo-toolbar style="background-color: gray;">
+                    <dxi-item formatName="undo"></dxi-item>
+                    <dxi-item formatName="redo"></dxi-item>
+                    <dxi-item formatName="separator"></dxi-item>
+                    <dxi-item formatName="size" [formatValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"></dxi-item>
+                    <dxi-item formatName="font" [formatValues]="['Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Verdana']"></dxi-item>
+                    <dxi-item formatName="separator"></dxi-item>
+                    <dxi-item formatName="bold"></dxi-item>
+                    <dxi-item formatName="italic"></dxi-item>
+                    <dxi-item formatName="strike"></dxi-item>
+                    <dxi-item formatName="underline"></dxi-item>
+                    <dxi-item formatName="separator"></dxi-item>
+                    <dxi-item formatName="alignLeft"></dxi-item>
+                    <dxi-item formatName="alignCenter"></dxi-item>
+                    <dxi-item formatName="alignRight"></dxi-item>
+                    <dxi-item formatName="alignJustify"></dxi-item>
+                    <dxi-item formatName="separator"></dxi-item>
+                    <dxi-item formatName="color"></dxi-item>
+                    <dxi-item formatName="background"></dxi-item>
+            </dxo-toolbar>
+                    <dxo-media-resizing
+                        [enabled]=true>
+                    </dxo-media-resizing>
+                    <div [innerHtml]="editItem.MSG_BODY"></div> 
+                </dx-html-editor>
+            </div>
+      </div>          
+  
+      </dx-validation-group>
+    </page-content>
+  </page>
+  
+  

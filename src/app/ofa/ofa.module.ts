@@ -22,6 +22,7 @@ import { HomeComponent } from './home/home.component';
 import { LettrtErjaatComponent } from './lettrt-erjaat/lettrt-erjaat.component';
 import { HistoryComponent } from "../shared/components/history/history.component";
 import { LetterErjataGraphComponent } from './lettrt-erjaat/letter-erjata-graph/letter-erjata-graph.component';
+import { CmpnyReciverComponent } from './cmpny-reciver/cmpny-reciver.component';
  
 
 export const ROUTES: any = [
@@ -34,8 +35,10 @@ export const ROUTES: any = [
              
             { path: 'ofa/home', component: ModuleHomePage , data: { code: "ofa" }},
             { path: 'ofa/outLetters', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'out'}}, 
+            { path: 'ofa/outLetters_archive', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'out',archive:true}}, 
             { path: 'ofa/outLetter', component: outLettercomponent ,data:{LETTER_IN_OUT_TYPE:'out'}},
             { path: 'ofa/inLetters', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'in'}}, 
+            { path: 'ofa/inLetters_archive', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'in',archive:true}},
             { path: 'ofa/inLetter', component: outLettercomponent ,data:{LETTER_IN_OUT_TYPE:'in'}},
             { path: 'ofa/letterNote', component: LetterNoteComponent },
             { path: 'ofa/letterNoteList', component: LetterNoteListComponent },
@@ -43,6 +46,7 @@ export const ROUTES: any = [
             { path: 'ofa/letterErjaatGraph', component: LetterErjataGraphComponent },
             { path: 'ofa/bookSetting', component: DynamicFormPage, data: { code: 'ofa_Frm_book_setting' } },                                      
             { path: 'ofa/letterHistory', component: HistoryComponent },
+            { path: 'ofa/ofa-cmpny-reciver', component: CmpnyReciverComponent },
             
         ]
     },
@@ -56,7 +60,8 @@ export const ROUTES: any = [
         LetterNoteListComponent,
         HomeComponent,
         LettrtErjaatComponent,
-        LetterErjataGraphComponent,        
+        LetterErjataGraphComponent,
+        CmpnyReciverComponent,        
     ],
     imports: [
         CommonModule,

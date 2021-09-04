@@ -2,9 +2,8 @@
     <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
     </page-toolbar>
     <page-content>
-      <dx-validation-group #form>
-        <div class="row">
-  
+      <dx-validation-group #form>        
+        <div class="row">  
           <div class="col-sm-4">
             <dx-label text="{{ 'MSG_SUBJECT' | translate }}">
               <dx-text-box [(value)]="editItem.MSG_SUBJECT">
@@ -14,28 +13,12 @@
               </dx-text-box>
             </dx-label>
           </div>
-          <div class="col-sm-4" >
-            <dx-label text="{{ 'MSG_RECIVER_CMPN' | translate }}">
-              <dx-lov formCode="LOV-ADM-223" 
-                      [displayMode]="'ComboBox'"
-                      [(value)]="editItem.MSG_RECIVER_CMPN_ID" 
-                      [(text)]="editItem.MSG_RECIVER_CMPN_NAM" 
-                      (dataChange)="onCompanyChange($event)"                      
-                     [required]="true"></dx-lov>
-            </dx-label>
-          </div>
-          <div class="col-sm-4">
-            <dx-label text="{{ 'MSG_RECIVER_USER' | translate }}">            
-              <dx-lov [(value)]="editItem.MSG_RECIVER_USER_ID" 
-                    [(text)]="editItem.MSG_RECIVER_SUSR_NAM_USR" formCode="lov-ofa-001"
-                [required]="true" [displayMode]="'ComboBox'" [(params)]="FilterCompanyCondition"></dx-lov>
-            </dx-label>
-          </div>  
+ 
         </div>  
         <div class="row">
   
             <div class="col-sm-12">
-                <dx-html-editor  (valueChange)="valueChange($event)" height="400px">
+                <dx-html-editor [(value)]="editItem.MSG_BODY" valueType="html" (valueChange)="valueChange($event)" height="150px">
                   <dxo-toolbar style="background-color: gray;">
                     <dxi-item formatName="undo"></dxi-item>
                     <dxi-item formatName="redo"></dxi-item>
@@ -58,12 +41,92 @@
             </dxo-toolbar>
                     <dxo-media-resizing
                         [enabled]=true>
-                    </dxo-media-resizing>
-                    <div [innerHtml]="editItem.MSG_BODY"></div> 
+                    </dxo-media-resizing>                    
                 </dx-html-editor>
             </div>
-      </div>          
-  
+          </div>
+          <panel-box [caption]=" 'پیوست' | translate">                    
+              <div class="row" >               
+                <div class="col-md-4 col-sm-12">
+                    <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
+                      <div  *dxTemplate="let data of 'buttonTemplate'">  
+                        <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span>
+                        <span style="margin: 5px;">پیوستها</span>
+                        <span *ngIf="editItem.count_Attach" style="margin: 2px;" class="notification-number">{{editItem.count_Attach}}</span>
+                      </div>  
+                    </dx-button>
+                </div>
+              </div>  
+          </panel-box>        
+          
+          <panel-box [caption]=" 'گیرندگان' | translate">                    
+            <!-- <div class="row" >
+              <div class="col-sm-4" >
+                <dx-label text="{{ 'MSG_RECIVER_CMPN' | translate }}">
+                  <dx-lov formCode="LOV-ADM-223" 
+                          [displayMode]="'ComboBox'"
+                          [(value)]="editItem.MSG_RECIVER_CMPN_ID" 
+                          [(text)]="editItem.MSG_RECIVER_CMPN_NAM" 
+                          (dataChange)="onCompanyChange($event)"                      
+                         ></dx-lov>
+                </dx-label>
+              </div>
+              <div class="col-sm-4">
+                <dx-label text="{{ 'MSG_RECIVER_USER' | translate }}">            
+                  <dx-lov (dataChange)="onDataChange($event)" [(value)]="editItem.MSG_RECIVER_USER_ID" 
+                        [(text)]="editItem.MSG_RECIVER_SUSR_NAM_USR" formCode="lov-msg-001"
+                     [displayMode]="'ComboBox'" [(params)]="FilterCompanyCondition"></dx-lov>
+                </dx-label>
+              </div> 
+              <div class="col-md-4 col-sm-12">
+                <dx-button [width]="120" (click)="onAddClick($event)" [template]="'buttonTemplate'">  
+                  <div  *dxTemplate="let data of 'buttonTemplate'">  
+                    <span class="fa fa-plus-square" aria-hidden="true" style="margin: 5px;"></span>
+                    <span style="margin: 5px;">افزودن</span>                    
+                  </div>  
+                </dx-button>
+            </div> -->
+            <!-- </div>   -->
+            <div class="row">
+              <div class="col-sm-4">
+                <grid-toolbar>
+                <dx-data-grid #companygrid    (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
+                [columnAutoWidth]="true" [height]="250">
+             
+                <dxo-scrolling mode="virtual"></dxo-scrolling>
+                <dxo-selection mode="single"></dxo-selection>
+                <dxi-column  dataField="CMPN_NAM"   caption="{{'MSG_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
+                <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'MSG_RECIVER_USER'| translate}}" [width]="185"></dxi-column>                
+              </dx-data-grid>
+            </grid-toolbar>
+              </div>
+              <div class="col-sm-6">
+                <grid-toolbar>
+                  <dx-data-grid #grid  [dataSource]="dataSource" 
+                  
+                    [columnAutoWidth]="true" [height]="250">
+                    <dxo-editing 
+                    mode="row"                    
+                    [allowDeleting]="true"
+                    [allowAdding]="false">
+                    </dxo-editing>              
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-selection mode="single"></dxo-selection>
+
+                    <dxi-column  dataField="MSG_RECIVER_CMPN_NAM"   caption="{{'MSG_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
+                    <dxi-column  dataField="MSG_RECIVER_SUSR_NAM_USR"   caption="{{'MSG_RECIVER_USER'| translate}}" [width]="185"></dxi-column>
+                    <dxi-column  dataField="RECIVER_READ"   caption="{{'MSG_RECIVER_RECIVER_READ'| translate}}" [width]="150"></dxi-column>
+                  
+                   
+                  </dx-data-grid>
+                </grid-toolbar>
+              </div>
+            </div>
+
+        </panel-box>               
+
+
+
       </dx-validation-group>
     </page-content>
   </page>

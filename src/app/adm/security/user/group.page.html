@@ -10,10 +10,10 @@
             <dxo-editing mode="row" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
             </dxo-editing>
             <dxo-selection mode="single"></dxo-selection>
-            <dxi-column dataField="GroupName" caption="{{'نام گروه'| translate}}">
-            </dxi-column>
-            <dxi-column dataField="FlagActive" caption="{{'فعال'| translate}}" dataType="boolean" [width]="80">
-            </dxi-column>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxi-column sortOrder="asc" dataField="CompanyName" caption="{{'نام سازمان'| translate}}"  [width]="180"></dxi-column>            
+            <dxi-column dataField="GroupName" caption="{{'نام گروه'| translate}}" [width]="180"></dxi-column>
+            <dxi-column dataField="FlagActive" caption="{{'فعال'| translate}}" dataType="boolean" [width]="80"></dxi-column>
           </dx-tree-list>
         </tree-toolbar>
       </div>

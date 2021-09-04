@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~11.2.9",
     "@angular/router": "~11.2.9",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
+    "@pdftron/webviewer": "^7.3.3",
     "angular-event-service": "^1.2.0",
     "devextreme": "^20.2.4",
     "devextreme-angular": "^20.2.4",

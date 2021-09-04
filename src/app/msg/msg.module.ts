@@ -8,6 +8,8 @@ import { ModuleHomePage } from "../shared/pages/module-home.page";
 import { AuthGuard } from "../shared/services/AuthGuard";
 import { MasterLayoutComponent } from "../shared/layouts/master.layout";
 import { MessageComponent } from './message/message.component';
+import { MessageListComponent } from './message-list/message-list.component';
+import { CmpnyReciverComponent } from './cmpny-reciver/cmpny-reciver.component';
 
 
 export const ROUTES: any = [
@@ -18,8 +20,10 @@ export const ROUTES: any = [
         canActivateChild: [AuthGuard],
         children: [             
             { path: 'msg/home', component: ModuleHomePage , data: { code: "msg" }},
-            { path: 'msg/msgs', component: MessageComponent }
-            
+            { path: 'msg/msgs', component: MessageComponent },
+            { path: 'msg/out-msg-list', component: MessageListComponent, data:{MSG_IN_OUT_TYPE:'out'}},
+            { path: 'msg/in-msg-list', component: MessageListComponent, data:{MSG_IN_OUT_TYPE:'in'}},
+            { path: 'msg/msg-cmpny-reciver', component: CmpnyReciverComponent}                    
         ]
     },
 ];
@@ -28,7 +32,9 @@ export const ROUTES: any = [
     declarations: [
       
     
-    MessageComponent
+    MessageComponent,
+                  MessageListComponent,
+                  CmpnyReciverComponent
   ],
     imports: [
         CommonModule,

@@ -15,10 +15,10 @@
         <li class="notification-button" (click)="navigationDrawer2()" title="تغییر ظاهر برنامه">
           <i class="fa fa-paint-brush"></i>
         </li> -->
-        <!-- <li class="d-none d-sm-block" (click)="navigationDrawer()" title="لیست اعلانات">
-          <span class="notification-number">4</span>
+        <li class="d-none d-sm-block" (click)="navigationDrawer()" title="لیست اعلانات">
+          <span class="notification-number">{{notifyCount}}</span>
           <i class="fa fa-bell" aria-hidden="true"></i>
-        </li> -->
+        </li>
         <li class="d-none d-sm-block" (click)="toggleScreen()" title="عریض کردن صفحه">
           <i class="fa fa-arrows-alt" aria-hidden="true"></i>
         </li>
@@ -98,7 +98,7 @@
         <span class="text-center">لیست اعلان ها</span>
       </div>
       <ul>
-        <li class="border-left-red">
+        <!-- <li class="border-left-red">
           <span>درخواست مدیریت</span>
           <i class="fa fa-times"></i>
           <i class="fa fa-retweet"></i>
@@ -107,16 +107,16 @@
           <span>اطلاعیه انبار</span>
           <i class="fa fa-times"></i>
           <i class="fa fa-retweet"></i>
+        </li> -->
+        <li (click)="redirectToLetter()" class="border-left-blue" *ngIf='letterCount>0'>
+          <span>نامه وارده خوانده نشده {{letterCount}}</span>
+          <i class="fa fa-envelope"></i>
+          <i >اتوماسیون</i>
         </li>
-        <li class="border-left-blue">
-          <span>رمز عبور شما ضعیف است</span>
-          <i class="fa fa-times"></i>
-          <i class="fa fa-retweet"></i>
-        </li>
-        <li class="border-left-yellow">
-          <span>پیغام از مدیریت</span>
-          <i class="fa fa-times"></i>
-          <i class="fa fa-retweet"></i>
+        <li (click)="redirectToMessage()" class="border-left-yellow" *ngIf='msgCount>0'>
+          <span >پیام جدید خوانده نشده {{msgCount}}</span>
+          <i class="fa fa fa-weixin"></i>
+          <i>مرکز پیام</i>
         </li>
       </ul>
     </div>

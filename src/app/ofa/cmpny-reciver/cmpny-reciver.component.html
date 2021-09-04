@@ -1,0 +1,55 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+            <div class="row">                                                                       
+              <div class="col-sm-3">
+                <dx-label text="{{ 'OFA_LETTER_RECIVER_CMPN' | translate }}">
+                  <dx-lov formCode="LOV-ADM-223" 
+                          [displayMode]="'ComboBox'"
+                          [(value)]="editItem.CMPNY_RECIVER_COMPANY_ID" 
+                          [(text)]="editItem.CMPNY_RECIVER_COMPANY_NAM"
+                         (dataChange)="onCompanyChange($event)"
+                         [required]="true"></dx-lov>
+                </dx-label>
+              </div>
+              <div class="col-sm-3">
+                <dx-label text="{{ 'OFA_LETTER_RECIVER_USER' | translate }}">            
+                  <dx-lov [(value)]="editItem.CMPNY_RECIVER_USER_ID" 
+                        [(text)]="editItem.CMPNY_RECIVER_USER_NAM" formCode="lov-ofa-002"
+                    [required]="true" [displayMode]="'ComboBox'" [(params)]="FilterCompanyCondition"></dx-lov>
+                </dx-label>
+              </div>   
+              <div class="col-sm-3">
+                <dx-button [width]="120" (click)="addClick($event)" [template]="'buttonTemplate'">  
+                    <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                      <span class="fa fa-plus-circle btn-success" aria-hidden="true" style="margin: 5px;"></span>
+                      <span style="margin: 5px;font-size: 11px;">اضافه</span>                  
+                    </div>  
+                  </dx-button>                 
+              </div>             
+      
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <grid-toolbar>
+                  <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+                    [columnAutoWidth]="true" [height]="400">
+                    <dxo-sorting mode="multiple"></dxo-sorting>
+                    <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-selection mode="single"></dxo-selection>
+                    <dxi-column dataField="CMPNY_RECIVER_CREATE_DATE_TIME"    dataType="date" caption="{{'PUB_CREATE_DATE'| translate}}" [width]="100"></dxi-column>
+                    <dxi-column dataField="CMPN_NAM"  caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
+                    <dxi-column dataField="SUSR_NAM_USR"  caption="{{'PUB_USER'| translate}}" [width]="150"></dxi-column>                                             
+                  </dx-data-grid>
+                </grid-toolbar>
+              </div>
+            </div>                                      
+              
+      </dx-validation-group>
+    </page-content>
+  </page>
+  

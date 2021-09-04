@@ -30,13 +30,13 @@ export class UploadPopupComponent extends PopupBasePage implements OnInit {
         this.config = applyConfigDefaults(this.popupInstance.data);
         this.useMultipleUpload = this.config.uploadMode === UploadMode.Multiple;
 
-        let that = this;
-        this.mainfile.nativeElement.onchange = function () {
-            if (this.files[0].size > that.config.fileSize * 1000000) {
-                this.value = "";
-                Notify.error('حجم فایل انتخاب شده بزرگتر از حد مجاز است');
-            };
-        };
+        // this.mainfile.nativeElement.onchange = function () {
+        //     if (this.files[0].size > that.config.fileSize * 1000000) {
+        //  let that = this;
+        //        this.value = "";
+        //         Notify.error('حجم فایل انتخاب شده بزرگتر از حد مجاز است');
+        //     };
+        // };
     }
 
     onChangeMain(e) {

@@ -12,8 +12,11 @@
             <h1>
               {{item.Title}}
             </h1>
+                        
             <div class="collapse-card" *ngIf="item.Items" (click)="selectSystem(item)">
               <i class="fa fa-external-link" aria-hidden="true"></i>
+              <span style="text-align:center" *ngIf='item.Code.trim() == "ofa" && UnreadLetterCount' class="notification-number">{{UnreadLetterCount}}</span>
+              <span style="text-align:center" *ngIf='item.Code.trim() == "msg" && UnreadMsgCount' class="notification-number">{{UnreadMsgCount}}</span>              
             </div>
           </div>
         </div>

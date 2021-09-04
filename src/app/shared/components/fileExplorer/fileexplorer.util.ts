@@ -8,7 +8,8 @@ export enum FileGroup {
     ForEntity,
     SharedWithMe,
     ofaMainFile,
-    ofaAttachments
+    ofaAttachments,
+    msgAttachments
 }
 
 export enum FileExtension {
@@ -88,7 +89,13 @@ export function fileGroupManager(data: FileExplorerInputConfig) {
                     fileGroup: data.fileGroup,
                     fileExtensions: [FileExtension.All],
                     ...data
-                })            
+                })        
+        case FileGroup.msgAttachments:
+            return applyConfigDefaults({
+                fileGroup: data.fileGroup,
+                fileExtensions: [FileExtension.All],
+                ...data
+            })                        
         default:
             break;
     }

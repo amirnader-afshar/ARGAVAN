@@ -9,6 +9,8 @@ import { DemisPopupService } from '../components/popup/demis-popup-service';
 import { ThemeService } from '../services/ThemeService';
 import * as screenfull from 'screenfull';
 import { Dialog } from '../util/Dialog';
+import { DataToPost } from "../../shared/services/data-to-post.interface";
+import * as internal from 'node:stream';
 declare function page_init(): any;
 declare function sidemenu_hide(): any;
 
@@ -55,6 +57,9 @@ export class MasterLayoutComponent implements AfterViewInit {
     showOverlay2: boolean = false;
     version: string = '1.0';
     config: any = { items: [], subject: null };
+    notifyCount : number=0;
+    msgCount : number=0;
+    letterCount : number=0;
 
     navigationDrawer() {
         this.navigation = !this.navigation;
@@ -146,6 +151,8 @@ export class MasterLayoutComponent implements AfterViewInit {
     }
     ngOnInit(): void {
         this.demisPopupService.setRootViewContainerRef(this.viewContainerRef);
+        this.loadUnreadMessage();
+        this.loadUnreadLetter();
     }
 
     //  -------------- تغییر ظاهر برنامه -------------
@@ -167,6 +174,63 @@ export class MasterLayoutComponent implements AfterViewInit {
         location.reload();
     }
 
+    redirectToMessage(){
+        this.router.navigate(["msg/in-msg-list"]   );
+    }
 
+    redirectToLetter(){
+        this.router.navigate(["ofa/inLetters"]   );
+    }
+
+    loadUnreadLetter()
+    {
+        var dataToPostBody: DataToPost;
+        var Header :any ={};  
+        Header.LETTER_IN_OUT_TYPE = 'in'
+        Header.LETTER_IS_READED = false;
+        dataToPostBody = {
+            'Data': {
+              'SPName': '[OFA].[OFA_Sp_letter]',
+              'Data_Input': { 'Mode': 4,          
+               'Header': Header
+              , 'Detail': '', 'InputParams': '' }
+            }                    
+          }
+          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody).
+          then((data) => {     
+            if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+                var d = data.ReturnData.Data_Output[0].Header.filter(x=>x.LETTER_IS_READED===false);
+              this.notifyCount=d.length+this.notifyCount;  
+              this.letterCount=d.length;    
+            }
+            
+          });
+    }
+
+    loadUnreadMessage()
+    {
+        var dataToPostBody: DataToPost;
+        var Header :any ={};
+        Header.MSG_IN_OUT_TYPE='in'
+        Header.RECIVER_READ=false;
+        dataToPostBody = {
+            'Data': {
+              'SPName': '[MSG].[MSG_Sp_MESSAGE]',
+              'Data_Input': { 'Mode': 4,          
+               'Header': Header
+              , 'Detail': '', 'InputParams': '' }
+            }
+            
+          }
+          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody).
+          then((data) => {     
+            if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+              this.notifyCount=data.ReturnData.Data_Output[0].Header.length+this.notifyCount;  
+              this.msgCount=data.ReturnData.Data_Output[0].Header.length;
+                   
+            }
+            
+          });          
+    }
 
 }

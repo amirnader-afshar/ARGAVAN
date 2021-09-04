@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import { BasePage } from '../../shared/BasePage';
 import { TranslateService } from '../../shared/services/TranslateService';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -24,14 +24,16 @@ import { LetterNoteListComponent } from '../letter-note-list/letter-note-list.co
 import { LettrtErjaatComponent } from "../lettrt-erjaat/lettrt-erjaat.component";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Dialog } from '../../shared/util/Dialog';
-import { runInThisContext } from 'node:vm';
+import  Webviewer, { WebViewerInstance }  from '@pdftron/webviewer';
+import { threadId } from 'node:worker_threads';
+
 
 @Component({
   selector: 'app-root-outLetter',
   templateUrl: './outLetter.component.html',
   styleUrls: ['./outLetter.component.scss']
 })
-export class outLettercomponent extends BasePage implements OnInit {
+export class outLettercomponent extends BasePage implements OnInit,AfterViewInit {
   
   
   config: FileExplorerInputConfig = new FileExplorerInputConfig();
@@ -41,6 +43,7 @@ export class outLettercomponent extends BasePage implements OnInit {
   ALLOW_PRG_UFIF_001;
   OFA_AUTO_BOOK_NO;
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
+  @ViewChild('viewer',{static: false}) vieweRef: ElementRef;
   GRID_SOURCE;
   constructor(public translate: TranslateService
             , public router: Router,
@@ -56,6 +59,7 @@ export class outLettercomponent extends BasePage implements OnInit {
     this.route.queryParams.subscribe(params => {
 
       this.editItem.LETTER_ID = params['LETTER_ID'];
+      this.editItem.archive = params['archive'];
       this.GRID_SOURCE = params['GRID_SOURCE'];
 
   });
@@ -82,6 +86,11 @@ export class outLettercomponent extends BasePage implements OnInit {
       text: 'تاریخچه',
       icon: "fa fa-history",
       visible: true}
+      ,{
+        name: "archive",
+        text: 'انتقال به آرشیو',
+        icon: "fa fa-archive",
+        visible: true}
     ]
       if(this.editItem.LETTER_ID)
       {
@@ -106,6 +115,22 @@ export class outLettercomponent extends BasePage implements OnInit {
     }, 1000);
   }
 
+  wvinstance :WebViewerInstance;
+  ngAfterViewInit():void{
+    //  Webviewer({
+    //    path:'../assets/lib',
+    //    initialDoc: ''
+    //  },this.vieweRef.nativeElement).then(instance=> {
+    //   this.wvinstance = instance;
+    //   // 'http://localhost:5577/Temp/53ce85a2-c1db-44fb-9233-b28697fe3761.pdf'
+    //     instance.loadDocument(environment.url+this.editItem.FILE_PATH,{
+         
+
+    //     })
+    //     instance.setTheme('dark');
+    //  })
+  }    
+
   ngOnInit() {
     this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
     this.editItem.FolderID = Guid.empty;    
@@ -120,8 +145,7 @@ export class outLettercomponent extends BasePage implements OnInit {
                             
       }
 
-       
-
+   
     // let deferred: Deferred<any> = new Deferred<any>();
     // this.ALLOW_PRG_UFIF_001 = this.permissionService.hasDefined('PRG_UFIF_001');//چک دسترسی به ویرایش قسمت کاست و تلرانس
     // this.service.get("/PRG/USER_FURTHER_INFORMATION/List", (data) => {
@@ -131,7 +155,12 @@ export class outLettercomponent extends BasePage implements OnInit {
     //   deferred.resolve(data);
     // }, this.filter);
   }
+  downloadFile(id) {
+    
+    this.service.getfile("/EDM/File/Download?fileId=" + id, (data) => {
 
+    });
+  }
   loadLetter(){
     this.editItem.LOAD_MAIN_FILE=true;
     this.dataToPostBody = {
@@ -148,10 +177,16 @@ export class outLettercomponent extends BasePage implements OnInit {
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0];  
+        
         if(this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA==false){
           this.menuItems[1].visible=false;
           this.menuItems[0].visible=false;       
         }
+        if(this.editItem.LETTER_IS_ARCHIVE){
+          this.menuItems[4].text='بازگشت از آرشیو';          
+        }
+        else { this.menuItems[4].text='انتقال به آرشیو';  }
+        
       }
       
     });
@@ -168,7 +203,32 @@ export class outLettercomponent extends BasePage implements OnInit {
 
 
   onMenuItemClick(name) {
+    if (name == "archive"){
+      this.dataToPostBody = {
+        'Data': {
+          'SPName': '[OFA].[OFA_Sp_letter]',
+          'Data_Input': { 'Mode': 5,          
+           'Header': {'LETTER_ID':this.editItem.LETTER_ID,
+                      'LETTER_ARGHAVAN_TIME_STAMP':this.editItem.LETTER_ARGHAVAN_TIME_STAMP
+                      }
+          , 'Detail': '', 'InputParams': '' }
+        }
+        
+      }
+  
+      this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+      then((data) => {     
+        if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+          this.editItem=data.ReturnData.Data_Output[0].Header[0];            
+          this.loadLetter();
+          Notify.success('اطلاعات با موفقیت ذخیره شد');
 
+
+        }
+        
+      });
+    
+    }
     if (name == "cancel") {
       if (this.GRID_SOURCE=='out')
         this.router.navigate(["ofa/outLetters"]);
@@ -287,7 +347,7 @@ uploadfile(e) {
   this.popup.open(UploadPopupComponent, {
     title: 'بارگذاری فایل',
     data: {
-        entityId: this.editItem.LETTER_ID,
+        entityId:'kiiiiiiiiir',// this.editItem.LETTER_ID,
         folderid: this.editItem.FolderID,        
         ...this.config
     } //TODO add entity id from explorer
@@ -296,7 +356,11 @@ uploadfile(e) {
   this.editItem.LETTER_MAIN_FILE_ID = res.Result[0].ID;
   this.editItem.MainFilePatch=environment.url+res.Result[0].Patch;
   this.editItem.FILE_BASE64STRING=res.Result[0].FILE_BASE64STRING;
-  
+  this.editItem.FLTP_ICON=res.Result[0].Icon;
+  this.editItem.FLTP_DES=res.Result[0].FileType;
+  this.editItem.FILE_TITLE=res.Result[0].Title;
+  // this.wvinstance.loadDocument(this.editItem.MainFilePatch,{    
+  // })
 })
 }
 

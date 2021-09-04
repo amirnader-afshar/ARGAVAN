@@ -19,6 +19,7 @@ import {
 import { DateTime } from "../util/DateTime";
 import { Deferred } from "../Deferred";
 import { Guid } from "../types/GUID";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 export enum DisplayMode {
   Popup,
@@ -489,19 +490,46 @@ export class DXLovComponent {
 
   private findByValue() {
     // console.log('findByValue');
-    let that = this;
-    setTimeout(() => {
-
+    let that = this;  
       let filter = that.getFilter();
       filter.SearchQuery = this.value;
-      this.getFormList(filter).then(data => {
-        if (data.Data.length > 0) {
-          that.data = data.Data[0];
-          that.text = this.getDisplayText(data.Data[0]);
-          //that.innerSetValue(data.Data[0][this.valueField], false);
-        }
-      });
-    }, 10);
+      if (!this.localData)
+      {
+          this.getFormList(filter).then(data => {
+            if (data.Data.length > 0) {
+
+              var keycol = that.fields.find(e => e.IsValue === true);
+
+              for (let i = 0; i <= data.Data.length - 1; i++) 
+              {
+                  const item = data.Data[i];
+                  if (item[keycol.Name] === this.value)
+                  {
+                    that.data = item;
+                    break;
+                  }                        
+                }          
+              that.text = this.getDisplayText(that.data);
+              //that.innerSetValue(data.Data[0][this.valueField], false);
+            }
+          });
+      }
+      else{
+
+        for (let i = 0; i <= this.localData.length - 1; i++) 
+              {
+                  const item = this.localData[i];
+                  if (item[this.valueField] === this.value)
+                  {
+                    that.data = item;
+                    break;
+                  }                        
+                } 
+        
+        that.text = this.getDisplayText(that.data);
+
+      }
+    
   }
 
   private onButtonClick() {

@@ -65,7 +65,7 @@
                 
             <div class="col-sm-3">
               <dx-label text="{{ 'OFA_LETTER_RECIVER_CMPN' | translate }}">
-                <dx-lov formCode="LOV-ADM-223" 
+                <dx-lov formCode="LOV-OFA-003" 
                         [displayMode]="'ComboBox'"
                         [(value)]="editItem.LETTER_RECIVER_CMPN_ID" 
                         [(text)]="editItem.LETTER_RECIVER_CMPN_NAM"
@@ -140,19 +140,35 @@
       </div>
       <div class="row"  >
         <div class="col-sm-12">   
-              <ngx-extended-pdf-viewer 
+            <!-- <div #viewer class="webviewer"></div> -->
+            
+              <ngx-extended-pdf-viewer  
                 [base64Src]="editItem.FILE_BASE64STRING"   backgroundColor="#ffffff"
                 [height]="'90vh'"
                 [useBrowserLocale]="true"
-                *ngIf="!hidePdfViewer"
+                *ngIf="!hidePdfViewer && editItem.FLTP_DES==='PDF'"
                 [language]="language"
                 textLayer="true"                
-              >
-              </ngx-extended-pdf-viewer>              
+              >            
+              </ngx-extended-pdf-viewer>      
+              
+              <div class="row justify-content-center" *ngIf="editItem.FLTP_DES!='PDF'"                                >
+                <div class="card" style="width: 18rem;">
+                                    
+                  <div class="card-header" id="headingOne">
+                    <h5 class="text-center">فایل نامه</h5> 
+                  </div>
+        
+                  <div class="card-body text-center">
+                    <i [ngClass]="editItem.FLTP_ICON+' fa-3x'" aria-hidden="true" style="margin: 5px;"></i>
+                    <h5 class="card-title">نام فایل : {{editItem.FILE_TITLE}} </h5>                    
+                    <button (click)="downloadFile(editItem.LETTER_MAIN_FILE_ID)" class="btn btn-success">دانلود فایل</button>
+                  </div>
+                </div>
+              </div>        
         </div>
       </div>
 
     </dx-validation-group>
   </page-content>
 </page>
-

@@ -16,7 +16,7 @@
         <div class="row">
   
             <div class="col-sm-12">
-                <dx-html-editor  (valueChange)="valueChange($event)" height="400px">
+                <dx-html-editor [(value)]="editItem.LETTER_NOTE_CONTENT" valueType="html" (valueChange)="valueChange($event)" height="400px">
                   <dxo-toolbar style="background-color: gray;">
                     <dxi-item formatName="undo"></dxi-item>
                     <dxi-item formatName="redo"></dxi-item>
@@ -40,7 +40,7 @@
                     <dxo-media-resizing
                         [enabled]=true>
                     </dxo-media-resizing>
-                    <div [innerHtml]="editItem.LETTER_NOTE_CONTENT"></div> 
+                    
                 </dx-html-editor>
             </div>
       </div>          

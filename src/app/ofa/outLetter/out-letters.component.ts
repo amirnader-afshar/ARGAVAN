@@ -27,6 +27,7 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
     }
     ngOnInit():void{
       this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];  
+      this.editItem.archive = this.route.snapshot.data["archive"]; 
       this.loadGrid();
     
       
@@ -98,18 +99,24 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
    };
   
     onMenuItemClick(name) {
+      var qp = {
+        LETTER_ID: this.selectedRow.LETTER_ID 
+        ,GRID_SOURCE:this.editItem.LETTER_IN_OUT_TYPE
+        ,archive:this.editItem.archive
+      }
+      var routPath = "";
+      if(this.editItem.LETTER_IN_OUT_TYPE=='out')
+       routPath="ofa/outLetter";
+      else
+       routPath="ofa/inLetter";
+
       if (name == "New") {
-        if(this.editItem.LETTER_IN_OUT_TYPE=='out')
-          this.router.navigate(["ofa/outLetter"]);
-        else
-          this.router.navigate(["ofa/inLetter"]);
         
-      } else if (name == "Edit") {
+          this.router.navigate([routPath],{queryParams: qp});
         
-        if(this.editItem.LETTER_IN_OUT_TYPE=='out')
-          this.router.navigate(["ofa/outLetter"] ,{ queryParams: { LETTER_ID: this.selectedRow.LETTER_ID ,GRID_SOURCE:this.editItem.LETTER_IN_OUT_TYPE} }  );
-        else  
-          this.router.navigate(["ofa/inLetter"],{ queryParams: { LETTER_ID: this.selectedRow.LETTER_ID ,GRID_SOURCE:this.editItem.LETTER_IN_OUT_TYPE} });
+      } else if (name == "Edit") {        
+
+        this.router.navigate([routPath],{queryParams: qp});
       }
       else if (name=="Delete")
       {

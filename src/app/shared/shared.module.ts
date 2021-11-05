@@ -92,6 +92,7 @@ import { LangSelectorComponent } from './components/ui/lang-selector/lang-select
 import { JalaliPipe } from './pipes/jalali_show_date_full_name';
 import { HistoryComponent } from './components/history/history.component';
 import { HistoryService } from './services/HistoryService';
+import { SignupComponent } from './pages/signup/signup.component';
 
 const packageVersion = require('../../../package.json');
 
@@ -156,6 +157,7 @@ export const ROUTES: any = [
       { path: 'setpass', component: ResetPasswordPage },
       { path: '404', component: NotFoundPage },
       { path: '403', component: AccessDeniedPage },
+      { path:'signup',component:SignupComponent}
     ]
   },
 ];
@@ -215,7 +217,8 @@ export const ROUTES: any = [
     LoginPopup,
     SunPopUpDatepickerComponent,
     LangSelectorComponent,
-    HistoryComponent
+    HistoryComponent,
+    SignupComponent
   ],
   imports: [
     CommonModule,

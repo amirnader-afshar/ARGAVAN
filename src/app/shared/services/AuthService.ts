@@ -10,6 +10,8 @@ import { Notify } from '../util/Dialog';
 import { TranslateService } from './TranslateService';
 import { resolve } from 'path';
 
+import { DataToPost } from "../../shared/services/data-to-post.interface";
+
 @Injectable({
     providedIn: 'root',
 })
@@ -19,6 +21,8 @@ export class AuthService {
     private static resetPass: boolean = false;
 
     userdeflang: string;
+
+    dataToPostBody: DataToPost;
 
     redirectUrl: string = '/home';
 
@@ -155,6 +159,43 @@ export class AuthService {
             }).catch((err) => {
                 reject(err);
             });
+        });
+    }
+
+    public signup(user: any): Promise<boolean> {
+        
+        return new Promise((resolve, reject) => {
+            
+            this.dataToPostBody = {
+                'Data': {
+                  'SPName': 'ADM.ADM_SP_SIGNUP',
+                  'Data_Input': { 'Mode': 1,          
+                   'Header': {'SUSR_COD_USR':user.Username,'SUSR_COD_PSW':user.Password
+                                ,'SUSR_NAM_USR':user.Username,'SUSR_MOBILE_NUM':user.Mobile,'SUSR_FLG_ACT':true}  
+                  , 'Detail': '', 'InputParams': '' }
+                }
+              };
+                this.service.postPromise("/ADM/Security/User/signup", this.dataToPostBody).
+                  then((data) => {                        
+                                       
+                    Notify.success('اطلاعات با موفقیت ذخیره شد');                
+                    AuthService.resetPass = false;
+                    this.router.navigate(['/login']); 
+                    resolve(true);                                              
+                       
+                  
+                  }).catch((err) => {
+                    reject(err);
+                });;
+
+
+            // this.service.postPromise("/ADM/Security/User/signup", user).then(data => {
+            //     AuthService.resetPass = false;
+            //     this.router.navigate(['/login']);
+            //     resolve(true);
+            // }).catch((err) => {
+            //     reject(err);
+            // });
         });
     }
 

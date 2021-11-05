@@ -1,0 +1,93 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+        <div class="row">
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_NAME' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_NAME">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_LASTNAME' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_LASTNAME">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_DADNAME' | translate }}">
+              <dx-text-box  [(value)]="editItem.PERSONINFO_DADNAME">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>             
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_NATIONALCODE' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_NATIONALCODE">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                  
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_UNION_NAME' | translate }}">
+              <dx-lov [(value)]="editItem.PERSONINFO_UNION_ID" [(text)]="editItem.PERSONINFO_UNION_NAME" formCode="LOV-ADM-223"
+                [required]="true" [displayMode]="'ComboBox'"></dx-lov>
+            </dx-label>
+          </div>          
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_SIGNTITEL' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_SIGNTITEL">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                  
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_MAINSTREET_ADDRESS' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_MAINSTREET_ADDRESS">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                  
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_ADDRESS' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_ADDRESS">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                  
+              </dx-text-box>
+            </dx-label>
+          </div>
+       
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_PERSONINFO_JOBNAME' | translate }}">
+              <dx-text-box [(value)]="editItem.PERSONINFO_JOBNAME">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>  
+              </dx-text-box>
+            </dx-label>
+          </div>
+                
+  
+  
+        </div>
+      </dx-validation-group>
+    </page-content>
+  </page>

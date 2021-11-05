@@ -10,11 +10,11 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
 
 
 @Component({
-  selector: 'app-message-list',
-  templateUrl: './message-list.component.html',
-  styleUrls: ['./message-list.component.scss']
+  selector: 'app-edu-course-list',
+  templateUrl: './edu-course-list.component.html',
+  styleUrls: ['./edu-course-list.component.scss']
 })
-export class MessageListComponent extends BasePage implements OnInit {
+export class EduCourseListComponent extends BasePage implements OnInit {
 
   editItem: any = {};
   @ViewChild('grid',{static: true}) dataGrid: DxDataGridComponent;
@@ -27,13 +27,13 @@ export class MessageListComponent extends BasePage implements OnInit {
     {
       name: "New",
       icon: "fa fa-plus green",
-      text: 'ارسال پیام',
+      text: 'دوره جدید',
       visible: true
     },
     {
       name: "Edit",
       icon: "fa fa-edit green",
-      text: 'مشاهده پیام',
+      text: 'ویرایش دوره',
       visible: true
     }
   ]
@@ -46,21 +46,20 @@ export class MessageListComponent extends BasePage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menuItems[1].visible = false;
-    this.editItem.MSG_IN_OUT_TYPE = this.route.snapshot.data["MSG_IN_OUT_TYPE"];
+    this.menuItems[1].visible = false;   
     this.loadGrid();
   }
   onMenuItemClick(name) {
     if (name == "New") {  
-        this.router.navigate(["msg/msgs"]);
+        this.router.navigate(["edu/edu-course"]);
     } 
     else if (name == "Edit") {
       var qp = {
-        MSG_ID: this.selectedRow.MSG_ID 
-        ,GRID_SOURCE:this.editItem.MSG_IN_OUT_TYPE        
+        COURSE_ID: this.selectedRow.COURSE_ID 
+            
       }
     
-      this.router.navigate(["msg/msgs"] ,{ queryParams: qp }  );
+      this.router.navigate(["edu/edu-course"] ,{ queryParams: qp }  );
 
     }
 
@@ -69,7 +68,7 @@ export class MessageListComponent extends BasePage implements OnInit {
   loadGrid(){
     this.dataToPostBody = {
       'Data': {
-        'SPName': '[MSG].[MSG_Sp_MESSAGE]',
+        'SPName': '[EDU].[EDU_Sp_COURSE]',
         'Data_Input': { 'Mode': 4,          
          'Header': this.editItem
         , 'Detail': '', 'InputParams': '' }
@@ -82,7 +81,7 @@ export class MessageListComponent extends BasePage implements OnInit {
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.dataSource=data.ReturnData.Data_Output[0].Header;  
         this.dataSource.store = new CustomStore({
-          key: "MSG_ID",
+          key: "COURSE_ID",
           load: (loadOptions) => {
             let deferred: Deferred<any> = new Deferred<any>();
             console.log("dataSource", this.dataSource);
@@ -114,3 +113,4 @@ export class MessageListComponent extends BasePage implements OnInit {
   }
 
 }
+

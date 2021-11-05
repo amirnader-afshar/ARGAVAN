@@ -1,0 +1,146 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+        <div class="row">
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_CODE' | translate }}">
+              <dx-text-box [(value)]="editItem.COURSE_CODE">
+                <dx-validator>
+                  <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </dx-label>
+          </div>
+          
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_NAME' | translate }}">
+              <dx-text-box [(value)]="editItem.COURSE_NAME">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_STARTDATE' | translate }}">
+                <sun_popup_datepicker  
+                [(ngModel)]="editItem.COURSE_STARTDATE"  
+                [name]="'COURSE_STARTDATE'" 
+                [required]="true" 
+                [showToday] ="true" > 
+             </sun_popup_datepicker>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_ENDDATE' | translate }}">
+                <sun_popup_datepicker  
+                [(ngModel)]="editItem.COURSE_ENDDATE"  
+                [name]="'COURSE_ENDDATE'" 
+                [required]="true" 
+                [showToday] ="true" > 
+             </sun_popup_datepicker>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_LECTURE_NAME' | translate }}">
+                <dx-text-box [(value)]="editItem.COURSE_LECTURE_NAME">
+                    <dx-validator>
+                        <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                      </dx-validator>                  
+                  </dx-text-box>
+            </dx-label>
+          </div>          
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_BEGINTIME' | translate }}">                
+              <dx-date-box [(value)]="editItem.COURSE_BEGINTIME" type="time" >
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator> 
+                            
+              </dx-date-box>
+              {{editItem.COURSE_BEGINTIME}}    
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_DAYS' | translate }}">
+              <dx-text-box [(value)]="editItem.COURSE_DAYS">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>                  
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_SESSION_TIME' | translate }}">
+              <dx-number-box
+                [(value)]="editItem.COURSE_SESSION_TIME"
+                [showSpinButtons]="true"
+                [showClearButton]="true"
+              >
+              <dx-validator>
+                <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+              </dx-validator> 
+            </dx-number-box>
+            </dx-label>
+          </div>
+       
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_EXAM_DATE_TIME' | translate }}">
+                <sun_popup_datepicker  
+                [(ngModel)]="editItem.COURSE_EXAM_DATE_TIME"  
+                [name]="'COURSE_EXAM_DATE_TIME'" 
+                [required]="true" 
+                [showToday] ="true" > 
+             </sun_popup_datepicker>
+       
+            </dx-label>
+          </div>
+
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_EXAM_LOCATION' | translate }}">
+              <dx-text-box [(value)]="editItem.COURSE_EXAM_LOCATION">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>  
+              </dx-text-box>
+            </dx-label>
+          </div>
+          <div class="col-sm-4">
+            <dx-check-box [(value)]="editItem.COURSE_ENABEL" [text]="'EDU_COURSE_ENABEL' | translate"></dx-check-box>          
+          </div>
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_CAPICITY' | translate }}">
+              <dx-text-box [(value)]="editItem.COURSE_CAPICITY">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                  </dx-validator>  
+              </dx-text-box>
+            </dx-label>
+          </div>  
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_DURATON' | translate }}">
+                <dx-number-box
+                [(value)]="editItem.COURSE_DURATON"
+                [showSpinButtons]="true"
+                [showClearButton]="true">
+                <dx-validator>
+                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                </dx-validator>
+                </dx-number-box>
+            </dx-label>
+          </div>  
+          <div class="col-sm-4">
+            <dx-label text="{{ 'COURSE_COST' | translate }}">
+                <dx-number-box required="true" format="#,##0" [(value)]="editItem.COURSE_COST">
+                    <dx-validator>
+                        <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                      </dx-validator>  
+                </dx-number-box>
+            </dx-label>
+          </div>          
+        </div>
+      </dx-validation-group>
+    </page-content>
+  </page>

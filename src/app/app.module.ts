@@ -8,7 +8,6 @@ import { SlickModule } from 'ngx-slick';
 // Modules
 import { SharedModule } from "./shared/shared.module";
 import { ADMModule } from "./adm/adm.module";
-import { msgModule } from "./msg/msg.module";
 import { DemisInjector } from "./shared/util/Injector";
 import { CoreModule } from "./shared/util/Core.module";
 
@@ -19,7 +18,7 @@ export const ROUTES: any = [
   { path: '', loadChildren: () => import('./adm/adm.module').then(m => m.ADMModule) },
   { path: '', loadChildren: () => import('./ofa/ofa.module').then(m => m.ofaModule) },
   { path: '', loadChildren: () => import('./msg/msg.module').then(m => m.msgModule) },
-
+  { path: '', loadChildren: () => import('./edu/edu.module').then(m => m.eduModule) },
 ];
 
 @NgModule({

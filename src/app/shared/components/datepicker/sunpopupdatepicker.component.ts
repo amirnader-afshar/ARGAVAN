@@ -52,6 +52,8 @@ if (!Calender_Type){
 })
 export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterViewInit, OnInit,OnChanges {
 
+  time = {hour: 13, minute: 30};
+
   model: any;
   today = this.calendar.getToday();
   placement = 'bottom';

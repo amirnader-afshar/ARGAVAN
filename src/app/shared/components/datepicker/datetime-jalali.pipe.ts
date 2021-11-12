@@ -11,8 +11,11 @@ export class DateTimeJalaliPipe implements PipeTransform {
         if (value) {
                 value = new Date(value);
             if (value) {
-                //let da = new NgbCalendarPersian().fromGregorian(value);
-               //// return  `${da.year}/${da.month}/${da.day} ${value.getHours()}:${value.getMinutes()}`;
+                // let da = new NgbCalendarPersian().fromGregorian(value);
+                // if (args[0]=='withoutTime')
+                //     return  `${da.year}/${da.month}/${da.day}`;
+                // else
+                //     return  `${da.year}/${da.month}/${da.day} ${value.getHours()}:${value.getMinutes()}`;
             }
         }
         return '';

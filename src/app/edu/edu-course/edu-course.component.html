@@ -54,13 +54,11 @@
           </div>          
           <div class="col-sm-4">
             <dx-label text="{{ 'COURSE_BEGINTIME' | translate }}">                
-              <dx-date-box [(value)]="editItem.COURSE_BEGINTIME" type="time" >
+              <dx-date-box [(value)]="COURSE_BEGINTIME" type="time" >
                 <dx-validator>
                     <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
-                  </dx-validator> 
-                            
-              </dx-date-box>
-              {{editItem.COURSE_BEGINTIME}}    
+                  </dx-validator>                             
+              </dx-date-box> 
             </dx-label>
           </div>
           <div class="col-sm-4">
@@ -87,15 +85,32 @@
           </div>
        
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_EXAM_DATE_TIME' | translate }}">
-                <sun_popup_datepicker  
-                [(ngModel)]="editItem.COURSE_EXAM_DATE_TIME"  
-                [name]="'COURSE_EXAM_DATE_TIME'" 
-                [required]="true" 
-                [showToday] ="true" > 
-             </sun_popup_datepicker>
-       
-            </dx-label>
+            <div class="row">
+                
+                  <div class="col-sm-6">        
+                    <dx-label text="{{ 'EDU_COURSE_EXAM_DATE_TIME' | translate }}">       
+                    <sun_popup_datepicker  
+                      [(ngModel)]="editItem.COURSE_EXAM_DATE_TIME"  
+                      [name]="'COURSE_EXAM_DATE_TIME'" 
+                      [required]="true" 
+                      [showToday] ="true" > 
+                    </sun_popup_datepicker>    
+                  </dx-label>                            
+                  </div>
+                 
+                
+                    <div class="col-sm-6">
+                      <dx-label text="{{ 'EDU_COURSE_EXAM_TIME' | translate }}">
+                      <dx-date-box [(value)]="COURSE_EXAM_TIME" type="time" >
+                        <dx-validator>
+                            <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                          </dx-validator>                           
+                      </dx-date-box>
+                    </dx-label>
+                    </div>
+                  
+            </div>
+            
           </div>
 
           <div class="col-sm-4">
@@ -132,15 +147,31 @@
             </dx-label>
           </div>  
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_COST' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_COST' | translate }}">
                 <dx-number-box required="true" format="#,##0" [(value)]="editItem.COURSE_COST">
                     <dx-validator>
                         <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
                       </dx-validator>  
                 </dx-number-box>
             </dx-label>
-          </div>          
+          </div> 
+          <div class="col-sm-4">
+            <dx-label text="{{ 'EDU_COURSE_IMG' | translate }}">
+              <dx-button text=" بارگزاری فایل " (click)="uploadfile($event)"></dx-button>
+            </dx-label>
+            
+              <img *ngIf="editItem.FILE_PATH" class="img-thumbnail" [src]="editItem.FILE_PATH" />
+            
+          </div>
+                  
         </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <dx-label text="{{ 'EDU_COURSE_DES' | translate }}">
+              <dx-text-area [height]="90" [maxLength]="null" [(value)]="editItem.COURSE_DES"></dx-text-area>
+            </dx-label>
+          </div> 
+        </div>         
       </dx-validation-group>
     </page-content>
   </page>

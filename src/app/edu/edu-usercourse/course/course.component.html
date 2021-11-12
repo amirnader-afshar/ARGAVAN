@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row m-0 rounded">
+      <div id="hotels" class="col-12  col-sm-2 col-md-2 col-lg-2 m-0 p-0">
+        <div class="p-2 ">
+          <img itemprop="image" 
+            class="embed-responsive-item lazy " src="{{en.url+item.FILE_PATH}}"              
+            alt="" title="" style="filter: none; height: 150px; width: 100%; border-radius: 7px">        
+        </div>
+      </div>
+        
+      <div id="hotels" class="col-12 col-sm-2 col-md-2 col-lg-2">
+        <div class="p-4 text-right">
+           <a target="_blank">{{item.COURSE_CODE}}-{{item.COURSE_NAME}}</a> 
+          <div class="row ">
+            <div class="col-12">مدرس : {{item.COURSE_LECTURE_NAME}}</div>
+          </div>
+        </div>
+      </div>
+      <div id="hotels" class="col-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="row p-2">
+          <table class="w-100 text-center table">
+            <tr>
+              <th>{{'EDU_COURSE_DATES'| translate}}</th>
+              <th>{{'EDU_COURSE_DAYS_TIME'| translate}}</th>
+              <th>{{'EDU_COURSE_EXAM_DATE_TIME'| translate}}</th>
+            </tr>
+
+                  <tr>
+                    <td>{{item.COURSE_STARTDATE | jalali:'withoutTime'}} <br/> {{item.COURSE_ENDDATE | jalali:'withoutTime'}}</td>
+                    <td>{{item.COURSE_BEGINTIME}} <br/> {{item.COURSE_DAYS}} <br/> {{item.COURSE_SESSION_TIME}} دقیقه</td>
+                    <td>{{item.COURSE_EXAM_DATE_TIME | jalali:'withoutTime'}} 
+                      <br/> {{item.COURSE_EXAM_TIME}} <br/> {{item.COURSE_EXAM_LOCATION}}
+                    </td>
+                  </tr>
+
+          </table>
+          <div class="col-12">
+            <div class="p-4 text-right">               
+             <div class="row ">
+               <div class="col-12">{{item.COURSE_DES}}</div>
+             </div>
+           </div>
+          </div>
+          <div class="col-12">
+            
+              <div class="p-4 text-right">               
+                <div class="row ">
+                  <div class="col-12">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
+                    {{item.COURSE_CAPICITY}}</div>
+                    <dx-button class="w-100 mt-2" text="{{'EDU_COURSE_SIGNUP'| translate}} 
+                                                   {{item.COURSE_COST | number}} ریال" type="success" > </dx-button> 
+                </div>
+              </div>      
+            
+            
+                         
+            
+        </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-12">
+      <hr class="new5">
+    </div>
+  </div>

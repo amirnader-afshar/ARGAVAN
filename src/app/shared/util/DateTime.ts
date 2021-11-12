@@ -44,9 +44,9 @@ export class DateTime {
         let convert;
         if (format === DateTimeFormat.DateTime) {
           convert = moment(date.toLocaleString(), this.convertFormat(DateTimeFormat.DateTime));
-          // convert.hour(convert.hours());
-          // convert.minute(convert.minutes());
-          // convert.second(convert.seconds());
+          convert.hour(convert.hours());
+          convert.minute(convert.minutes());
+          convert.second(convert.seconds());
         } else {
           convert = moment(date.toLocaleString());
         }

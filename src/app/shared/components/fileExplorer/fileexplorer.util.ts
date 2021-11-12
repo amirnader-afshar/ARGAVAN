@@ -9,7 +9,8 @@ export enum FileGroup {
     SharedWithMe,
     ofaMainFile,
     ofaAttachments,
-    msgAttachments
+    msgAttachments,
+    eduCourse_pic
 }
 
 export enum FileExtension {

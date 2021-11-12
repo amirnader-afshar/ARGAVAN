@@ -10,6 +10,8 @@ import { MasterLayoutComponent } from "../shared/layouts/master.layout";
 import { EduPersonInfoComponent } from './edu-person-info/edu-person-info.component';
 import { EduCourseComponent } from './edu-course/edu-course.component';
 import { EduCourseListComponent } from './edu-course-list/edu-course-list.component';
+import { EduUsercourseComponent } from './edu-usercourse/edu-usercourse.component';
+import { CourseComponent } from './edu-usercourse/course/course.component';
 
 
 export const ROUTES: any = [
@@ -22,7 +24,8 @@ export const ROUTES: any = [
             { path: 'edu/home', component: ModuleHomePage , data: { code: "edu" }},
             { path: 'edu/edu-person-info', component: EduPersonInfoComponent },
             { path: 'edu/edu-course', component: EduCourseComponent },
-            { path: 'edu/edu-course-list', component: EduCourseListComponent }   
+            { path: 'edu/edu-course-list', component: EduCourseListComponent },   
+            { path: 'edu/edu-course-user', component: EduUsercourseComponent },
         ]
     },
 ];
@@ -35,7 +38,9 @@ export const ROUTES: any = [
   
     EduPersonInfoComponent,
                         EduCourseComponent,
-                        EduCourseListComponent
+                        EduCourseListComponent,
+                        EduUsercourseComponent,
+                        CourseComponent
   ],
     imports: [
         CommonModule,

@@ -10,6 +10,7 @@ import { DemisPopupService } from "../../shared/components/popup/demis-popup-ser
 import { UploadPopupComponent } from "../../shared/components/fileExplorer/upload.popup";
 import { environment } from '../../../environments/environment';
 import { Guid } from 'src/app/shared/types/GUID';
+import { CoreService } from "../../shared/services/CoreService";
 
 @Component({
   selector: 'app-edu-course',
@@ -19,7 +20,7 @@ import { Guid } from 'src/app/shared/types/GUID';
 export class EduCourseComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,public router: Router,public service: ServiceCaller
-    ,public popup: DemisPopupService) {
+    ,public popup: DemisPopupService,public core: CoreService) {
     this.route.queryParams.subscribe(params => {
 
       this.editItem.COURSE_ID = params['COURSE_ID'];
@@ -33,6 +34,7 @@ export class EduCourseComponent implements OnInit {
   COURSE_BEGINTIME;
   COURSE_EXAM_TIME;
   dataToPostBody: DataToPost;
+  Attachments:any={};
   menuItems = [
     {
       name: "save",
@@ -47,7 +49,15 @@ export class EduCourseComponent implements OnInit {
       visible: true
     },
   ];
-
+  onAttachClick(e) {
+    this.core.fileExplorer.open({ entityId: this.editItem.ID,tabelName:"EDU_COURSE"
+          , fileGroup: FileGroup.eduCourseAttachments,multipleModeDisable:true,enableSecurityMode:false}).then((data) => {
+      this.Attachments=data;
+      this.editItem.count_Attach=data.length;
+  
+    });    
+  
+  }
   ngOnInit(): void {
     this.editItem.FolderID = Guid.empty;
     if (this.editItem.COURSE_ID){
@@ -116,7 +126,7 @@ export class EduCourseComponent implements OnInit {
               'SPName': 'EDU.EDU_Sp_COURSE',
               'Data_Input': { 'Mode': mode,          
                'Header': this.editItem  
-              , 'Detail': {}, 'InputParams': '' }
+              , 'Detail':  {'Attachments':this.Attachments}, 'InputParams': '' }
             }
           };
             this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).

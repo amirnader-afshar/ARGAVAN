@@ -65,6 +65,8 @@
               "src/assets/css/fonts.scss",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
+              "src/assets/css/Fixer.scss",
               "node_modules/devexpress-diagram/dist/dx-diagram.css", 
               "node_modules/metismenu/dist/metisMenu.min.css",
               "src/assets/vendor/bootstrap/css/bootstrap.min.css",

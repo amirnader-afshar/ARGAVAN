@@ -156,11 +156,21 @@
             </dx-label>
           </div> 
           <div class="col-sm-4">
-            <dx-label text="{{ 'EDU_COURSE_IMG' | translate }}">
-              <dx-button text=" بارگزاری فایل " (click)="uploadfile($event)"></dx-button>
-            </dx-label>
-            
-              <img *ngIf="editItem.FILE_PATH" class="img-thumbnail" [src]="editItem.FILE_PATH" />
+            <div class="col-sm-6">
+              <dx-label text="{{ 'EDU_COURSE_IMG' | translate }}">
+                <dx-button text=" بارگزاری فایل " (click)="uploadfile($event)"></dx-button>
+              </dx-label>              
+                <img *ngIf="editItem.FILE_PATH" class="img-thumbnail" [src]="editItem.FILE_PATH" />
+            </div>
+            <div class="col-sm-6">
+              <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
+                <div  *dxTemplate="let data of 'buttonTemplate'">  
+                  <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span>
+                  <span style="margin: 5px;">پیوستها</span>
+                  <span *ngIf="editItem.count_Attach" style="margin: 2px;" class="notification-number">{{editItem.count_Attach}}</span>
+                </div>  
+              </dx-button>
+            </div>
             
           </div>
                   

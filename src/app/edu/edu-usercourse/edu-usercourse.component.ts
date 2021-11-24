@@ -23,6 +23,8 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
 
   }
   editItem: any = {};
+  userInfo : any={};
+  user_ok :boolean=true;
   @ViewChild('grid',{static: true}) dataGrid: DxDataGridComponent;
   dataSource: any = [];
   selectedRow: any = {};
@@ -30,10 +32,42 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
   dataToPostBody: DataToPost;
 
   ngOnInit(): void {
-    this.loadGrid();
+    this.load_edu_personInfo();
+    
   }
+  clickToUserInfo(){
+    this.router.navigate(["edu/edu-person-info"] ,{}  );
+   }
+
+
+
+  load_edu_personInfo(){
+
+    this.dataToPostBody = {
+      'Data': {
+        'SPName': '[EDU].[EDU_Sp_PERSONINFO]',
+        'Data_Input': { 'Mode': 5,          
+         'Header': ''
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
+
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+        this.userInfo=data.ReturnData.Data_Output[0].Header[0]; 
+        this.user_ok=true;
+        this.loadGrid();       
+      }            
+        });
+   };
+
+
+
   loadGrid(){
     this.editItem.COURSE_ENABEL=true;
+    this.editItem.TODAY_DATE=new Date;
     this.dataToPostBody = {
       'Data': {
         'SPName': '[EDU].[EDU_Sp_COURSE]',

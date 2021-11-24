@@ -10,7 +10,8 @@ export enum FileGroup {
     ofaMainFile,
     ofaAttachments,
     msgAttachments,
-    eduCourse_pic
+    eduCourse_pic,
+    eduCourseAttachments
 }
 
 export enum FileExtension {
@@ -96,7 +97,19 @@ export function fileGroupManager(data: FileExplorerInputConfig) {
                 fileGroup: data.fileGroup,
                 fileExtensions: [FileExtension.All],
                 ...data
-            })                        
+            })  
+            case FileGroup.eduCourseAttachments:
+                return applyConfigDefaults({
+                    fileGroup: data.fileGroup,
+                    fileExtensions: [FileExtension.All],
+                    ...data
+                })   
+                case FileGroup.eduCourse_pic:
+                    return applyConfigDefaults({
+                        fileGroup: data.fileGroup,
+                        fileExtensions: [FileExtension.Image],
+                        ...data
+                    })                                                  
         default:
             break;
     }

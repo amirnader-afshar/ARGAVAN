@@ -1,8 +1,30 @@
 
 <page>
   <page-content>
-    <div  *ngFor="let i of  dataSource">
-      <edu-course [item]="i"></edu-course>
+    <div *ngIf="user_ok">
+      <div  *ngFor="let i of  dataSource">
+        <edu-course [item]="i"></edu-course>
+      </div>
     </div>
+
+    <div  *ngIf="!user_ok" class="container">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="error-template">
+                  <h1>
+                      اطلاعات شما تکمیل نشده!</h1>              
+                  <div class="error-details">
+                      لطفا با مراجعه به فرم مشخصات فردی اطلاعات خود را کامل کنید
+                  </div>
+                  <div class="error-actions">
+                    <dx-button class="w-50 mt-2" text="مشخصات فردی" type="success" (onClick)="clickToUserInfo($event)" >
+                    </dx-button>
+                                            
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
   </page-content>
 </page>

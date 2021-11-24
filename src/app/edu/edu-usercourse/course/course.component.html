@@ -46,15 +46,14 @@
               <div class="p-4 text-right">               
                 <div class="row ">
                   <div class="col-12">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
-                    {{item.COURSE_CAPICITY}}</div>
-                    <dx-button class="w-100 mt-2" text="{{'EDU_COURSE_SIGNUP'| translate}} 
-                                                   {{item.COURSE_COST | number}} ریال" type="success" > </dx-button> 
+                    {{item.COURSE_REMAIN_CAPICITY}}</div>                    
+                    <dx-button [disabled]="item.COURSE_REGED" (click)="courseSignup(item.COURSE_ID)" class="w-50 mt-2" 
+                          text="{{ item.COURSE_REGED == 0 ?  ('EDU_COURSE_SIGNUP'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate)   : ('EDU_COURSE_SIGNED_UP'| translate) }}"
+                          type="item.COURSE_REGED == 0 ? success : primary" > 
+                    </dx-button> 
                 </div>
               </div>      
-            
-            
-                         
-            
+                                                             
         </div>
 
         </div>

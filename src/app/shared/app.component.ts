@@ -63,11 +63,11 @@ export class AppComponent {
         });
 
 
-        if (!localStorage.getItem('dx-theme')) {
-            themeService.lightTheme();
-        } else {
-            themeService.SetUserTheme(localStorage.getItem('dx-theme'));
-        }
+        // if (!localStorage.getItem('dx-theme')) {
+        //     themeService.lightTheme();
+        // } else {
+        //     themeService.SetUserTheme(localStorage.getItem('dx-theme'));
+        // }
 
         
         loadMessages(fa);

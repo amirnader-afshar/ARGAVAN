@@ -37,20 +37,66 @@
           <div class="col-12">
             <div class="p-4 text-right">               
              <div class="row ">
-               <div class="col-12">{{item.COURSE_DES}}</div>
+               <div class="col-12">
+                <dx-label text="{{ 'EDU_COURSE_DES' | translate }}">
+                  <dx-text-area [readOnly]="true" [height]="90" [maxLength]="null" [(value)]="item.COURSE_DES"></dx-text-area>
+                </dx-label> 
+              </div>
              </div>
            </div>
           </div>
-          <div class="col-12">
+          <div *ngIf="item.COURSE_REGED && item.COURSE_IS_PAYED" class="col-12">  
+            <dx-box direction="row" width="100%" [height]="40">
+              <dxi-item class="rect demo-dark bg-primary text-white" [ratio]="1">لیست دانلود های دوره </dxi-item>              
+            </dx-box>
             
+              <div   class="list-container">
+                <dx-list [dataSource]="item.Attachments" height="100%">
+                  <div *dxTemplate="let item of 'item'">
+                    <div class="container-fluid">
+                          <div class="row">
+                            <!-- <img src="{{ item.ImageSrc }}" /> -->
+                            <div class="col">{{ item.FILE_TITLE }}</div>
+                            <div class="col">
+                              
+                              {{item.FILE_NAME}}                    
+                                                  
+                            </div>
+                            <div class="col">
+                              <dx-button  (click)="downloadFile(item.FILE_ID)" 
+                                text="{{'PUB_DOWNLOAD' | translate}}"
+                                type="success" > 
+                              </dx-button> 
+                            </div>
+                            
+                          </div>
+                      </div>
+                  </div>
+                </dx-list>
+              </div>
+                  
+          </div>
+          <div class="col-12">            
               <div class="p-4 text-right">               
                 <div class="row ">
-                  <div class="col-12">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
-                    {{item.COURSE_REMAIN_CAPICITY}}</div>                    
-                    <dx-button [disabled]="item.COURSE_REGED" (click)="courseSignup(item.COURSE_ID)" class="w-50 mt-2" 
-                          text="{{ item.COURSE_REGED == 0 ?  ('EDU_COURSE_SIGNUP'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate)   : ('EDU_COURSE_SIGNED_UP'| translate) }}"
-                          type="item.COURSE_REGED == 0 ? success : primary" > 
-                    </dx-button> 
+                  <div class="col-6">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
+                    {{item.COURSE_REMAIN_CAPICITY}}
+                    <dx-button [disabled]="item.COURSE_REGED && item.COURSE_IS_PAYED" (click)="courseSignup(item.COURSE_ID,item.COURSE_IS_PAYED,item.COURSE_REGED,item.USER_COURSE_ID)" class="w-70 mt-2" 
+                          text="{{ (!item.COURSE_REGED && !item.COURSE_IS_PAYED)  ?  ('EDU_COURSE_SIGNUP'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate) 
+                           : (item.COURSE_REGED && !item.COURSE_IS_PAYED)? ('EDU_COURSE_PAY'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate) : ('EDU_COURSE_SIGNED_UP'| translate) }}"
+                          type="success" > 
+                    </dx-button>
+                    <p class="bg-danger text-white" *ngIf="item.COURSE_REGED && !item.COURSE_IS_PAYED">ثبت نام شما به صورت موقت انجام شده است لطفا برای قطعی شدن ثبت نام هزینه را پرداخت کنید </p>
+                  </div>                        
+                  <div *ngIf="item.ExamResult" class="col-6" > 
+                                      
+                    <div  [class.bg-success]="item.ExamResult[0].USER_COURSE_IS_PASSED==true"
+                         [class.bg-danger]="item.ExamResult[0].USER_COURSE_IS_PASSED==false"                         
+                          class="p-3 mb-2 bg-secondary text-white text-center">
+                        
+                      <p style="text-align: center;"> نتیجه آزمون : {{item.ExamResult[0].USER_COURSE_RESULT}} {{item.ExamResult[0].USER_COURSE_SCORE}}</p>                    
+                    </div>
+                  </div>                                
                 </div>
               </div>      
                                                              

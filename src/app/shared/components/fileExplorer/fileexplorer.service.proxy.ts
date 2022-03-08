@@ -25,10 +25,17 @@ export class FileExplorerService {
         
         let formData = new FormData();
         formData.append('enctype', 'multipart/form-data')
-        for (let i = 0; i < model.files.length; i++) {
-            const element = model.files.item(i);
-            formData.append('files', element, element.name);
+        if (model.files)
+        {
+            for (let i = 0; i < model.files.length; i++) {
+                const element = model.files.item(i);
+                formData.append('files', element, element.name);
+            }
         }
+        for (let i = 0; i < model.scanedFiles.length; i++) {
+            const element = model.scanedFiles[i];
+            formData.append('files', element, element.name);
+        }        
         if (model.preview && model.preview[0])
             formData.append('preview', model.preview[0], model.preview[0].name);
 

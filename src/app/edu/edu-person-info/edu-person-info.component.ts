@@ -17,6 +17,10 @@ export class EduPersonInfoComponent implements OnInit {
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   editItem :any ={};
   dataToPostBody: DataToPost;
+  genders = [
+    'مرد',
+    'زن',
+  ];
   menuItems = [
     {
       name: "save",

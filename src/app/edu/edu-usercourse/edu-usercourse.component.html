@@ -2,8 +2,8 @@
 <page>
   <page-content>
     <div *ngIf="user_ok">
-      <div  *ngFor="let i of  dataSource">
-        <edu-course [item]="i"></edu-course>
+      <div class="rounded" style="background-color: rgb(244, 245, 246);" *ngFor="let i of  dataSource">
+        <edu-course (userReged)='OnDataChange($event)' [item]="i" [userInfo]="userInfo"></edu-course>
       </div>
     </div>
 

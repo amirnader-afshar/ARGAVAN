@@ -1,0 +1,133 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <dx-validation-group #form>        
+      <div class="row">  
+        <div class="col-sm-2">        
+          <dx-label text="{{ 'SMSH_CREATE_DATE_TIME' | translate }}">       
+            <sun_popup_datepicker  
+              [(ngModel)]="editItem.SMSH_CREATE_DATE_TIME"  
+              [name]="'SMSH_CREATE_DATE_TIME'" 
+              [required]="true" 
+              [showToday] ="true" readOnly="true" > 
+            </sun_popup_datepicker>    
+          </dx-label>                            
+        </div>
+        <div class="col-sm-2">
+          <dx-label text="{{ 'SMSH_CREATE_TIME' | translate }}">
+            <dx-text-box [readOnly]='true' [(value)]="editItem.SMSH_CREATE_TIME">
+            </dx-text-box>
+          </dx-label>
+        </div>
+      </div>  
+ 
+
+      <div class="row">
+        <div class="col-sm-2" >
+          <dx-label text="{{ 'SMSH_TEMPLATE' | translate }}">
+            <dx-lov formCode="FRM-MSG-SMS-TEMPLATE" 
+                    [displayMode]="'ComboBox'"
+                    [(value)]="editItem.SMSTEMPLATE_ID" 
+                    [(text)]="editItem.SMSTEMPLATE_TITEL" 
+                    (dataChange)="onTemplateChange($event)"                      
+                   ></dx-lov>
+          </dx-label>
+        </div>
+        <div class="col-10">
+          <dx-label text="{{ 'SMSH_TEMPLATE' | translate }}">
+            <dx-text-area [readOnly]="false" [height]="90" [maxLength]="null" [(value)]="editItem.SMSH_TEMPLATE">
+              <dx-validator>
+                <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+              </dx-validator>
+            </dx-text-area>
+          </dx-label> 
+        </div>        
+      </div>
+                
+      <div class="row">
+        <div class="col-6">
+          <div class="row">
+              <div class="col-12" *ngIf="this.editItem.SMSH_DATA">
+                <panel-box [collapsed]='true' [caption]=" 'SMSH_STATIC_DATA' | translate">
+                <ngx-json-viewer style="direction: ltr;" [json]="this.editItem.SMSH_DATA" [expanded]="false"></ngx-json-viewer>
+                </panel-box>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-12" *ngIf="this.editItem.SMS_RACIVERS" >
+              <panel-box [collapsed]='true' [caption]=" 'SMSH_RECIVERS_DATA' | translate">
+              <ngx-json-viewer  style="direction: ltr;" [json]="this.editItem.SMS_RACIVERS" [expanded]="false"></ngx-json-viewer>
+              </panel-box>              
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <panel-box [collapsed]='false' [caption]=" 'SMSH_RECIVERS' | translate">
+            <form>
+              <dx-validation-group #reciverForm>
+                  <div class="row">
+                    <div class="col-4">
+                      <dx-label text="{{ 'MSG_SMSD_NAM' | translate }}">
+                        <dx-text-box  [(value)]="reciver.SMSD_NAM">
+                          <dx-validator>
+                            <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                          </dx-validator>
+                        </dx-text-box>
+                      </dx-label>
+                    </div>
+                    <div class="col-4">
+                      <dx-label text="{{ 'MSG_SMSD_NUMBER' | translate }}">
+                        <dx-text-box  [(value)]="reciver.SMSD_NUMBER">
+                          <dx-validator [validationRules]="phoneRules"></dx-validator>  
+                        </dx-text-box>
+                      </dx-label>
+                    </div> 
+                    <div class="col-4">
+                      <div class="d-flex justify-content-center">
+                        <button (click)="addNumber()" class="btn btn-success btn-block">  
+                          <span>{{ 'PUP_ADD' | translate }}</span>
+                        </button>
+                      </div>
+                    </div>             
+                  </div> 
+              </dx-validation-group>
+            </form>
+          <dx-list
+          #listRecivers
+          [dataSource]="recivers_dataSource"
+          [height]="200"
+          [selectionMode]="'none'"
+          [selectAllMode]="'page'"
+          [showSelectionControls]="true"
+          [selectedItemKeys]="[]"
+          [allowItemDeleting]="true"
+          [itemDeleteMode]="'static'"
+
+          >
+          <div *dxTemplate="let item of 'item'">
+            <div class="row">              
+              <div class="col-2">{{ item.Name }}</div>
+              <div class="col-2">{{item.Mobile}}</div>
+              <div class="col-8">
+                <dx-text-area [readOnly]="true" [height]="45" [maxLength]="null" [(value)]="item.smsBody"></dx-text-area>
+              </div>
+            </div>
+          </div>
+        </dx-list>
+      </panel-box>
+        </div>
+      </div>   
+    </dx-validation-group>
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center">
+          <button (click)="makeSmsDetail()" class="btn btn-primary btn-block">  
+            <span>{{ 'MSG_MAKE_SMS_DETAIL' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </page-content>
+</page>
+

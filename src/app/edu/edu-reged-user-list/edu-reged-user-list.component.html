@@ -1,0 +1,46 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <div class="row">
+        <div class="col-sm-12">
+         
+            <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem"
+             (onSelectionChanged)="selectionChangedHandler()"
+              [columnAutoWidth]="true" [height]="800" 
+              [remoteOperations]="true"
+              [repaintChangesOnly]="true"
+              (onSaving)="onSaving($event)"
+            >
+              <dxo-editing
+                mode="batch"
+                [allowUpdating]="true">
+              </dxo-editing>
+              <dxo-selection
+                [selectAllMode]="'allPages'"
+                [showCheckBoxesMode]="'always'"
+                mode="multiple"
+              ></dxo-selection>
+
+              <dxo-sorting mode="multiple"></dxo-sorting>
+
+              <dxi-column  dataField="REG_DATE" [allowEditing]="false" dataType="date" caption="{{'EDU_COURSE_REG_DATE'| translate}}" [width]="100"></dxi-column>
+              <dxi-column  dataField="REG_TIME" [allowEditing]="false" caption="{{'EDU_COURSE_REG_TIME'| translate}}" [width]="130"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_NAME" [allowEditing]="false"  caption="{{'EDU_PERSONINFO_NAME'| translate}}" [width]="100"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_LASTNAME"[allowEditing]="false"  caption="{{'EDU_PERSONINFO_LASTNAME'| translate}}" [width]="130"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_DADNAME" [allowEditing]="false" caption="{{'EDU_PERSONINFO_DADNAME'| translate}}" [width]="100"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_NATIONALCODE"[allowEditing]="false"   caption="{{'EDU_PERSONINFO_NATIONALCODE'| translate}}" [width]="110"></dxi-column>
+              <dxi-column   dataField="USER_COURSE_IS_PAYED"[allowEditing]="false"  dataType="boolean" caption="{{'EDU_USER_COURSE_IS_PAYED'| translate}}" [width]="80"></dxi-column>                                          
+              <dxi-column  dataField="CMPN_NAM" [allowEditing]="false"   caption="{{'ADM_CMPN_NAM'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_SIGNTITEL" [allowEditing]="false"   caption="{{'EDU_PERSONINFO_SIGNTITEL'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="PERSONINFO_MAINSTREET_ADDRESS" [allowEditing]="false"  caption="{{'EDU_PERSONINFO_MAINSTREET_ADDRESS'| translate}}" [width]="150"></dxi-column>                             
+              
+              <dxi-column  dataField="USER_COURSE_SCORE"    caption="{{'EDU_USER_COURSE_SCORE'| translate}}" [width]="80"></dxi-column>
+              <dxi-column   dataField="USER_COURSE_IS_PASSED"  dataType="boolean" caption="{{'EDU_USER_COURSE_IS_PASSED'| translate}}" [width]="80"></dxi-column>                                          
+              
+            </dx-data-grid>
+         
+        </div>
+      </div>
+    </page-content>
+  </page>

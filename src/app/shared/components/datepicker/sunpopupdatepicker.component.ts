@@ -12,6 +12,9 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
   getMonthShortName(month: number) { return Jalali_MONTHS[month - 1]; }
   getMonthFullName(month: number) { return Jalali_MONTHS[month - 1]; }
   getDayAriaLabel(date: NgbDateStruct): string { return `${date.year}-${this.getMonthFullName(date.month)}-${date.day}`; }
+  getWeekdayLabel(weekday: number): string {
+    return Jalali_WEEKDAYS_SHORT[weekday - 1];
+  }
 }
 
 const Gregorian_weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
@@ -23,6 +26,9 @@ export class NgbDatepickerI18nGregorian extends NgbDatepickerI18n {
   getMonthShortName(month: number) { return Gregorian_months[month - 1]; }
   getMonthFullName(month: number) { return Gregorian_months[month - 1]; }
   getDayAriaLabel(date: NgbDateStruct): string { return `${date.year}-${this.getMonthFullName(date.month)}-${date.day}`; }
+  getWeekdayLabel(weekday: number): string {
+    return Jalali_WEEKDAYS_SHORT[weekday - 1];
+  }
 }
 
 var Calender_Type: string = localStorage.getItem('Calender_Type');

@@ -10,6 +10,9 @@ import { MasterLayoutComponent } from "../shared/layouts/master.layout";
 import { MessageComponent } from './message/message.component';
 import { MessageListComponent } from './message-list/message-list.component';
 import { CmpnyReciverComponent } from './cmpny-reciver/cmpny-reciver.component';
+import { MsgSendSmsComponent } from './msg-send-sms/msg-send-sms.component';
+import { DynamicFormPage } from "../shared/pages/dform.page";
+import { MsgSmsListComponent } from './msg-sms-list/msg-sms-list.component';
 
 
 export const ROUTES: any = [
@@ -23,7 +26,14 @@ export const ROUTES: any = [
             { path: 'msg/msgs', component: MessageComponent },
             { path: 'msg/out-msg-list', component: MessageListComponent, data:{MSG_IN_OUT_TYPE:'out'}},
             { path: 'msg/in-msg-list', component: MessageListComponent, data:{MSG_IN_OUT_TYPE:'in'}},
-            { path: 'msg/msg-cmpny-reciver', component: CmpnyReciverComponent}                    
+            { path: 'msg/msg-cmpny-reciver', component: CmpnyReciverComponent}  ,
+            { path: 'msg/send-sms', component: MsgSendSmsComponent} ,
+            { path: 'msg/sms-list', component: MsgSmsListComponent} ,
+            {
+                path: "msg/msg-sms-template",
+                component: DynamicFormPage,
+                data: { code: "FRM-MSG-SMS-TEMPLATE" }
+              }                   
         ]
     },
 ];
@@ -34,7 +44,9 @@ export const ROUTES: any = [
     
     MessageComponent,
                   MessageListComponent,
-                  CmpnyReciverComponent
+                  CmpnyReciverComponent,
+                  MsgSendSmsComponent,
+                  MsgSmsListComponent
   ],
     imports: [
         CommonModule,

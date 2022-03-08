@@ -4,6 +4,7 @@ import { DxValidationGroupComponent } from 'devextreme-angular';
 import { TranslateService } from "../../services/TranslateService";
 import { ConfigService } from '../../services/ConfigService';
 import { AuthService } from '../../services/AuthService';
+import { SmsService } from '../../services/SmsService';
 
 @Component({
   selector: 'app-signup',
@@ -53,7 +54,12 @@ confirmRules = [{
 }];
 
 
-  constructor(private translate: TranslateService,private configService: ConfigService,private authService: AuthService) { }
+  constructor(private translate: TranslateService
+            ,private configService: ConfigService
+            ,private authService: AuthService,
+            private smsservise:SmsService) { 
+              
+            }
 
   ngOnInit(): void {
   }
@@ -68,6 +74,8 @@ confirmRules = [{
                             ,Mobile:this.mobileNumber,Enabled:1}
             this.authService.signup(this.editItem).then(() => {
                 this.isLoading = false;
+                this.smsservise.sendSms([this.mobileNumber]
+                  ,["ثبت نام شما با موفقیت انجام شد "+"\n"+this.translate.instant('ADM_CMPN_NAM_REAL_NAME')])
             }).catch((err) => {
                 this.isLoading = false;
             });

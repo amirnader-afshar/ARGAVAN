@@ -1,6 +1,6 @@
 <page>
     <page-content>
-        <dx-validation-group #form>
+        <dx-validation-group #form>        
             <div class="row">
                 <div class="col-sm-12" *ngIf="!config.multipleModeDisable">
                     <dx-check-box [(value)]="useMultipleUpload" text="بارگذاری چند فایل همزمان">
@@ -21,6 +21,14 @@
                         </dx-label>
 
                     </div>
+                    <div class="col-sm-6">                        
+                        <dx-button type="success" text="{{ 'PUB_SCAN' | translate }}" (onClick)="scan()"></dx-button>
+                        <!-- <img [src]="imgsrc"> -->
+                        
+                    </div>
+
+                    
+                    
                     <!-- <div class="col-sm-6" *ngIf="checkPreview() && saveForAll()">
                         <dx-label text="{{'EDM_PREVIEW'| translate}}">
                             <input type="file" (change)="onChangePreveiw($event)" accept="image/*" />

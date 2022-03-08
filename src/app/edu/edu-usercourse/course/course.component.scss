@@ -2,3 +2,20 @@ hr.new5 {
     border: 10px solid gray;
     border-radius: 5px;
   }
+  ::ng-deep .rect {
+    text-align: center;
+    font-size: 18px;
+    padding-top: 10px;
+    height: 100%;
+  }
+  
+
+  
+  ::ng-deep .demo-dark {
+    background: #0270ff94;
+  }
+  
+ 
+  
+
+  

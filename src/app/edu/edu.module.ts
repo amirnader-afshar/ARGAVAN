@@ -12,6 +12,7 @@ import { EduCourseComponent } from './edu-course/edu-course.component';
 import { EduCourseListComponent } from './edu-course-list/edu-course-list.component';
 import { EduUsercourseComponent } from './edu-usercourse/edu-usercourse.component';
 import { CourseComponent } from './edu-usercourse/course/course.component';
+import { EduRegedUserListComponent } from './edu-reged-user-list/edu-reged-user-list.component';
 
 
 export const ROUTES: any = [
@@ -26,6 +27,7 @@ export const ROUTES: any = [
             { path: 'edu/edu-course', component: EduCourseComponent },
             { path: 'edu/edu-course-list', component: EduCourseListComponent },   
             { path: 'edu/edu-course-user', component: EduUsercourseComponent },
+            { path: 'edu/edu-user-reged-list', component: EduRegedUserListComponent },
         ]
     },
 ];
@@ -40,7 +42,8 @@ export const ROUTES: any = [
                         EduCourseComponent,
                         EduCourseListComponent,
                         EduUsercourseComponent,
-                        CourseComponent
+                        CourseComponent,
+                        EduRegedUserListComponent
   ],
     imports: [
         CommonModule,

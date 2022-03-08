@@ -7,6 +7,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import { Deferred } from '../../shared/Deferred';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
+import { RouteData } from 'src/app/shared/util/RouteData';
 
 
 @Component({
@@ -35,11 +36,17 @@ export class EduCourseListComponent extends BasePage implements OnInit {
       icon: "fa fa-edit green",
       text: 'ویرایش دوره',
       visible: true
+    },
+    {
+      name: "userList",
+      icon: "fa fa-list blue",
+      text: 'لیست کاربران ثبت نام شده و ثبت نمرات',
+      visible: true      
     }
   ]
 
   constructor(public translate: TranslateService, public router: Router
-    , public service: ServiceCaller,private route: ActivatedRoute) {
+    , public service: ServiceCaller,private route: ActivatedRoute ,private routeDate: RouteData) {
     
     super(translate);      
 
@@ -47,6 +54,7 @@ export class EduCourseListComponent extends BasePage implements OnInit {
 
   ngOnInit(): void {
     this.menuItems[1].visible = false;   
+    this.menuItems[2].visible = false;
     this.loadGrid();
   }
   onMenuItemClick(name) {
@@ -55,14 +63,21 @@ export class EduCourseListComponent extends BasePage implements OnInit {
     } 
     else if (name == "Edit") {
       var qp = {
-        COURSE_ID: this.selectedRow.COURSE_ID 
-            
+        COURSE_ID: this.selectedRow.COURSE_ID             
       }
     
       this.router.navigate(["edu/edu-course"] ,{ queryParams: qp }  );
 
     }
-
+    else if (name == "userList") {
+      var qparam = {
+        COURSE_ID: this.selectedRow.COURSE_ID ,             
+      }
+      this.routeDate.clear;
+      this.routeDate.push('COURSE_DATA',this.selectedRow);
+      this.router.navigate(["edu/edu-user-reged-list"] ,{ queryParams: qparam }  );
+    }
+       
   }
     
   loadGrid(){
@@ -99,18 +114,21 @@ export class EduCourseListComponent extends BasePage implements OnInit {
   
     if (this.jasem.length == 0) {
       this.menuItems[1].visible = false;
+      this.menuItems[2].visible = false;
 
     } else if (this.jasem.length == 1) {
       this.menuItems[1].visible = true;
-
+      this.menuItems[2].visible = true;
       this.selectedRow = this.dataGrid.instance.getSelectedRowsData()[0];
       
     } else {
       this.selectedRow = {};
       this.menuItems[1].visible = false;
-
+      this.menuItems[2].visible = false;
     }
   }
 
 }
+
+
 

@@ -49,6 +49,7 @@ import { PrintComponent } from './components/print.component';
 import { MenuService } from './services/MenuService';
 import { AuthGuard } from './services/AuthGuard';
 import { AuthService } from './services/AuthService';
+import { SmsService } from './services/SmsService';
 import { RouteData } from './util/RouteData';
 import { EventsServiceModule } from 'angular-event-service/dist';
 import { ModuleHomePage } from './pages/module-home.page';
@@ -93,6 +94,10 @@ import { JalaliPipe } from './pipes/jalali_show_date_full_name';
 import { HistoryComponent } from './components/history/history.component';
 import { HistoryService } from './services/HistoryService';
 import { SignupComponent } from './pages/signup/signup.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { WebsocketService } from './services/WebsocketService';
+import { ScanService } from './services/ScanService';
+
 
 const packageVersion = require('../../../package.json');
 
@@ -143,6 +148,7 @@ export const ROUTES: any = [
       { path: 'pub/report', component: ReportPage },
       { path: 'adm/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'ADM-CNF-10' } },
       { path: 'ofa/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'OFA' } },
+      { path: 'msg/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'MSG' } },
       // { path: 'mfg/configs', component: ADMConfigsPage, data: { mode: ConfigType.User, subject: 'BOM' } },
       // { path: 'adm/user/configs', component: ADMConfigsPage, data: { mode: ConfigType.User, subject: 'ADM-USR-10' } },
     ]
@@ -164,7 +170,7 @@ export const ROUTES: any = [
 
 @NgModule({
   declarations: [
-
+    
     MasterLayoutComponent,
     LoginLayoutComponent,
     LabelComponent,
@@ -223,7 +229,7 @@ export const ROUTES: any = [
   imports: [
     CommonModule,
     DevExtremeModule,
-    NgbModule, FormsModule,
+    NgbModule, FormsModule,NgxJsonViewerModule,
     RouterModule.forChild(ROUTES),
     HttpClientModule,
     EventsServiceModule.forRoot(),
@@ -242,6 +248,9 @@ export const ROUTES: any = [
     MenuService,
     AuthGuard,
     AuthService,
+    SmsService,
+    WebsocketService,
+    ScanService,
     DemisPopupService,
     DialogService,
     NotifyService,
@@ -264,6 +273,7 @@ export const ROUTES: any = [
   ],
   exports: [
     //
+    NgxJsonViewerModule,
     DevExtremeModule,
     NgbModule, FormsModule,
     DateTimeJalaliPipe,
@@ -314,7 +324,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
-      providers: [MenuService, AuthService, ConfigService, CoreService]
+      providers: [MenuService, AuthService, ConfigService, CoreService,SmsService,WebsocketService,ScanService]
     }
   }
 }

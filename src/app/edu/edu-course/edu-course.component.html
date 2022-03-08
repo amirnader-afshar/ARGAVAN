@@ -34,7 +34,7 @@
             </dx-label>
           </div>
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_ENDDATE' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_ENDDATE' | translate }}">
                 <sun_popup_datepicker  
                 [(ngModel)]="editItem.COURSE_ENDDATE"  
                 [name]="'COURSE_ENDDATE'" 
@@ -44,7 +44,7 @@
             </dx-label>
           </div>
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_LECTURE_NAME' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_LECTURE_NAME' | translate }}">
                 <dx-text-box [(value)]="editItem.COURSE_LECTURE_NAME">
                     <dx-validator>
                         <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
@@ -53,7 +53,7 @@
             </dx-label>
           </div>          
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_BEGINTIME' | translate }}">                
+            <dx-label text="{{ 'EDU_COURSE_BEGINTIME' | translate }}">                
               <dx-date-box [(value)]="COURSE_BEGINTIME" type="time" >
                 <dx-validator>
                     <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
@@ -62,7 +62,7 @@
             </dx-label>
           </div>
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_DAYS' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_DAYS' | translate }}">
               <dx-text-box [(value)]="editItem.COURSE_DAYS">
                 <dx-validator>
                     <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
@@ -71,7 +71,7 @@
             </dx-label>
           </div>
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_SESSION_TIME' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_SESSION_TIME' | translate }}">
               <dx-number-box
                 [(value)]="editItem.COURSE_SESSION_TIME"
                 [showSpinButtons]="true"
@@ -126,7 +126,7 @@
             <dx-check-box [(value)]="editItem.COURSE_ENABEL" [text]="'EDU_COURSE_ENABEL' | translate"></dx-check-box>          
           </div>
           <div class="col-sm-4">
-            <dx-label text="{{ 'COURSE_CAPICITY' | translate }}">
+            <dx-label text="{{ 'EDU_COURSE_CAPICITY' | translate }}">
               <dx-text-box [(value)]="editItem.COURSE_CAPICITY">
                 <dx-validator>
                     <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>

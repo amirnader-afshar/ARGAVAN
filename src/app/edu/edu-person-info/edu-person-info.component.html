@@ -83,10 +83,17 @@
                   </dx-validator>  
               </dx-text-box>
             </dx-label>
+          </div>         
+        </div>
+        <div class="row">
+
+          <div class="col-md-3 col-sm-12">
+            <dx-label text="{{'PUB_GENDER'|translate}}">
+              <dx-lov formCode="LOV-ADM-006" [(value)]="editItem.PERSONINFO_GENDER" [text]="editItem.GENDER" [displayMode]="'ComboBox'"
+               required="true"></dx-lov>
+            </dx-label>
           </div>
-                
-  
-  
+
         </div>
       </dx-validation-group>
     </page-content>

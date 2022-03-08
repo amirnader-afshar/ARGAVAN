@@ -24,7 +24,7 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
   }
   editItem: any = {};
   userInfo : any={};
-  user_ok :boolean=true;
+  user_ok :boolean=false;
   @ViewChild('grid',{static: true}) dataGrid: DxDataGridComponent;
   dataSource: any = [];
   selectedRow: any = {};
@@ -39,7 +39,10 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
     this.router.navigate(["edu/edu-person-info"] ,{}  );
    }
 
-
+   OnDataChange(childData: string){
+    this.dataSource=null;
+    this.loadGrid();
+    }
 
   load_edu_personInfo(){
 
@@ -68,6 +71,7 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
   loadGrid(){
     this.editItem.COURSE_ENABEL=true;
     this.editItem.TODAY_DATE=new Date;
+    this.editItem.Mode = 5;
     this.dataToPostBody = {
       'Data': {
         'SPName': '[EDU].[EDU_Sp_COURSE]',

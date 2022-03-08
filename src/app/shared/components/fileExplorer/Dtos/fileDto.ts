@@ -116,6 +116,7 @@ export class FileDto implements IFileDto {
     alt: string;
     title: string;
     files: FileList;
+    scanedFiles: File[] = [];
     preview: File;
     folderId: string;
     id: string;

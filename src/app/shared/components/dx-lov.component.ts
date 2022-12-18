@@ -593,8 +593,8 @@ export class DXLovComponent {
   }
 
   private onComboInit(e) {
-
-    this.comboBox.valueExpr = this.valueField;
+    if(this.comboBox)
+     { this.comboBox.valueExpr = this.valueField;}
   }
 
   private confirmSelection() {

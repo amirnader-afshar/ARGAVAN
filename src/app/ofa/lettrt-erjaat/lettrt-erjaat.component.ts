@@ -63,7 +63,10 @@ export class LettrtErjaatComponent extends PopupBasePage implements AfterViewIni
   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
   then((data) => {
     if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {     
-          this.dataSource=data.ReturnData.Data_Output[0].Header;  
+          let _data=data.ReturnData.Data_Output[0].Header[0];  
+          this.dataSource =  [ ..._data.LETTER_CMPNY_RECIVERS_DATA? _data.LETTER_CMPNY_RECIVERS_DATA:[]
+          , ..._data.LETTER_NONE_CMPNY_RECIVERS_DATA?_data.LETTER_NONE_CMPNY_RECIVERS_DATA:[]];  
+
           this.dataSource.store = new CustomStore({
             key: "LETTER_ERJA_ID",
             load: (loadOptions) => {

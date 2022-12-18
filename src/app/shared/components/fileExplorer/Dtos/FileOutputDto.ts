@@ -1,3 +1,4 @@
+import { Guid } from "src/app/shared/types/GUID";
 import { IFileOutputDto } from "./fileDto";
 export class FileOutputDto implements IFileOutputDto {
     code: string;
@@ -15,6 +16,7 @@ export class FileOutputDto implements IFileOutputDto {
     thumbnail: string;
     flag: boolean = false;
     FILE_BASE64STRING :string;
+    CreatorUserId:Guid;
     constructor(data?: IFileOutputDto) {
         if (data) {
             for (var property in data) {
@@ -38,6 +40,7 @@ export class FileOutputDto implements IFileOutputDto {
             this.flag = data["Flag"];
             this.icon = data["Icon"];
             this.FILE_BASE64STRING = data["FILE_BASE64STRING"];
+            this.CreatorUserId = data["CreatorUserId"]
         }
     }
     static fromJS(data: any): FileOutputDto {
@@ -60,6 +63,7 @@ export class FileOutputDto implements IFileOutputDto {
         data["Flag"] = this.flag;
         data["Icon"] = this.icon;
         data["FILE_BASE64STRING"]=this.FILE_BASE64STRING;
+        data["CreatorUserId"]=this.CreatorUserId;
         return data;
     }
 }

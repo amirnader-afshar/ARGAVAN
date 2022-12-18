@@ -97,7 +97,7 @@
         </div>
         <span class="text-center">لیست اعلان ها</span>
       </div>
-      <ul>
+      <ul class="list-group">
         <!-- <li class="border-left-red">
           <span>درخواست مدیریت</span>
           <i class="fa fa-times"></i>
@@ -108,15 +108,18 @@
           <i class="fa fa-times"></i>
           <i class="fa fa-retweet"></i>
         </li> -->
-        <li (click)="redirectToLetter()" class="border-left-blue" *ngIf='letterCount>0'>
-          <span>نامه وارده خوانده نشده {{letterCount}}</span>
-          <i class="fa fa-envelope"></i>
-          <i >اتوماسیون</i>
+        <li (click)="redirectToLetter()" class="list-group-item d-flex justify-content-between align-items-center" *ngIf='letterCount>0'>
+          <h6>اتوماسیون : نامه وارده خوانده نشده 
+            <span class="badge badge-primary fa fa-envelope">  {{letterCount}}  </span>
+          </h6>
+
+         
         </li>
-        <li (click)="redirectToMessage()" class="border-left-yellow" *ngIf='msgCount>0'>
-          <span >پیام جدید خوانده نشده {{msgCount}}</span>
-          <i class="fa fa fa-weixin"></i>
-          <i>مرکز پیام</i>
+        <li (click)="redirectToMessage()" class="list-group-item d-flex justify-content-between align-items-center" *ngIf='msgCount>0'>
+          <h6>مرکز پیام : پیام جدید خوانده نشده 
+            <span class="badge badge-primary fa fa-weixin">  {{msgCount}}  </span>
+          </h6>
+
         </li>
       </ul>
     </div>

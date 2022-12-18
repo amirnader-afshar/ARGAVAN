@@ -194,6 +194,7 @@ interface IFileExplorerInputConfig {
 }
 
 export class FileExplorerInputConfig implements IFileExplorerInputConfig {
+    entity?:any={};
     entityId?: string = null;
     tabelName?: string = null;
     fileExtensions?: FileExtension[] = [FileExtension.All];

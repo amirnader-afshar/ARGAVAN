@@ -51,16 +51,16 @@ export class HomePage implements OnInit {
         Header.LETTER_IS_READED = false;
         dataToPostBody = {
             'Data': {
-              'SPName': '[OFA].[OFA_Sp_letter]',
+              'SPName': '[OFA].[OFA_SP_GET_UNREAD_LETTER]',
               'Data_Input': { 'Mode': 4,          
                'Header': Header
               , 'Detail': '', 'InputParams': '' }
             }                    
           }
-          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody).
+          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody,{ loading: false }).
           then((data) => {     
             if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
-                var d = data.ReturnData.Data_Output[0].Header.filter(x=>x.LETTER_IS_READED===false);                
+                var d = data.ReturnData.Data_Output[0].Header.filter(x=>x.LETTER_ERJA_IS_READED===false);                
               this.UnreadLetterCount=d.length;    
             }
             
@@ -81,7 +81,7 @@ export class HomePage implements OnInit {
             }
             
           }
-          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody).
+          this.service.postPromise("/adm/CommenContext/Run", dataToPostBody,{ loading: false }).
           then((data) => {     
             if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {             
               this.UnreadMsgCount=data.ReturnData.Data_Output[0].Header.length;                   

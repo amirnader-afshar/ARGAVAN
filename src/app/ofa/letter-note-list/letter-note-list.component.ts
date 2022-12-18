@@ -119,15 +119,55 @@ export class LetterNoteListComponent extends PopupBasePage implements AfterViewI
 
   onMenuItemClick(name) {
     if (name == "New") {
-      this.openPopup({LETTER_NOTE_IS_PUBLIC:true});
+      
+      if(  this.config.entity.LETTER_AM_I_ERJA || this.config.entity.LETTER_AM_I_ERJA==undefined  )
+      {
+         this.openPopup({LETTER_NOTE_IS_PUBLIC:true});
+      }
+      else  
+        Notify.error("نامه ارجاع شده است و یا به شما ارجاع داده نشده امکان ثبت نیست");
+
     } else if (name == "Edit") {
+      let _ok:boolean = false;
+      if(this.config.entity.LETTER_AM_I_ERJA && this.selectedRow.LETTER_NOTE_CREATOR_USER_ID==this.config.entity.CURRENT_USER)
+        _ok=true;
+      if(this.config.entity.LETTER_AM_I_ERJA==undefined)
+        _ok=true;
+      if(!_ok)
+      {
+        Notify.error("نامه ارجاع شده است امکان ویرایش وجود ندارد");
+      }
+      else
       this.openPopup(this.selectedRow);
     }
     else if (name=="Delete")
     {
-      this.service.post("/PRG/PriceList/DeletePriceList", (data) => {        
-        Notify.success("PUB_ACTION_SUCCESS_MSG");
-      }, this.dataGrid.instance.getSelectedRowsData()[0]);
+      let _ok:boolean = false;
+      if(this.config.entity.LETTER_AM_I_ERJA && this.selectedRow.LETTER_NOTE_CREATOR_USER_ID==this.config.entity.CURRENT_USER)
+        _ok=true;
+      if(this.config.entity.LETTER_AM_I_ERJA==undefined)
+        _ok=true;
+      if(!_ok)
+      {
+        Notify.error("نامه ارجاع شده است امکان حذف وجود ندارد");
+      }
+      else{
+        this.dataToPostBody = {
+          'Data': {
+            'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
+            'Data_Input': { 'Mode': 3,          
+             'Header': this.selectedRow
+            , 'Detail': {}, 'InputParams': '' }
+          }
+        };
+          this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+            then((data) => {                        
+              
+              Notify.success('اطلاعات با موفقیت حذف شد');
+
+            });
+
+        }
     }
   }
   selectionChangedHandler() {

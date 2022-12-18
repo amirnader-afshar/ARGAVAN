@@ -16,9 +16,10 @@ import { FileExplorerService } from "./fileexplorer.service.proxy";
 import { Files } from "./Dtos/fileDto";
 import { environment } from "../../../../environments/environment";
 import { FileOutputDto } from "./Dtos/FileOutputDto";
-import { FileExplorerInputConfig } from "./fileexplorer.util";
+import { FileExplorerInputConfig, FileGroup } from "./fileexplorer.util";
 import { Notify } from "../../util/Dialog";
 import { Guid } from "../../types/GUID";
+import { Console } from "console";
 
 @Component({
     selector: 'file-explorer-popup',
@@ -156,6 +157,8 @@ export class FileExplorerPopupPage extends PopupBasePage implements OnInit, Afte
         this.folder.fileTypes = this.config.fileGroup;
         this.folder.tabelName = this.config.tabelName;
         this.fileexplorerService.GetFileByFolder(this.folder).then((data: Files) => {
+            console.log(data);
+            
             if (this.isCheck == false) {
                 data.selectedFiles.forEach(element => {
                     this.selectedKeys.push(element)
@@ -204,6 +207,7 @@ export class FileExplorerPopupPage extends PopupBasePage implements OnInit, Afte
     showDetail(data: FileOutputDto) {
         this.detailmode = true;
         this.currentDetailItem = data;
+        console.log(data);
         this.fileId = data.id;
         if (this.fileId) {
             this.menuItems[2].visible = true;
@@ -264,17 +268,31 @@ export class FileExplorerPopupPage extends PopupBasePage implements OnInit, Afte
             case "FileUpload":                
                 if (this.popupInstance)
                     this.config = this.popupInstance.data;
-                this.popup.open(UploadPopupComponent, {
-                    title: 'بارگذاری فایل',
-                    data: {
-                        entityId: this.popupInstance && this.popupInstance.data ?
-                            this.popupInstance.data.entityId : null,
-                        folderid: this.folderid,
-                        ...this.config
-                    } //TODO add entity id from explorer
-                }).then(res => {
-                    this.loadFile();
-                })
+
+                    let _allow: boolean=true;
+                    
+                    if(this.config.fileGroup==FileGroup.ofaAttachments && this.config.tabelName=="OFA_LETTER")
+                        if( this.config.entity.LETTER_AM_I_ERJA || this.config.entity.LETTER_AM_I_ERJA==undefined )
+                        {
+                            _allow=true;
+                        }
+                        else{
+                            Notify.error("نامه ارجاع شده است و یا به شما ارجاع داده نشده امکان ثبت نیست");
+                            _allow=false;
+                        }
+                    if (_allow)       
+                        this.popup.open(UploadPopupComponent, {
+                            title: 'بارگذاری فایل',
+                            data: {
+                                entityId: this.popupInstance && this.popupInstance.data ?
+                                    this.popupInstance.data.entityId : null,
+                                folderid: this.folderid,
+                                ...this.config
+                            } //TODO add entity id from explorer
+                        }).then(res => {
+                            this.loadFile();
+                        })
+                    
                 break;
             case "CreateFolder":
                 this.popup.open(FolderPopupComponent, {
@@ -302,14 +320,33 @@ export class FileExplorerPopupPage extends PopupBasePage implements OnInit, Afte
 
         });
     }
-    deleteFile(id) {
-        this.service.getPromise('/EDM/File/Delete', {id}).then(res => {
-            Notify.success('فایل با موفقیت حذف شد');
-            this.loadFile();
 
-        }).catch(err => {
-            Notify.error('عملیات با خطا مواجه شد')
-        });
+
+    deleteFile(id) {
+
+        let _ok:boolean = true;
+       
+                    
+        if(this.config.fileGroup==FileGroup.ofaAttachments && this.config.tabelName=="OFA_LETTER"){
+
+        if(!(this.config.entity.LETTER_AM_I_ERJA && this.currentDetailItem.CreatorUserId==this.config.entity.CURRENT_USER.toLowerCase( ) ))
+            _ok=false; 
+        if(this.config.entity.LETTER_AM_I_ERJA==undefined)
+            _ok=true;
+        }
+
+        if(!_ok)
+        {
+            Notify.error("نامه ارجاع شده است و یا به شما ارجاع داده نشده امکان حذف نیست");
+        }
+        else        
+            this.service.getPromise('/EDM/File/Delete', {id}).then(res => {
+                Notify.success('فایل با موفقیت حذف شد');
+                this.loadFile();
+
+            }).catch(err => {
+                Notify.error('عملیات با خطا مواجه شد')
+            });
     }
 
     onDataChange(item) {

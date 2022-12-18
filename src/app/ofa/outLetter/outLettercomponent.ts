@@ -28,6 +28,7 @@ import ArrayStore from 'devextreme/data/array_store';
 import CustomStore from 'devextreme/data/custom_store';
 import {DocumenteEditorComponent} from './documente-editor/documente-editor.component'
 import dxTagBox from 'devextreme/ui/tag_box';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-root-outLetter',
@@ -53,6 +54,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   allcategoryItems: any[];
   categoryselected: string[]=[];
   categoryDataSource: any = {};
+  CompanydataSource:any =[];
+  reciversDataSource:any =[];
   constructor(public translate: TranslateService
             , public router: Router,
             private route: ActivatedRoute
@@ -113,6 +116,46 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       this.loadCategory();
               
    }
+
+   dblClick(e)
+   {
+      const found = this.reciversDataSource.some(el => el.SUSR_ID === e.data.SUSR_ID);
+      if (!found) this.reciversDataSource.push(e.data); 
+   }
+
+   onAddAllClick(e){
+    let data : any=[];
+    this.CompanydataSource.forEach(function (arrayItem) {    
+    data.push(arrayItem); 
+  });
+  this.reciversDataSource=[];
+  this.reciversDataSource=data;
+  }
+   loadCompanys(){
+
+    this.dataToPostBody = {
+      'Data': {
+        'SPName': '[OFA].[OFA_SP_GET_RECIVER_COMPANYS_USERES]',
+        'Data_Input': { 'Mode': 1,          
+         'Header': {LETTER_ID:this.editItem.LETTER_ID}
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
+
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+        this.CompanydataSource=data.ReturnData.Data_Output[0].Header;
+        let Detail;
+        if (data.ReturnData.Data_Output[0].Detail.Detail!='is Empty') {
+            Detail = data.ReturnData.Data_Output[0].Detail;
+            this.CompanydataSource = [ ...this.CompanydataSource, ...Detail];  
+        }   
+
+      }            
+        });
+   };
 
    loadCategory(){
     this.dataToPostBody = {
@@ -218,7 +261,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     this.editItem={LETTER_IN_OUT_TYPE:this.editItem.LETTER_IN_OUT_TYPE
                   ,FolderID:Guid.empty,LETTER_BOOK_DATE:this.editItem.LETTER_BOOK_DATE
                   ,LETTER_DATE:this.editItem.LETTER_DATE}
-
+    this.reciversDataSource=[];  
     this.getBookNumber();                  
   }
 
@@ -226,7 +269,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
     this.editItem.FolderID = Guid.empty;    
     this.getBookNumber();
-
+    this.loadCompanys();
    
     // let deferred: Deferred<any> = new Deferred<any>();
     // this.ALLOW_PRG_UFIF_001 = this.permissionService.hasDefined('PRG_UFIF_001');//چک دسترسی به ویرایش قسمت کاست و تلرانس
@@ -259,6 +302,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0];  
+        // this.reciversDataSource =  [ ...this.editItem.LETTER_CMPNY_RECIVERS_DATA? this.editItem.LETTER_CMPNY_RECIVERS_DATA:[]
+        //     , ...this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA?this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA:[]];  
 
         this.childcmp.openDocument(this.editItem.FILE_PATH,this.editItem.FILE_NAME).then(
           data => {
@@ -267,11 +312,17 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             this.childcmp.updateDocFields('{attachment}',this.editItem.count_Attach>0?'دارد':'ندارد');
           });   
 
-        if(this.editItem.LETTER_AM_I_ERJA==false){
-          this.menuItems[1].visible=false;
-          this.menuItems[0].visible=false;   
-          this.docReadOnly=true;            
-        }
+        this.docReadOnly=true;  
+        if (this.editItem.LETTER_IS_SENT)
+          this.docReadOnly=true;
+        if (this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_OWNER && this.editItem.LETTER_AM_I_ERJA)
+          this.docReadOnly=false;
+        if (!this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_OWNER)
+          this.docReadOnly=false;
+
+        this.menuItems[1].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA )
+        this.menuItems[0].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA ); 
+        
         if(this.editItem.LETTER_IS_ARCHIVE){
           this.menuItems[4].text='بازگشت از آرشیو';          
         }
@@ -347,7 +398,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     }
     if (name=="save_sent"){
       if (this.editItem.LETTER_IN_OUT_TYPE=='out')
-        if(!this.editItem.LETTER_RECIVER_CMPN_ID||!this.editItem.LETTER_RECIVER_USER_ID)
+        if(!this.reciversDataSource || this.reciversDataSource.length<=0)
           {
             Notify.error('!سازمان گیرنده و کاربر گیرنده را انتخاب کنید');
             return; 
@@ -380,6 +431,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       then((data) => {     
         if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
           Notify.success('عملیات با موفقیت انجام شد ');  
+          this.loadLetter();
         }
         
       })     
@@ -404,15 +456,12 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
               return;
           }
           this.editItem.LETTER_MAIN_FILE_ID = data.fileid;
+          if (this.categoryselected.length>0)
+          { 
+            this.Categorys=[];
+            this.Categorys=this.categoryDataSource.filter(el => this.categoryselected.includes(el.CATEGORY_CAPTION));
+          }
 
-          this.Categorys=[];
-          this.Categorys=this.categoryDataSource.filter(el => this.categoryselected.includes(el.CATEGORY_CAPTION));
-          // for (let i = 0; i < this.categoryselected.length; i++)
-          // {   
-          //   let fi:any= {};
-          //   fi = this.categoryDataSource.filter(item => item.CATEGORY_CAPTION in  this.categoryselected[i]);     
-          //   this.editItem.categoryIds.push( fi.CATEGORY_ID );
-          // }
 
             
             this.editItem.LETTER_IS_SENT=isSent;
@@ -436,7 +485,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
                 'LETTER_IN_OUT_TYPE':this.editItem.LETTER_IN_OUT_TYPE,
                 'LETTER_IS_SENT':  this.editItem.LETTER_IS_SENT,
                 'LOAD_MAIN_FILE':true}
-                , 'Detail': {'Attachments':this.Attachments,'Notes':this.Notes,'Category':this.Categorys}, 'InputParams': '' }
+                , 'Detail': {'Attachments':this.Attachments,'Notes':this.Notes,'Category':this.Categorys,'Recivers':this.reciversDataSource}, 'InputParams': '' }
               }
             };
             
@@ -463,12 +512,12 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     
 }
 
-onCompanyChange(e) {
-  console.log('FilterCompanyCondition',e);
-  this.FilterCompanyCondition = {
-    SUSR_CMPN_ID: e.ID
-  };
-}
+// onCompanyChange(e) {
+//   console.log('FilterCompanyCondition',e);
+//   this.FilterCompanyCondition = {
+//     SUSR_CMPN_ID: e.ID
+//   };
+// }
 
 onTemplateChange(e) {
   console.log('Template',e);
@@ -477,7 +526,7 @@ onTemplateChange(e) {
 
 
 onAttachClick(e) {
-  this.core.fileExplorer.open({ entityId: this.editItem.ID,tabelName:"OFA_LETTER"
+  this.core.fileExplorer.open({entity:this.editItem, entityId: this.editItem.ID,tabelName:"OFA_LETTER"
         , fileGroup: FileGroup.ofaAttachments,multipleModeDisable:true,enableSecurityMode:false}).then((data) => {
     this.Attachments=data;
     this.editItem.count_Attach=data.length;
@@ -517,6 +566,7 @@ showNote(e) {
     width:"60%",
     height:"70%",
     data: {
+        entity:this.editItem,
         entityId: this.editItem.LETTER_ID,
         tabelName:'OFA_LETTER'
     } //TODO add entity id from explorer

@@ -27,6 +27,7 @@ import { DocumenteEditorComponent } from './outLetter/documente-editor/documente
 import { LetterTemplateComponent } from './letter-template/letter-template.component';
 import { LettetTemplateListComponent } from "./letter-template/lettet-template-list/lettet-template-list.component";
 import { CategoryComponent } from './category/category.component';
+import { ReciverComponent } from './reciver/reciver.component';
 
  
 
@@ -55,7 +56,7 @@ export const ROUTES: any = [
             { path: 'ofa/ofa-letter-template-list', component: LettetTemplateListComponent },
             { path: 'ofa/ofa-letter-template', component: LetterTemplateComponent },
             { path: 'ofa/ofa-category', component: CategoryComponent },
-            
+            { path: 'ofa/ofa-reciver', component: ReciverComponent },
             
         ]
     },
@@ -74,7 +75,8 @@ export const ROUTES: any = [
         DocumenteEditorComponent,
         LetterTemplateComponent,
         LettetTemplateListComponent,
-        CategoryComponent,        
+        CategoryComponent,
+        ReciverComponent,        
     ],
     imports: [
         CommonModule,

@@ -18,12 +18,11 @@ import { ConfigService } from 'src/app/shared/services/ConfigService';
 
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  selector: 'app-reciver',
+  templateUrl: './reciver.component.html',
+  styleUrls: ['./reciver.component.scss']
 })
-export class CategoryComponent extends BasePage implements OnInit {
-
+export class ReciverComponent extends BasePage implements OnInit {
 
   editItem: any = {};
   dataToPostBody: DataToPost;
@@ -61,7 +60,7 @@ export class CategoryComponent extends BasePage implements OnInit {
     {
       this.dataToPostBody = {
         'Data': {
-          'SPName':'[OFA].[OFA_Sp_CATEGORY]',
+          'SPName':'[OFA].[OFA_Sp_RECIVER]',
           'Data_Input': { 'Mode': 3,          
            'Header': this.selectedRow
           , 'Detail': '', 'InputParams': '' }
@@ -82,14 +81,14 @@ export class CategoryComponent extends BasePage implements OnInit {
   loadGrid(){
     this.dataToPostBody = {
       'Data': {
-        'SPName':'[OFA].[OFA_Sp_CATEGORY]',
+        'SPName':'[OFA].[OFA_Sp_RECIVER]',
         'Data_Input': { 'Mode': 4,          
          'Header': {}
         , 'Detail': '', 'InputParams': '' }
       }
       
     }
-  
+
     this.dataSource.store = new CustomStore({
       key: "ID",
       load: (loadOptions) => {
@@ -101,11 +100,14 @@ export class CategoryComponent extends BasePage implements OnInit {
           if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {  
             console.log(data.ReturnData.Data_Output[0].Header) 
             deferred.resolve(data.ReturnData.Data_Output[0].Header);
-           } else
+           }   
+          else
            {
             deferred.resolve([]);
-           }    
-        });
+           }
+        }).catch((err) => {
+          deferred.reject(err);
+      });      
               
         
         return deferred.promise;        
@@ -141,7 +143,7 @@ export class CategoryComponent extends BasePage implements OnInit {
   let deferred: Deferred<any> = new Deferred<any>();   
   let row = this.dataGrid.instance.getDataSource().items().filter(c => c.ID == key)[0];    
   this.dataToPostBody.Data.Data_Input.Mode=3;
-  this.dataToPostBody.Data.Data_Input.Header={CATEGORY_ID:key,CATEGORY_ARGHAVAN_TIME_STAMP:row.CATEGORY_ARGHAVAN_TIME_STAMP};
+  this.dataToPostBody.Data.Data_Input.Header={RECIVER_ID:key,RECIVER_ARGHAVAN_TIME_STAMP:row.RECIVER_ARGHAVAN_TIME_STAMP};
   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
   then((data) => {            
     deferred.resolve(data);        
@@ -162,7 +164,7 @@ export class CategoryComponent extends BasePage implements OnInit {
       {    
           this.dataToPostBody = {
             'Data': {
-              'SPName': '[OFA].[OFA_Sp_CATEGORY]',
+              'SPName': '[OFA].[OFA_Sp_RECIVER]',
               'Data_Input': { 'Mode': 1,          
                             'Header': this.editItem
                             , 'Detail': {}

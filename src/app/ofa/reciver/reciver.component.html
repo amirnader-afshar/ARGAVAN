@@ -1,12 +1,12 @@
 <page>
-    <page-toolbar helpUrl="http://google.com" >
+    <page-toolbar helpUrl="http://google.com"  >
     </page-toolbar>
     <page-content>
       <dx-validation-group #form>
             <!-- <div class="row">                                                                       
               <div class="col-sm-3">
-                <dx-label text="{{ 'OFA_CATEGORY_CAPTION' | translate }}">
-                    <dx-text-box [(value)]="editItem.CATEGORY_CAPTION">
+                <dx-label text="{{ 'OFA_RECIVER_CAPTION' | translate }}">
+                    <dx-text-box [(value)]="editItem.RECIVER_CAPTION">
                         <dx-validator>
                           <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
                         </dx-validator>
@@ -17,7 +17,7 @@
                 <div class="col-sm-6" style="padding: 10px;">              
                     <dx-text-area 
                       [height]="50"
-                      [(value)]="editItem.CATEGORY_DESC"
+                      [(value)]="editItem.RECIVER_DESC"
                       placeholder="{{ 'DESCRIPTION' | translate }}">
                     </dx-text-area>              
                 </div>  
@@ -44,9 +44,9 @@
                     <dxo-selection mode="single"></dxo-selection>
                     <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" >
                     </dxo-editing>
-                    <dxi-column dataField="CATEGORY_CREATE_DATE_TIME"  [allowEditing]="false"  dataType="date" caption="{{'PUB_CREATE_DATE'| translate}}" [width]="100"></dxi-column>
-                    <dxi-column dataField="CATEGORY_CAPTION"  caption="{{'OFA_CATEGORY_CAPTION'| translate}}" [width]="250"></dxi-column>
-                    <dxi-column dataField="CATEGORY_DESC"  caption="{{'DESCRIPTION'| translate}}" [width]="150"></dxi-column>                                             
+                    <dxi-column dataField="RECIVER_CREATE_DATE_TIME"  [allowEditing]="false"  dataType="date" caption="{{'PUB_CREATE_DATE'| translate}}" [width]="100"></dxi-column>
+                    <dxi-column dataField="RECIVER_CAPTION"  caption="{{'OFA_RECIVER_CAPTION'| translate}}" [width]="250"></dxi-column>
+                    <dxi-column dataField="RECIVER_DESC"  caption="{{'DESCRIPTION'| translate}}" [width]="150"></dxi-column>                                             
                   </dx-data-grid>
                 </grid-toolbar>
               </div>

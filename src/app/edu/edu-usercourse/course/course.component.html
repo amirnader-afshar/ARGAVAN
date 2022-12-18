@@ -1,22 +1,27 @@
 <div class="container">
-    <div class="row m-0 rounded">
-      <div id="hotels" class="col-12  col-sm-2 col-md-2 col-lg-2 m-0 p-0">
-        <div class="p-2 ">
-          <img itemprop="image" 
-            class="embed-responsive-item lazy " src="{{en.url+item.FILE_PATH}}"              
-            alt="" title="" style="filter: none; height: 150px; width: 100%; border-radius: 7px">        
-        </div>
-      </div>
-        
-      <div id="hotels" class="col-12 col-sm-2 col-md-2 col-lg-2">
-        <div class="p-4 text-right">
-           <a target="_blank">{{item.COURSE_CODE}}-{{item.COURSE_NAME}}</a> 
-          <div class="row ">
-            <div class="col-12">مدرس : {{item.COURSE_LECTURE_NAME}}</div>
-          </div>
-        </div>
-      </div>
-      <div id="hotels" class="col-12 col-sm-8 col-md-8 col-lg-8">
+    
+
+      <div class="row"  >
+            <div  class="col-2">
+              <div class="row">
+                <div  class="col-12">
+                  <img itemprop="image" 
+                    class="embed-responsive-item lazy " src="{{en.url+item.FILE_PATH}}"              
+                    alt="" title="" style="filter: none; height: 100%; width: 100%; border-radius: 7px">    
+                </div>    
+              </div>
+            </div>
+            
+              <div  class="col-10">
+                <div class="p-4 text-right">
+                  <a target="_blank">{{item.COURSE_CODE}}-{{item.COURSE_NAME}}</a> 
+                  <div class="row ">
+                    <div class="col-12">مدرس : {{item.COURSE_LECTURE_NAME}}</div>
+                  </div>
+                </div>
+              </div>
+     
+      <div  class="col-12 col-sm-8 col-md-8 col-lg-8">
         <div class="row p-2">
           <table class="w-100 text-center table">
             <tr>
@@ -55,7 +60,7 @@
                   <div *dxTemplate="let item of 'item'">
                     <div class="container-fluid">
                           <div class="row">
-                            <!-- <img src="{{ item.ImageSrc }}" /> -->
+                          
                             <div class="col">{{ item.FILE_TITLE }}</div>
                             <div class="col">
                               

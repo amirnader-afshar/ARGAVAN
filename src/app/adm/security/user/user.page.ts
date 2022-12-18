@@ -1,5 +1,8 @@
 import { Component, ViewChild } from "@angular/core";
 import "rxjs/add/operator/toPromise";
+import { DomSanitizer } from '@angular/platform-browser';
+
+
 import { ServiceCaller } from "../../../shared/services/ServiceCaller";
 import { TranslateService } from "../../../shared/services/TranslateService";
 import { BasePage } from "../../../shared/BasePage";
@@ -40,7 +43,7 @@ export class ADMEditUserPage extends BasePage {
     public translate: TranslateService,
     public core: CoreService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,private _sanitizer: DomSanitizer
   ) {
     super(translate);
     this.route.queryParams.subscribe(params => {
@@ -51,6 +54,9 @@ export class ADMEditUserPage extends BasePage {
           data => {
             this.editItem = data;
             this.readOnlyUsername = true;
+            this.editItem.sign_FILE_BASE64STRING = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+                 + this.editItem.Sign_FILE_BASE64STRING);
+
           });
       } else {
         this.editItem = {};
@@ -74,9 +80,12 @@ export class ADMEditUserPage extends BasePage {
   }
 
   onSignatureClick(e) {
-    this.core.fileExplorer.open({ entityId: this.editItem.ID, fileGroup: FileGroup.Signature}).then((data) => {
-      console.log(data);
-
+    this.core.fileExplorer.open({ tabelName:'ADM_USERS',entityId: this.editItem.ID, fileGroup: FileGroup.Signature}).then((data) => {
+      
+      this.editItem.SUSR_SIGN_FILE_ID = data[0].id;
+      this.editItem.sign_FILE_BASE64STRING = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+      + data[0].FILE_BASE64STRING); 
+      
     });
   }
 

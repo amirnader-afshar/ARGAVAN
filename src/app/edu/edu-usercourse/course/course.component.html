@@ -79,15 +79,23 @@
           <div class="col-12">            
               <div class="p-4 text-right">               
                 <div class="row ">
-                  <div class="col-6">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
+                  <div  class="col-6">{{'EDU_COURSE_REMAIN_TEXT'| translate}} 
                     {{item.COURSE_REMAIN_CAPICITY}}
-                    <dx-button [disabled]="item.COURSE_REGED && item.COURSE_IS_PAYED" (click)="courseSignup(item.COURSE_ID,item.COURSE_IS_PAYED,item.COURSE_REGED,item.USER_COURSE_ID)" class="w-70 mt-2" 
+                    <dx-button *ngIf="item.COURSE_COST!=0" [disabled]="item.COURSE_REGED && item.COURSE_IS_PAYED" (click)="courseSignup(item.COURSE_ID,item.COURSE_IS_PAYED,item.COURSE_REGED,item.USER_COURSE_ID)" class="w-70 mt-2" 
                           text="{{ (!item.COURSE_REGED && !item.COURSE_IS_PAYED)  ?  ('EDU_COURSE_SIGNUP'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate) 
                            : (item.COURSE_REGED && !item.COURSE_IS_PAYED)? ('EDU_COURSE_PAY'| translate ) +(item.COURSE_COST | number)+ ('PUP_CURRENCY_NAME' | translate) : ('EDU_COURSE_SIGNED_UP'| translate) }}"
                           type="success" > 
                     </dx-button>
+                    <dx-button *ngIf="item.COURSE_COST==0" [disabled]="item.COURSE_REGED && item.COURSE_IS_PAYED" (click)="courseSignup(item.COURSE_ID,item.COURSE_IS_PAYED,item.COURSE_REGED,item.USER_COURSE_ID)" class="w-70 mt-2" 
+                          text="{{ (!item.COURSE_REGED && !item.COURSE_IS_PAYED)  ?  ('EDU_COURSE_SIGNUP_FREE'| translate ) 
+                           : (item.COURSE_REGED && !item.COURSE_IS_PAYED)? ('EDU_COURSE_SIGNUP_FREE'| translate )  : ('EDU_COURSE_SIGNED_UP'| translate) }}"
+                          type="success" > 
+                    </dx-button>
                     <p class="bg-danger text-white" *ngIf="item.COURSE_REGED && !item.COURSE_IS_PAYED">ثبت نام شما به صورت موقت انجام شده است لطفا برای قطعی شدن ثبت نام هزینه را پرداخت کنید </p>
-                  </div>                        
+                  </div>  
+                  <div *ngIf="item.COURSE_REMAIN_CAPICITY==0 && !item.COURSE_REGED" class="col-6">
+                    <p class="bg-danger text-white"> ظرفیت تکمیل! </p>   
+                  </div>                      
                   <div *ngIf="item.ExamResult" class="col-6" > 
                                       
                     <div  [class.bg-success]="item.ExamResult[0].USER_COURSE_IS_PASSED==true"

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { DevExtremeModule} from 'devextreme-angular';
+import { DocumentEditorContainerModule  } from '@syncfusion/ej2-angular-documenteditor';
 
 import { BasePage, PopupBasePage } from './BasePage';
 import { Deferred } from './Deferred';
@@ -228,7 +229,7 @@ export const ROUTES: any = [
   ],
   imports: [
     CommonModule,
-    DevExtremeModule,
+    DevExtremeModule,DocumentEditorContainerModule,
     NgbModule, FormsModule,NgxJsonViewerModule,
     RouterModule.forChild(ROUTES),
     HttpClientModule,
@@ -275,6 +276,7 @@ export const ROUTES: any = [
     //
     NgxJsonViewerModule,
     DevExtremeModule,
+    DocumentEditorContainerModule,
     NgbModule, FormsModule,
     DateTimeJalaliPipe,
     // DxTextBoxModule ,

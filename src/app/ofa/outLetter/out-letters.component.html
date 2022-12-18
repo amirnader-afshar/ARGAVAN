@@ -1,5 +1,5 @@
 <page>
-    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event,'')">
     </page-toolbar>
     <page-content>
       <div class="row">
@@ -12,6 +12,8 @@
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-scrolling mode="virtual"></dxo-scrolling>
               <dxo-selection mode="single"></dxo-selection>
+              
+              <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>
             
@@ -20,6 +22,26 @@
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="200"></dxi-column>
               <dxi-column  dataField="LETTER_AM_I_ERJA"  dataType="boolean" caption="{{'LETTER_AM_I_ERJA'| translate}}" [width]="150"></dxi-column>
               <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_IS_READED"  dataType="boolean" caption="{{'LETTER_IS_READED'| translate}}" [width]="150"></dxi-column>
+
+              <dxi-column  dataField="LETTER_CATEGORYS"  caption="{{'LETTER_CATEGORYS'| translate}}" [width]="150"></dxi-column>              
+              <dxi-column  dataField="LETTER_RECIVER_CMPN_NAM"  caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="150"></dxi-column>              
+
+              <dxi-column
+              dataField="this.editItem.id"
+              caption = ""
+              [width]="110"
+              [allowFiltering]="false"
+              [allowSorting]="false"
+              cellTemplate="cellTemplate"
+            ></dxi-column>
+              <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-button  [width]="120" (click)="onMenuItemClick('Edit',data.data.ID)" [template]="'buttonTemplate'">  
+                  <div  *dxTemplate="let data of 'buttonTemplate'">  
+                    <!-- <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span> -->
+                    <span style="margin: 5px;">نمایش نامه</span>                    
+                  </div> 
+                </dx-button>
+              </div>              
             </dx-data-grid>
           </grid-toolbar>
         </div>

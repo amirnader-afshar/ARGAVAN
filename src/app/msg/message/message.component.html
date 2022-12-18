@@ -59,7 +59,7 @@
               </div>  
           </panel-box>        
           
-          <panel-box [caption]=" 'گیرندگان' | translate">                    
+          <panel-box  [caption]=" 'گیرندگان' | translate">                    
             <!-- <div class="row" >
               <div class="col-sm-4" >
                 <dx-label text="{{ 'MSG_RECIVER_CMPN' | translate }}">
@@ -87,6 +87,17 @@
                 </dx-button>
             </div> -->
             <!-- </div>   -->
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+
+              <dx-button [width]="120" (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
+                <div  *dxTemplate="let data of 'buttonTemplate'">  
+                  <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
+                  <span style="margin: 5px;">افزودن همه</span>                  
+                </div>  
+              </dx-button>  
+              </div>
+            </div>
             <div class="row">
               <div class="col-sm-4">
                 <grid-toolbar>

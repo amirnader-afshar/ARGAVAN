@@ -147,11 +147,12 @@ export class EduCourseComponent implements OnInit {
       this.config.fileGroup=FileGroup.eduCourse_pic;
       this.config.multipleModeDisable=true;
       this.config.enableSecurityMode=false;
+      this.config.tabelName='EDU_COURSE';
       this.popup.open(UploadPopupComponent, {
         title: 'بارگذاری فایل',
         data: {
             entityId: this.editItem.COURSE_ID,
-            folderid: this.editItem.FolderID,        
+            folderid: !this.editItem.folderID?Guid.empty:this.editItem.FolderID,        
             ...this.config
         } //TODO add entity id from explorer
     }).then(res => {

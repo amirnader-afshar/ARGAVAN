@@ -1,0 +1,43 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+        <div class="row">  
+          <div class="col-sm-10">
+            <div class="row">
+              <div class="col-sm-10">
+                <dx-label text="{{ 'OFA_LETTER_TEMP_TITEL' | translate }}">
+                  <dx-text-box [(value)]="editItem.LETTER_TEMP_TITEL">
+                    <dx-validator>
+                      <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                    </dx-validator>
+                  </dx-text-box>
+                </dx-label>
+              </div>
+              <div class="col-sm-2">
+                <dx-check-box [(value)]="editItem.LETTER_TEMP_ENABEL" [text]="'OFA_LETTER_TEMP_ENABEL' | translate"></dx-check-box>
+              </div>
+            </div>  
+
+            <div class="row">
+              <div class="col-sm-12">              
+                  <dx-text-area
+                    [height]="45"
+                    [(value)]="editItem.LETTER_TEMP_DESC"
+                    placeholder="{{ 'DESCRIPTION' | translate }}">
+                  </dx-text-area>              
+              </div>        
+            </div>        
+
+          </div>
+        </div>
+        <div class="row"  >
+          <div class="col-sm-12">    
+            <app-documente-editor [readonly]="false"></app-documente-editor>        
+          </div>
+        </div>  
+      </dx-validation-group>
+    </page-content>
+  </page>
+  

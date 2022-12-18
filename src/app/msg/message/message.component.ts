@@ -215,6 +215,21 @@ export class MessageComponent extends PopupBasePage implements OnInit {
     });    
   
   }
+
+  onAddAllClick(e){
+    let data : any=[];
+    this.CompanydataSource.forEach(function (arrayItem) {
+      var o =  {MSG_RECIVER_CMPN_NAM:arrayItem.CMPN_NAM
+        ,MSG_RECIVER_SUSR_NAM_USR:arrayItem.SUSR_NAM_USR
+        ,MSG_RECIVER_USER_ID:arrayItem.SUSR_ID
+        ,MSG_RECIVER_CMPN_ID:arrayItem.CMPN_ID}
+    
+        data.push(o); 
+  });
+  this.dataSource=[];
+  this.dataSource=data;
+  }
+
  onAddClick(e){
   if (this.editItem.MSG_RECIVER_USER_ID){
         this.dataSource.push({MSG_RECIVER_CMPN_NAM:this.editItem.MSG_RECIVER_CMPN_NAM

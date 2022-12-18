@@ -15,4 +15,5 @@ export const environment = {
     sunrsv_pics: url + 'pics',
     cheque_designer_url: 'http://192.168.25.104:8095/Designer/',
     cheque_print_url: 'http://192.168.25.104:8095/Print/',
+    syncfusion_api_url : url+ 'api/EDM/syncfusion/'
 };

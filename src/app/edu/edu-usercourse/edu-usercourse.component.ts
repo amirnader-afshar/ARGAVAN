@@ -7,6 +7,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import { Deferred } from '../../shared/Deferred';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -72,6 +73,7 @@ export class EduUsercourseComponent extends BasePage implements OnInit {
     this.editItem.COURSE_ENABEL=true;
     this.editItem.TODAY_DATE=new Date;
     this.editItem.Mode = 5;
+    this.editItem.USERINFO_CMPNY_ID =this.userInfo.PERSONINFO_UNION_ID;
     this.dataToPostBody = {
       'Data': {
         'SPName': '[EDU].[EDU_Sp_COURSE]',

@@ -14,4 +14,5 @@ export const environment = {
   temp_url: url + 'UploadTemps',
   cheque_designer_url: '',
   cheque_print_url: '',
+  syncfusion_api_url : url+ 'api/EDM/syncfusion/'
 };

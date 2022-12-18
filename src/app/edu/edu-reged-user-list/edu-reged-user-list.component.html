@@ -2,6 +2,29 @@
     <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
     </page-toolbar>
     <page-content>
+      <panel-box [caption]=" 'EDU_COURSE_USER_TRASFER' | translate">                    
+        <div class="row" > 
+          <div class="col-sm-12" >
+            <div class="col-sm-8" >
+              <dx-label text="{{ 'EDU_COURSE_NAME' | translate }}">
+                <dx-lov formCode="LOV-EDU-001" 
+                            [displayMode]="'ComboBox'"
+                            [(value)]="transferItem.NEW_COURSE_ID" 
+                            [(text)]="transferItem.NEW_COURSE_NAME"                                                 
+                          ></dx-lov>
+              </dx-label>                         
+            </div>
+            <div class="col-sm-4" >
+              <dx-button text="{{ 'PUB_TRASFER' | translate  }}" icon="fa fa-exchange" type="default" (click)="onCourseTrasferClick($event)" width="100%">
+              </dx-button>
+            </div>
+
+          </div>
+        </div>
+      </panel-box>
+      <!-- <panel-box [caption]="{{ ('EDU_COURSE_NAME'| translate ) +(COURSE_DATA.COURSE_NAME|number) }} ">   -->
+      <panel-box [caption]=" ('EDU_COURSE_NAME'| translate ) + ' : ' + editItem.COURSE_NAME ">  
+
       <div class="row">
         <div class="col-sm-12">
          
@@ -42,5 +65,6 @@
          
         </div>
       </div>
+      </panel-box>
     </page-content>
   </page>

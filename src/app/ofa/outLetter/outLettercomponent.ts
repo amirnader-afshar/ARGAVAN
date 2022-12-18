@@ -3,6 +3,7 @@ import { BasePage } from '../../shared/BasePage';
 import { TranslateService } from '../../shared/services/TranslateService';
 import { Router,ActivatedRoute } from '@angular/router';
 import { DxValidationGroupComponent } from 'devextreme-angular';
+
 import { Notify } from '../../shared/util/Dialog';
 import { Deferred } from '../../shared/Deferred';
 import { ServiceCaller } from '../../shared/services/ServiceCaller';
@@ -13,7 +14,6 @@ import { FileExplorerInputConfig } from "../../shared/components/fileExplorer/fi
 import { DemisPopupService } from "../../shared/components/popup/demis-popup-service";
 import { UploadPopupComponent } from "../../shared/components/fileExplorer/upload.popup";
 
-
 import { Guid } from 'src/app/shared/types/GUID';
 import { environment } from '../../../environments/environment';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
@@ -22,29 +22,37 @@ import { RouteData } from '../../shared/util/RouteData';
 import { ConfigService } from 'src/app/shared/services/ConfigService';
 import { LetterNoteListComponent } from '../letter-note-list/letter-note-list.component';
 import { LettrtErjaatComponent } from "../lettrt-erjaat/lettrt-erjaat.component";
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Dialog } from '../../shared/util/Dialog';
-import  Webviewer, { WebViewerInstance }  from '@pdftron/webviewer';
-import { threadId } from 'node:worker_threads';
-
+import   { WebViewerInstance }  from '@pdftron/webviewer';
+import ArrayStore from 'devextreme/data/array_store';
+import CustomStore from 'devextreme/data/custom_store';
+import {DocumenteEditorComponent} from './documente-editor/documente-editor.component'
+import dxTagBox from 'devextreme/ui/tag_box';
 
 @Component({
   selector: 'app-root-outLetter',
   templateUrl: './outLetter.component.html',
-  styleUrls: ['./outLetter.component.scss']
+  styleUrls: ['./outLetter.component.scss'],
 })
 export class outLettercomponent extends BasePage implements OnInit,AfterViewInit {
+
   
   
   config: FileExplorerInputConfig = new FileExplorerInputConfig();
-  
+  docReadOnly : Boolean;  
   FilterCompanyCondition: any = { SUSR_CMPN_ID: null };
   menuItems = [];
   ALLOW_PRG_UFIF_001;
   OFA_AUTO_BOOK_NO;
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   @ViewChild('viewer',{static: false}) vieweRef: ElementRef;
+  @ViewChild(DocumenteEditorComponent) childcmp:DocumenteEditorComponent;
+  
   GRID_SOURCE;
+  user;
+  allcategoryItems: any[];
+  categoryselected: string[]=[];
+  categoryDataSource: any = {};
   constructor(public translate: TranslateService
             , public router: Router,
             private route: ActivatedRoute
@@ -73,7 +81,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     {
       name: "save_sent",
       icon: "fa fa-floppy-o green",
-      text: ' ذخیره و ارجاع',
+      text: 'ارسال نامه',
       visible: true
     },
     {
@@ -91,12 +99,73 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
         text: 'انتقال به آرشیو',
         icon: "fa fa-archive",
         visible: true}
+        ,{
+          name: "cancelSent",
+          text: 'لغو ارجاع',
+          icon: "fa fa-hand-paper-o",
+          visible: true}
     ]
       if(this.editItem.LETTER_ID)
       {
         this.loadLetter();
       }
+
+      this.loadCategory();
+              
    }
+
+   loadCategory(){
+    this.dataToPostBody = {
+      'Data': {
+        'SPName': '[OFA].[OFA_Sp_CATEGORY]',
+        'Data_Input': { 'Mode': 4,          
+         'Header': this.editItem
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
+
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+        this.categoryDataSource=data.ReturnData.Data_Output[0].Header; 
+        this.allcategoryItems = this.categoryDataSource.map(function(a) {return a.CATEGORY_CAPTION;});               
+      }
+      
+    });
+
+    this.dataToPostBody = {
+      'Data': {
+        'SPName': '[OFA].[OFA_Sp_LETTER_CATEGORY_USED_SELECT]',
+        'Data_Input': { 'Mode': 0,          
+         'Header': this.editItem
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
+
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+        let ret=data.ReturnData.Data_Output[0].Header; 
+        this.categoryselected = ret.map(function(a) {return a.CATEGORY_CAPTION;});               
+      }
+      
+    });
+
+   }
+   onSelectionChanged(args) {
+    
+    for (let i = 0; i < args.addedItems.length; i++)
+     { 
+      this.categoryselected.push(args.addedItems[i])
+     }
+     for (let i = 0; i < args.removedItems.length; i++)
+    {
+      this.categoryselected = this.categoryselected.filter(item => item !== args.removedItems[i])
+    }
+      
+  }
 
   public hidePdfViewer = false;
 
@@ -129,11 +198,10 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     //     })
     //     instance.setTheme('dark');
     //  })
-  }    
-
-  ngOnInit() {
-    this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
-    this.editItem.FolderID = Guid.empty;    
+  }  
+  
+  getBookNumber()
+  {
     this.OFA_AUTO_BOOK_NO = Boolean(JSON.parse(this.confService.get('OFA-AUTO-BOOK-NO')));
     if (this.OFA_AUTO_BOOK_NO && !this.editItem.LETTER_ID ) {
      this.confService.reload().then(() => {
@@ -144,6 +212,20 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
            })
                             
       }
+  }
+
+  new(){    
+    this.editItem={LETTER_IN_OUT_TYPE:this.editItem.LETTER_IN_OUT_TYPE
+                  ,FolderID:Guid.empty,LETTER_BOOK_DATE:this.editItem.LETTER_BOOK_DATE
+                  ,LETTER_DATE:this.editItem.LETTER_DATE}
+
+    this.getBookNumber();                  
+  }
+
+  ngOnInit() {
+    this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
+    this.editItem.FolderID = Guid.empty;    
+    this.getBookNumber();
 
    
     // let deferred: Deferred<any> = new Deferred<any>();
@@ -177,10 +259,18 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0];  
-        
-        if(this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA==false){
+
+        this.childcmp.openDocument(this.editItem.FILE_PATH,this.editItem.FILE_NAME).then(
+          data => {
+            this.childcmp.updateDocFields('{number}',this.editItem.LETTER_BOOK_NUMBER);
+            this.childcmp.updateDocFields('{date}',this.editItem.LETTER_BOOK_DATE);
+            this.childcmp.updateDocFields('{attachment}',this.editItem.count_Attach>0?'دارد':'ندارد');
+          });   
+
+        if(this.editItem.LETTER_AM_I_ERJA==false){
           this.menuItems[1].visible=false;
-          this.menuItems[0].visible=false;       
+          this.menuItems[0].visible=false;   
+          this.docReadOnly=true;            
         }
         if(this.editItem.LETTER_IS_ARCHIVE){
           this.menuItems[4].text='بازگشت از آرشیو';          
@@ -199,6 +289,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   editItem: any = {};
   Attachments:any={};
   Notes:any={};
+  Categorys:any={};
   dataToPostBody: DataToPost;
 
 
@@ -236,7 +327,13 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
         this.router.navigate(["ofa/inLetters"]);
     }
     if (name == "save") {        
-          this.Save(this.editItem.LETTER_IS_SENT?true:false  ,this.editItem.LETTER_ID?2:1)    
+          this.Save(false  ,this.editItem.LETTER_ID?2:1).then((data) => { 
+            if(data==true)
+              { 
+                Notify.success('اطلاعات با موفقیت ذخیره شد');
+                  
+              }
+          });      
     }
     if (name == "history"){
       this.routeData.push('ofa_outLetter',this.editItem);
@@ -256,64 +353,108 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             return; 
           }
 
-      Dialog.confirm('تایید ارجاع', 'آیا مایل به ثبت تغییرات و ارجاع نامه هستید؟').okay(() => {
-        this.Save(true,this.editItem.LETTER_ID?2:1)  
-        
+      Dialog.confirm('تایید ارجاع', 'آیا مایل به ثبت تغییرات و ارسال نامه هستید؟').okay(() => {
+        this.Save(true,this.editItem.LETTER_ID?2:1).then((data) => { 
+            if(data==true)
+              { 
+                Notify.success('اطلاعات با موفقیت ذخیره شد');
+                this.new();    
+              }
+          });    
         });    
       
     }
-  }
-  Save(isSent: Boolean,mode :number){
-    if (!this.editItem.LETTER_MAIN_FILE_ID)
+    if (name == "cancelSent" )
     {
-      Notify.error('!تصویر نامه را بارگزاری کنید');
-      return;
+      this.dataToPostBody = {
+        'Data': {
+          'SPName': '[OFA].[OFA_Sp_LETTER_CANCEL_SENT]',
+          'Data_Input': { 'Mode': 0,          
+           'Header': this.editItem
+          , 'Detail': '', 'InputParams': '' }
+        }
+        
+      }
+  
+      this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+      then((data) => {     
+        if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+          Notify.success('عملیات با موفقیت انجام شد ');  
+        }
+        
+      })     
     }
-  var result = this.form.instance.validate();
-  if (result.isValid) 
-  {
-    this.editItem.LETTER_IS_SENT=isSent;
-    this.dataToPostBody = {
-      'Data': {
-        'SPName': '[OFA].[OFA_Sp_letter]',
-        'Data_Input': { 'Mode': mode,          
-         'Header': { 
-        'LETTER_ID':this.editItem.LETTER_ID,
-        'LETTER_CMPN_ID': this.editItem.LETTER_CMPN_ID,
-        'LETTER_TITEL': this.editItem.LETTER_TITEL,          
-        'LETTER_BOOK_NUMBER':  this.editItem.LETTER_BOOK_NUMBER,
-        'LETTER_BOOK_DATE':  this.editItem.LETTER_BOOK_DATE,
-        'LETTER_NUMBER': this.editItem.LETTER_NUMBER,
-        'LETTER_DATE': this.editItem.LETTER_DATE,
-        'LETTER_RECIVER_CMPN_ID': this.editItem.LETTER_RECIVER_CMPN_ID,
-        'LETTER_RECIVER_USER_ID': this.editItem.LETTER_RECIVER_USER_ID,
-        'LETTER_MAIN_FILE_ID':this.editItem.LETTER_MAIN_FILE_ID,
-        'LETTER_ARGHAVAN_TIME_STAMP':this.editItem.LETTER_ARGHAVAN_TIME_STAMP,
-        'LETTER_DESC':this.editItem.LETTER_DESC,
-        'LETTER_IN_OUT_TYPE':this.editItem.LETTER_IN_OUT_TYPE,
-        'LETTER_IS_SENT':  this.editItem.LETTER_IS_SENT,
-        'LOAD_MAIN_FILE':true}
-        , 'Detail': {'Attachments':this.Attachments,'Notes':this.Notes}, 'InputParams': '' }
-      }
-    };
-    
-    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
-    then((data) => {
-      this.editItem=data.ReturnData.Data_Output[0].Header[0];     
-      // if (data.ReturnData.Data_Output[0].Header[0].ID)
-      // {
-      //   this.editItem.LETTER_ID=data.ReturnData.Data_Output[0].Header[0].ID;
-      //   this.editItem.LETTER_ARGHAVAN_TIME_STAMP= data.ReturnData.Data_Output[0].Header[0].LETTER_ARGHAVAN_TIME_STAMP;
-      //   this.editItem.LETTER_AM_I_ERJA=data.ReturnData.Data_Output[0].Header[0].LETTER_AM_I_ERJA;
-      // }
-      console.log("return data", this.editItem.LETTER_ID);
-      if(isSent && this.editItem.LETTER_AM_I_ERJA==false){
-        this.menuItems[1].visible=false;
-        this.menuItems[0].visible=false;       
-      }
-      Notify.success('اطلاعات با موفقیت ذخیره شد');
-    });
   }
+
+  Save(isSent: Boolean,mode :number): Promise<any> {
+    // if (!this.editItem.LETTER_MAIN_FILE_ID)
+    // {
+    //   Notify.error('!تصویر نامه را بارگزاری کنید');
+    //   return;
+    // }
+    return new Promise((resolve, reject) => {
+          var result = this.form.instance.validate();
+          if (result.isValid) 
+          {    
+          this.childcmp.saveDocument('ofa',this.editItem.LETTER_MAIN_FILE_ID).then((data) => {
+
+          if (data==Guid.empty) 
+          {
+              Notify.error('خطا در بارگزاری متن نامه');
+              return;
+          }
+          this.editItem.LETTER_MAIN_FILE_ID = data.fileid;
+
+          this.Categorys=[];
+          this.Categorys=this.categoryDataSource.filter(el => this.categoryselected.includes(el.CATEGORY_CAPTION));
+          // for (let i = 0; i < this.categoryselected.length; i++)
+          // {   
+          //   let fi:any= {};
+          //   fi = this.categoryDataSource.filter(item => item.CATEGORY_CAPTION in  this.categoryselected[i]);     
+          //   this.editItem.categoryIds.push( fi.CATEGORY_ID );
+          // }
+
+            
+            this.editItem.LETTER_IS_SENT=isSent;
+            this.dataToPostBody = {
+              'Data': {
+                'SPName': '[OFA].[OFA_Sp_letter]',
+                'Data_Input': { 'Mode': mode,          
+                'Header': { 
+                'LETTER_ID':this.editItem.LETTER_ID,
+                'LETTER_CMPN_ID': this.editItem.LETTER_CMPN_ID,
+                'LETTER_TITEL': this.editItem.LETTER_TITEL,          
+                'LETTER_BOOK_NUMBER':  this.editItem.LETTER_BOOK_NUMBER,
+                'LETTER_BOOK_DATE':  this.editItem.LETTER_BOOK_DATE,
+                'LETTER_NUMBER': this.editItem.LETTER_NUMBER,
+                'LETTER_DATE': this.editItem.LETTER_DATE,
+                'LETTER_RECIVER_CMPN_ID': this.editItem.LETTER_RECIVER_CMPN_ID,
+                'LETTER_RECIVER_USER_ID': this.editItem.LETTER_RECIVER_USER_ID,
+                'LETTER_MAIN_FILE_ID':this.editItem.LETTER_MAIN_FILE_ID,
+                'LETTER_ARGHAVAN_TIME_STAMP':this.editItem.LETTER_ARGHAVAN_TIME_STAMP,
+                'LETTER_DESC':this.editItem.LETTER_DESC,
+                'LETTER_IN_OUT_TYPE':this.editItem.LETTER_IN_OUT_TYPE,
+                'LETTER_IS_SENT':  this.editItem.LETTER_IS_SENT,
+                'LOAD_MAIN_FILE':true}
+                , 'Detail': {'Attachments':this.Attachments,'Notes':this.Notes,'Category':this.Categorys}, 'InputParams': '' }
+              }
+            };
+            
+            this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+            then((data) => {
+              this.editItem=data.ReturnData.Data_Output[0].Header[0];     
+              console.log("return data", this.editItem.LETTER_ID);
+              // if(isSent && this.editItem.LETTER_AM_I_ERJA==false){
+              //   this.menuItems[1].visible=false;
+              //   this.menuItems[0].visible=false;       
+              // }
+              resolve (true) ;
+              
+            });          
+        }); 
+      
+          }
+  });
   }
 
   valueChange_DatePicker(e, cell) {
@@ -327,6 +468,11 @@ onCompanyChange(e) {
   this.FilterCompanyCondition = {
     SUSR_CMPN_ID: e.ID
   };
+}
+
+onTemplateChange(e) {
+  console.log('Template',e);
+  this.childcmp.openDocument(e.FILE_PATH,!this.editItem.FILE_NAME?'unknow.docx':this.editItem.FILE_NAME);
 }
 
 
@@ -347,7 +493,7 @@ uploadfile(e) {
   this.popup.open(UploadPopupComponent, {
     title: 'بارگذاری فایل',
     data: {
-        entityId:'kiiiiiiiiir',// this.editItem.LETTER_ID,
+        entityId:'kkkk',// this.editItem.LETTER_ID,
         folderid: this.editItem.FolderID,        
         ...this.config
     } //TODO add entity id from explorer

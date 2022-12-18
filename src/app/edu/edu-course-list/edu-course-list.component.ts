@@ -71,7 +71,8 @@ export class EduCourseListComponent extends BasePage implements OnInit {
     }
     else if (name == "userList") {
       var qparam = {
-        COURSE_ID: this.selectedRow.COURSE_ID ,             
+        COURSE_ID: this.selectedRow.COURSE_ID , 
+        COURSE_NAME:  this.selectedRow.COURSE_NAME          
       }
       this.routeDate.clear;
       this.routeDate.push('COURSE_DATA',this.selectedRow);

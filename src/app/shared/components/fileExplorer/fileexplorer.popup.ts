@@ -154,6 +154,7 @@ export class FileExplorerPopupPage extends PopupBasePage implements OnInit, Afte
     loadFile() {
         this.detailmode = false;
         this.folder.fileTypes = this.config.fileGroup;
+        this.folder.tabelName = this.config.tabelName;
         this.fileexplorerService.GetFileByFolder(this.folder).then((data: Files) => {
             if (this.isCheck == false) {
                 data.selectedFiles.forEach(element => {

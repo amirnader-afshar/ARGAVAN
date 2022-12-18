@@ -1,0 +1,56 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <dx-validation-group #form>
+            <div class="row">                                                                       
+              <div class="col-sm-3">
+                <dx-label text="{{ 'OFA_CATEGORY_CAPTION' | translate }}">
+                    <dx-text-box [(value)]="editItem.CATEGORY_CAPTION">
+                        <dx-validator>
+                          <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                        </dx-validator>
+                      </dx-text-box>
+                </dx-label>
+              </div>
+              
+                <div class="col-sm-6" style="padding: 10px;">              
+                    <dx-text-area 
+                      [height]="50"
+                      [(value)]="editItem.CATEGORY_DESC"
+                      placeholder="{{ 'DESCRIPTION' | translate }}">
+                    </dx-text-area>              
+                </div>  
+                
+              <div class="col-sm-3">
+                <dx-button [width]="120" (click)="addClick($event)" [template]="'buttonTemplate'">  
+                    <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                      <span class="fa fa-plus-circle btn-success" aria-hidden="true" style="margin: 5px;"></span>
+                      <span style="margin: 5px;font-size: 11px;">اضافه</span>                  
+                    </div>  
+                  </dx-button>                 
+              </div>             
+      
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <grid-toolbar>
+                  <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+                    [columnAutoWidth]="true" [height]="400">
+                    <dxo-sorting mode="multiple"></dxo-sorting>
+                    <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-selection mode="single"></dxo-selection>
+                    <dxi-column dataField="CATEGORY_CREATE_DATE_TIME"    dataType="date" caption="{{'PUB_CREATE_DATE'| translate}}" [width]="100"></dxi-column>
+                    <dxi-column dataField="CATEGORY_CAPTION"  caption="{{'OFA_CATEGORY_CAPTION'| translate}}" [width]="250"></dxi-column>
+                    <dxi-column dataField="CATEGORY_DESC"  caption="{{'DESCRIPTION'| translate}}" [width]="150"></dxi-column>                                             
+                  </dx-data-grid>
+                </grid-toolbar>
+              </div>
+            </div>                                      
+              
+      </dx-validation-group>
+    </page-content>
+  </page>
+  

@@ -10,6 +10,8 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
 import { letProto } from 'rxjs-compat/operator/let';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { RouteData } from 'src/app/shared/util/RouteData';
+import notify from 'devextreme/ui/notify';
+import { Notify } from 'src/app/shared/util/Dialog';
 
 
 @Component({
@@ -19,6 +21,7 @@ import { RouteData } from 'src/app/shared/util/RouteData';
 })
 export class EduRegedUserListComponent  extends BasePage implements OnInit {
   editItem: any = {};
+  transferItem: any = {};
   COURSE_DATA :any={};
   @ViewChild('grid',{static: true}) dataGrid: DxDataGridComponent;
   dataSource: any = {};
@@ -42,9 +45,37 @@ export class EduRegedUserListComponent  extends BasePage implements OnInit {
       
       this.route.queryParams.subscribe(params => {
         this.editItem.USER_COURSE_EDU_COURSE_ID = params['COURSE_ID'];
+        this.editItem.COURSE_NAME = params['COURSE_NAME'];
     });
   
     } 
+
+    onCourseTrasferClick(e){
+
+      if(!this.transferItem.USER_COURSE_ID)
+      {
+        return;
+      }
+
+      this.dataToPostBody = {
+        'Data': {
+          'SPName': '[EDU].[EDU_Sp_USER_COURSE]',
+          'Data_Input': { 'Mode': 21,          
+           'Header': this.transferItem
+          , 'Detail': '', 'InputParams': '' }
+        }          
+      }
+      return this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+          then((data) => {     
+            if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+            Notify.success();
+            this.dataSource=null;
+            this.loadGrid();
+
+            }      
+          });
+    }
+  
 
     ngOnInit(): void {
       this.COURSE_DATA = this.routeDate.pop('COURSE_DATA') ;
@@ -92,8 +123,11 @@ export class EduRegedUserListComponent  extends BasePage implements OnInit {
     
      };
      selectionChangedHandler() {
-    
-
+       if (!this.dataGrid.instance.getSelectedRowsData()[0]){
+         return;
+       }
+      this.transferItem.USER_COURSE_ID = this.dataGrid.instance.getSelectedRowsData()[0]['USER_COURSE_ID'];
+      this.transferItem.USER_COURSE_ARGHAVAN_TIME_STAMP = this.dataGrid.instance.getSelectedRowsData()[0]['USER_COURSE_ARGHAVAN_TIME_STAMP'];
     }
 
     onEditorPreparing(e:any): void {  

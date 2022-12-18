@@ -28,16 +28,24 @@ export class CourseComponent implements OnInit {
   
   }
   courseSignup(courseID,COURSE_IS_PAYED,COURSE_REGED,USER_COURSE_ID){
+
+    if(this.item.COURSE_REMAIN_CAPICITY<=0){
+      Notify.error('ظرفیت تکمیل امکان ثبت نام وجود ندارد!');  
+      return;     
+
+    }
     if(COURSE_REGED && !COURSE_IS_PAYED)
     {
+      if (this.item.COURSE_COST!=0){
       this.redirectToBank(USER_COURSE_ID)
+      }
     }
     else {
             this.dataToPostBody = {
               'Data': {
                 'SPName': '[EDU].[EDU_Sp_USER_COURSE]',
                 'Data_Input': { 'Mode': 1,          
-                'Header': {'USER_COURSE_EDU_COURSE_ID': courseID,'USER_COURSE_IS_PAYED':false}
+                'Header': {'USER_COURSE_EDU_COURSE_ID': courseID,'USER_COURSE_IS_PAYED': this.item.COURSE_COST==0?true:false}
                 , 'Detail': '', 'InputParams': '' }
               }
               
@@ -46,10 +54,14 @@ export class CourseComponent implements OnInit {
             this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
             then((data) => {     
                   Notify.success('ثبت نام انجام شد');       
-                  //this.userReged.emit(courseID);
-                  debugger;
                   
-                  this.redirectToBank( data.ReturnData.Data_Output[0].Header[0].USER_COURSE_ID);
+                  
+                  if (this.item.COURSE_COST!=0){
+                    this.redirectToBank( data.ReturnData.Data_Output[0].Header[0].USER_COURSE_ID);
+                  }
+                  else{
+                    this.userReged.emit(courseID);
+                  }
                   // this.smsservise.sendSms([this.userInfo.]
                   //                     ,["ثبت نام شما در دوره آموزشی با موفقیت انجام شد "+"\n"+this.translate.instant('ADM_CMPN_NAM_REAL_NAME')])
                 });  

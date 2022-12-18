@@ -23,6 +23,11 @@ import { LettrtErjaatComponent } from './lettrt-erjaat/lettrt-erjaat.component';
 import { HistoryComponent } from "../shared/components/history/history.component";
 import { LetterErjataGraphComponent } from './lettrt-erjaat/letter-erjata-graph/letter-erjata-graph.component';
 import { CmpnyReciverComponent } from './cmpny-reciver/cmpny-reciver.component';
+import { DocumenteEditorComponent } from './outLetter/documente-editor/documente-editor.component';
+import { LetterTemplateComponent } from './letter-template/letter-template.component';
+import { LettetTemplateListComponent } from "./letter-template/lettet-template-list/lettet-template-list.component";
+import { CategoryComponent } from './category/category.component';
+
  
 
 export const ROUTES: any = [
@@ -47,6 +52,10 @@ export const ROUTES: any = [
             { path: 'ofa/bookSetting', component: DynamicFormPage, data: { code: 'ofa_Frm_book_setting' } },                                      
             { path: 'ofa/letterHistory', component: HistoryComponent },
             { path: 'ofa/ofa-cmpny-reciver', component: CmpnyReciverComponent },
+            { path: 'ofa/ofa-letter-template-list', component: LettetTemplateListComponent },
+            { path: 'ofa/ofa-letter-template', component: LetterTemplateComponent },
+            { path: 'ofa/ofa-category', component: CategoryComponent },
+            
             
         ]
     },
@@ -61,7 +70,11 @@ export const ROUTES: any = [
         HomeComponent,
         LettrtErjaatComponent,
         LetterErjataGraphComponent,
-        CmpnyReciverComponent,        
+        CmpnyReciverComponent,
+        DocumenteEditorComponent,
+        LetterTemplateComponent,
+        LettetTemplateListComponent,
+        CategoryComponent,        
     ],
     imports: [
         CommonModule,

@@ -13,6 +13,7 @@ export interface IFileOutputDto {
     icon: string;
     preview: string;
     code: string;
+    FILE_BASE64STRING:string;
 }
 
 export class FileOutputDto implements IFileOutputDto {
@@ -29,6 +30,7 @@ export class FileOutputDto implements IFileOutputDto {
     thumbnail: string;
     code: string;
     selected: boolean = false;
+    FILE_BASE64STRING :string;
 
     constructor(data?: IFileOutputDto) {
         if (data) {
@@ -53,6 +55,7 @@ export class FileOutputDto implements IFileOutputDto {
             this.entityId = data["EntityId"];
             this.icon = data["Icon"];
             this.preview = data["Preview"];
+            this.FILE_BASE64STRING = data["FILE_BASE64STRING"];
 
 
 
@@ -79,6 +82,7 @@ export class FileOutputDto implements IFileOutputDto {
         data["EntityId"] = this.entityId;
         data["Icon"] = this.icon;
         data["Preview"] = this.preview;
+        data["FILE_BASE64STRING"] = this.FILE_BASE64STRING;
         return data;
 
     }
@@ -104,6 +108,7 @@ interface IFileDto {
     code: string;
     fileGroup: string;
     isPublic: boolean;
+    FILE_BASE64STRING:string[];
 
 }
 
@@ -124,6 +129,7 @@ export class FileDto implements IFileDto {
     code: string;
     isPublic: boolean = false;
     fileName: string[];
+    FILE_BASE64STRING :string[];
 
     constructor(data?: IFileDto) {
         if (data) {
@@ -150,6 +156,7 @@ export class FileDto implements IFileDto {
             this.thumbnail = data["Thumbnail"];
             this.entityId = data["EntityId"];
             this.icon = data["Icon"];
+            this.FILE_BASE64STRING =data["FILE_BASE64STRING"];
         }
     }
 
@@ -175,6 +182,7 @@ export class FileDto implements IFileDto {
         data["Thumbnail"] = this.thumbnail;
         data["EntityId"] = this.entityId;
         data["Icon"] = this.icon;
+        data["FILE_BASE64STRING"] = this.FILE_BASE64STRING
         return data;
     }
 }

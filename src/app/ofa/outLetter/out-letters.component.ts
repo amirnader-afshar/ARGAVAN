@@ -55,7 +55,7 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
         name: "Delete",
         icon: "fa fa-trash red",
         text: 'حذف',
-        visible: true
+        visible: false
       }
     ]
   
@@ -98,7 +98,7 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
   
    };
   
-    onMenuItemClick(name) {
+    onMenuItemClick(name,id) {
       var qp = {
         LETTER_ID: this.selectedRow.LETTER_ID 
         ,GRID_SOURCE:this.editItem.LETTER_IN_OUT_TYPE
@@ -115,7 +115,8 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
           this.router.navigate([routPath],{queryParams: qp});
         
       } else if (name == "Edit") {        
-
+        if (id!="")
+          {qp.LETTER_ID=id}
         this.router.navigate([routPath],{queryParams: qp});
       }
       else if (name=="Delete")

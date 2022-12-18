@@ -13,6 +13,7 @@ import { EduCourseListComponent } from './edu-course-list/edu-course-list.compon
 import { EduUsercourseComponent } from './edu-usercourse/edu-usercourse.component';
 import { CourseComponent } from './edu-usercourse/course/course.component';
 import { EduRegedUserListComponent } from './edu-reged-user-list/edu-reged-user-list.component';
+import { DynamicFormPage } from "../shared/pages/dform.page";
 
 
 export const ROUTES: any = [
@@ -28,6 +29,12 @@ export const ROUTES: any = [
             { path: 'edu/edu-course-list', component: EduCourseListComponent },   
             { path: 'edu/edu-course-user', component: EduUsercourseComponent },
             { path: 'edu/edu-user-reged-list', component: EduRegedUserListComponent },
+            {
+                path: "edu/cmpnycourseprise",
+                component: DynamicFormPage,
+                data: { code: "FRM-EDU-DYFRM-CMPNY-COURSE-PRICE" }
+              },
+
         ]
     },
 ];

@@ -14,6 +14,7 @@ export class FileOutputDto implements IFileOutputDto {
     id: string;
     thumbnail: string;
     flag: boolean = false;
+    FILE_BASE64STRING :string;
     constructor(data?: IFileOutputDto) {
         if (data) {
             for (var property in data) {
@@ -36,6 +37,7 @@ export class FileOutputDto implements IFileOutputDto {
             this.entityId = data["EntityId"];
             this.flag = data["Flag"];
             this.icon = data["Icon"];
+            this.FILE_BASE64STRING = data["FILE_BASE64STRING"];
         }
     }
     static fromJS(data: any): FileOutputDto {
@@ -57,6 +59,7 @@ export class FileOutputDto implements IFileOutputDto {
         data["EntityId"] = this.entityId;
         data["Flag"] = this.flag;
         data["Icon"] = this.icon;
+        data["FILE_BASE64STRING"]=this.FILE_BASE64STRING;
         return data;
     }
 }

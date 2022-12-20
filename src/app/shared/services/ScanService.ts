@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs/Rx";
+import { Observable, Subject } from "rxjs";
+import 'rxjs/add/operator/map'
+
+
 import { WebsocketService } from "./WebsocketService";
 
 const SCAN_URL = "ws://localhost:8181/";

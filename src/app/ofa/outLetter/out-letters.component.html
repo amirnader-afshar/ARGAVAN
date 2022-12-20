@@ -6,7 +6,7 @@
         <div class="col-sm-12">
           <grid-toolbar>
             <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
-              [columnAutoWidth]="true" [height]="400">              
+            (onRowDblClick)="onMenuItemClick('Edit',$event.data.ID)"  [columnAutoWidth]="true" [height]="400">              
               <dxo-sorting mode="multiple"></dxo-sorting>
               <dxo-filter-panel [visible]="true"></dxo-filter-panel>
               <dxo-filter-row [visible]="true"></dxo-filter-row>

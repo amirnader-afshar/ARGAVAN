@@ -64,11 +64,11 @@
 
             <div class="col-sm-3" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
               <dx-label text="{{ 'OFA_LETTER_SENDER_CMPN' | translate }}">
-                <dx-lov formCode="LOV-ADM-223" 
+                <dx-lov formCode="LOV-OFA-003" 
                     [readOnly]="docReadOnly"
                         [displayMode]="'ComboBox'"
-                        [(value)]="editItem.LETTER_SENDER_CMPN_ID" 
-                        [(text)]="editItem.LETTER_SENDER_CMPN_NAM"                       
+                        [(value)]="editItem.LETTER_SENDER_ID" 
+                        [(text)]="editItem.LETTER_SENDER_CMPN"                       
                        [required]="true"></dx-lov>
               </dx-label>
             </div>

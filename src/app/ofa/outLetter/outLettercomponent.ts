@@ -290,8 +290,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     this.editItem.LOAD_MAIN_FILE=true;
     this.dataToPostBody = {
       'Data': {
-        'SPName': '[OFA].[OFA_Sp_letter]',
-        'Data_Input': { 'Mode': 4,          
+        'SPName': '[OFA].[OFA_SP_LETTER_GET]',
+        'Data_Input': { 'Mode': 0,          
          'Header': this.editItem
         , 'Detail': '', 'InputParams': '' }
       }
@@ -382,7 +382,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             if(data==true)
               { 
                 Notify.success('اطلاعات با موفقیت ذخیره شد');
-                  
+                this.new();  
               }
           });      
     }
@@ -477,6 +477,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
                 'LETTER_BOOK_DATE':  this.editItem.LETTER_BOOK_DATE,
                 'LETTER_NUMBER': this.editItem.LETTER_NUMBER,
                 'LETTER_DATE': this.editItem.LETTER_DATE,
+                'LETTER_SENDER_ID':this.editItem.LETTER_SENDER_ID,
                 'LETTER_RECIVER_CMPN_ID': this.editItem.LETTER_RECIVER_CMPN_ID,
                 'LETTER_RECIVER_USER_ID': this.editItem.LETTER_RECIVER_USER_ID,
                 'LETTER_MAIN_FILE_ID':this.editItem.LETTER_MAIN_FILE_ID,
@@ -491,12 +492,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             
             this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
             then((data) => {
-              this.editItem=data.ReturnData.Data_Output[0].Header[0];     
-              console.log("return data", this.editItem.LETTER_ID);
-              // if(isSent && this.editItem.LETTER_AM_I_ERJA==false){
-              //   this.menuItems[1].visible=false;
-              //   this.menuItems[0].visible=false;       
-              // }
+              
               resolve (true) ;
               
             });          

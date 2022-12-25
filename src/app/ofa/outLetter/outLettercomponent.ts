@@ -119,7 +119,14 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
 
    dblClick(e)
    {
-      const found = this.reciversDataSource.some(el => el.SUSR_ID === e.data.SUSR_ID);
+      let found:any;
+      if (e.data.IS_IT_CMPN)
+      {
+        found = this.reciversDataSource.some(el => el.SUSR_ID === e.data.SUSR_ID);
+      }
+      else
+        found = this.reciversDataSource.some(el => el.CMPN_ID === e.data.CMPN_ID);
+
       if (!found) this.reciversDataSource.push(e.data); 
    }
 

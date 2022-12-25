@@ -51,11 +51,15 @@ export class MessageListComponent extends BasePage implements OnInit {
     this.loadGrid();
   }
   onMenuItemClick(name) {
+    let qp:any={};
     if (name == "New") {  
-        this.router.navigate(["msg/msgs"]);
+       qp = {       
+                  GRID_SOURCE:'out'        
+                }
+        this.router.navigate(["msg/msgs"],{ queryParams: qp });
     } 
     else if (name == "Edit") {
-      var qp = {
+       qp = {
         MSG_ID: this.selectedRow.MSG_ID 
         ,GRID_SOURCE:this.editItem.MSG_IN_OUT_TYPE        
       }

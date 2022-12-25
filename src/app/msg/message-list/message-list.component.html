@@ -12,11 +12,33 @@
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-scrolling mode="virtual"></dxo-scrolling>
               <dxo-selection mode="single"></dxo-selection>
+
+              <dxi-column
+              dataField="MSG_PUB_PRIORITY_ID"
+              caption = "{{'MSG_PRIORITY'| translate}}"
+              [width]="85"
+              [allowFiltering]="false"
+              [allowSorting]="true"
+              cellTemplate="cellTemplate"
+            ></dxi-column>
+              <div class="" *dxTemplate="let data of 'cellTemplate'">
+                <i class="{{data.data.PUB_PRIORITY_ICON}} fa-2x "></i>
+                <span style="margin: 5px;">{{data.data.PRIORITY_CAPTION}}</span>
+              </div> 
+
+
               <dxi-column  dataField="MSG_SUBJECT"   caption="{{'MSG_SUBJECT'| translate}}" [width]="150"></dxi-column>
               <dxi-column  dataField="MSG_CREATE_DATE_TIME"  dataType="date" caption="{{'MSG_CREATE_DATE'| translate}}" [width]="150"></dxi-column>
             
               <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="in"' dataField="RECIVER_READ"  dataType="boolean" caption="{{'MSG_READ'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="in"' dataField="MSG_SENDER_CMPN_NAM"  caption="{{'MSG_SENDER_CMPN_NAM'| translate}}" [width]="300"></dxi-column>
+              <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="in"' dataField="MSG_SENDER_SUSR_NAM_USR"   caption="{{'MSG_SENDER_SUSR_NAM_USR'| translate}}" [width]="300"></dxi-column>
+              
+              
               <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="out"' dataField="MSG_SENT"  dataType="boolean" caption="{{'MSG_SENT'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="out"' dataField="MSG_CMPNY_RECIVERS"   caption="{{'MSG_RECIVER_CMPN'| translate}}" [width]="350"></dxi-column>
+              <dxi-column  [visible]='this.editItem.MSG_IN_OUT_TYPE=="out"' dataField="MSG_SUSR_NAM_USR_RECIVERS"   caption="{{'MSG_RECIVER_USER'| translate}}" [width]="350"></dxi-column>
+
             </dx-data-grid>
           </grid-toolbar>
         </div>

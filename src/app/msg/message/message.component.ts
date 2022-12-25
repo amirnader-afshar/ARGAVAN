@@ -68,7 +68,21 @@ export class MessageComponent extends PopupBasePage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadmsg();
+    if (this.editItem.MSG_ID )
+        this.loadmsg();
+    this.loadCompanys();
+  }
+
+  onTemplateChange(e) {
+    this.editItem.PUB_PRIORITY_ICON=e.PRIORITY_ICON
+    
+  }
+
+  new(){
+    this.editItem={};
+    this.editItem.MSG_IN_OUT_TYPE = this.GRID_SOURCE;
+    this.Attachments={};
+    this.dataSource=[];
     this.loadCompanys();
   }
   loadCompanys(){
@@ -196,13 +210,8 @@ export class MessageComponent extends PopupBasePage implements OnInit {
         then((data) => {                        
           console.log("return data", this.editItem);
           Notify.success('اطلاعات با موفقیت ذخیره شد');
-          if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
-            this.editItem=data.ReturnData.Data_Output[0].Header[0];
-            
-          }   
-          if (data.ReturnData.Data_Output[0].Detail.Detail!='is Empty') {
-            this.dataSource = data.ReturnData.Data_Output[0].Detail;
-          } 
+          this.new();
+
         });
     } 
   }

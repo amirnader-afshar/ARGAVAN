@@ -13,6 +13,20 @@
               </dx-text-box>
             </dx-label>
           </div>
+
+          <div class="col-sm-2">            
+            <dx-label text="{{ 'MSG_PRIORITY' | translate }}">
+              <dx-lov  [(value)]="editItem.MSG_PUB_PRIORITY_ID" 
+                   formCode="FRM-PUB-PRIORITY"
+                  [displayMode]="'ComboBox'"
+                  (dataChange)="onTemplateChange($event)">
+            </dx-lov>
+            </dx-label>
+          </div>    
+          
+          <div class="col-sm-1">
+            <i class="{{editItem.PUB_PRIORITY_ICON}} fa-2x "></i>
+          </div>
  
         </div>  
         <div class="row">

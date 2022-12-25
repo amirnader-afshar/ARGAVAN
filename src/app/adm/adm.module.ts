@@ -70,6 +70,11 @@ export const ROUTES: any = [
         component: DynamicFormPage,
         data: { code: "FRM-ADM-003" }
       },
+      {
+        path: "stp/pup_priority",
+        component: DynamicFormPage,
+        data: { code: "FRM-PUB-PRIORITY" }
+      },
       { path: "stp/configs", component: ADMConfigDefinition },
       { path: "stp/subjects", component: ADMSubjectsPage },
       {

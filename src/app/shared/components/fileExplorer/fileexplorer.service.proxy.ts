@@ -21,7 +21,7 @@ export class FileExplorerService {
      * upload file
      * @param files file list
      */
-    uploadFile(model: FileDto): Promise<void> {
+    uploadFile(model: FileDto): Promise<any> {
         
         let formData = new FormData();
         formData.append('enctype', 'multipart/form-data')

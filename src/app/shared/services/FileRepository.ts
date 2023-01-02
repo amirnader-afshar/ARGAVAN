@@ -21,13 +21,17 @@ export class FileRepository extends Repository {
         
         //
         return new Promise((resolve, reject) => {
-
+            
+            this.showLoading();
+            
             return this.http.post(this.BaseURL + path, body, { headers: headers })
                 .toPromise().then(response => {
                     resolve(response);
                 }).catch(err => {
                     reject(err)
-                })
+                }).then(() => {                    
+                    this.hideLoading();                    
+                });
         })
         //.then(response => response.json().Result);
     }

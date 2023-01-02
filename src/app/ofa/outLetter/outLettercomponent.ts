@@ -5,7 +5,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { DxValidationGroupComponent } from 'devextreme-angular';
 
 import { Notify } from '../../shared/util/Dialog';
-import { Deferred } from '../../shared/Deferred';
+
 import { ServiceCaller } from '../../shared/services/ServiceCaller';
 import { PermissionService } from '../../shared/permission';
 import { CoreService } from "../../shared/services/CoreService";
@@ -17,18 +17,21 @@ import { UploadPopupComponent } from "../../shared/components/fileExplorer/uploa
 import { Guid } from 'src/app/shared/types/GUID';
 import { environment } from '../../../environments/environment';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
-import { FileGroup } from "../../shared/components/fileExplorer/fileexplorer.util";
+import { FileGroup,fileExtensionConvertor } from "../../shared/components/fileExplorer/fileexplorer.util";
 import { RouteData } from '../../shared/util/RouteData';
 import { ConfigService } from 'src/app/shared/services/ConfigService';
 import { LetterNoteListComponent } from '../letter-note-list/letter-note-list.component';
 import { LettrtErjaatComponent } from "../lettrt-erjaat/lettrt-erjaat.component";
 import { Dialog } from '../../shared/util/Dialog';
 import   { WebViewerInstance }  from '@pdftron/webviewer';
-import ArrayStore from 'devextreme/data/array_store';
-import CustomStore from 'devextreme/data/custom_store';
+
 import {DocumenteEditorComponent} from './documente-editor/documente-editor.component'
-import dxTagBox from 'devextreme/ui/tag_box';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
+import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
+import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
+import { JsonPipe } from '@angular/common';
+
+
 
 @Component({
   selector: 'app-root-outLetter',
@@ -38,6 +41,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class outLettercomponent extends BasePage implements OnInit,AfterViewInit {
 
   
+  AttachmentsFiles: FileDto = new FileDto();
+  filepath:string=environment.url;
   
   config: FileExplorerInputConfig = new FileExplorerInputConfig();
   docReadOnly : Boolean;  
@@ -56,7 +61,9 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   categoryDataSource: any = {};
   CompanydataSource:any =[];
   reciversDataSource:any =[];
-  constructor(public translate: TranslateService
+
+
+  constructor(private explorerService: FileExplorerService,public translate: TranslateService
             , public router: Router,
             private route: ActivatedRoute
             , public service: ServiceCaller
@@ -117,6 +124,55 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
               
    }
 
+   fileExtensions(): string {
+    let extensions = '';
+    this.config.fileExtensions.forEach((item, index) => {
+        extensions += fileExtensionConvertor(item) + ',';
+    })
+    if (extensions.endsWith(','))
+        extensions.substr(extensions.length - 1);
+    return extensions;
+}
+
+onChangeMain(e) {
+  this.AttachmentsFiles.files = e.target.files;
+  this.upload();
+}
+
+onDeleteClick(id: any) {
+
+  Dialog.confirm('تایید حذف', 'آیا مایل به حذف هستید؟').okay(() => {
+    this.service.getPromise('/EDM/File/Delete', {id}).then(res => {
+      Notify.success('فایل با موفقیت حذف شد');  
+      let index = this.Attachments.findIndex(d => d.ID === id); //find index in your array
+      this.Attachments.splice(index, 1);//remove element from array
+        }).catch(err => {
+            Notify.error('عملیات با خطا مواجه شد')
+        });
+    });
+}
+
+downloadFile(id) {
+  debugger
+  this.service.getfile("/EDM/File/Download?fileId=" + id, (data) => {
+
+  });
+}
+
+upload(): void {        
+      this.AttachmentsFiles.fileGroup = FileGroup.ofaAttachments.toString();
+      this.AttachmentsFiles.entityId = this.editItem.ID;
+      this.AttachmentsFiles.tabelName = "OFA_LETTER";
+      this.explorerService.uploadFile(this.AttachmentsFiles).then(res => {
+          if (res!=null){
+            console.log('res',res);
+            console.log('attach',this.Attachments);
+            this.Attachments=[...this.Attachments?.length?this.Attachments:[] ,...res.Result];
+          }
+              
+      });  
+}
+
    dblClick(e)
    {
       let found:any;
@@ -127,16 +183,35 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       else
         found = this.reciversDataSource.some(el => el.CMPN_ID === e.data.CMPN_ID);
 
-      if (!found) this.reciversDataSource.push(e.data); 
+      if (!found) {
+        this.reciversDataSource.push(e.data); 
+        let index = this.CompanydataSource.findIndex(d => d.SUSR_ID === e.data.SUSR_ID); //find index in your array
+        this.CompanydataSource.splice(index, 1);//remove element from array
+      }
    }
 
+
+   onPRIORITYChange(e) {
+    this.editItem.PUB_PRIORITY_ICON=e.PRIORITY_ICON
+    
+  }
    onAddAllClick(e){
+    const that = this;
     let data : any=[];
-    this.CompanydataSource.forEach(function (arrayItem) {    
-    data.push(arrayItem); 
+    let found:any;
+    this.CompanydataSource.forEach(function (arrayItem) {   
+      if (arrayItem.IS_IT_CMPN)
+      {
+        found = that.reciversDataSource.some(el => el.SUSR_ID === arrayItem.SUSR_ID);
+      }
+      else
+        found = that.reciversDataSource.some(el => el.CMPN_ID === arrayItem.CMPN_ID);
+        if (!found) { 
+          data.push(arrayItem); 
+        }
   });
-  this.reciversDataSource=[];
-  this.reciversDataSource=data;
+  this.CompanydataSource=[];
+  this.reciversDataSource=[...this.reciversDataSource,...data];
   }
    loadCompanys(){
 
@@ -269,6 +344,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
                   ,FolderID:Guid.empty,LETTER_BOOK_DATE:this.editItem.LETTER_BOOK_DATE
                   ,LETTER_DATE:this.editItem.LETTER_DATE}
     this.reciversDataSource=[];  
+    this.Attachments=[];
     this.getBookNumber();                  
   }
 
@@ -287,12 +363,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     //   deferred.resolve(data);
     // }, this.filter);
   }
-  downloadFile(id) {
-    
-    this.service.getfile("/EDM/File/Download?fileId=" + id, (data) => {
 
-    });
-  }
   loadLetter(){
     this.editItem.LOAD_MAIN_FILE=true;
     this.dataToPostBody = {
@@ -308,7 +379,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
-        this.editItem=data.ReturnData.Data_Output[0].Header[0];  
+        this.editItem=data.ReturnData.Data_Output[0].Header[0]; 
+        this.Attachments=this.editItem.ATTACHMENTS; 
         // this.reciversDataSource =  [ ...this.editItem.LETTER_CMPNY_RECIVERS_DATA? this.editItem.LETTER_CMPNY_RECIVERS_DATA:[]
         //     , ...this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA?this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA:[]];  
 
@@ -349,6 +421,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   Notes:any={};
   Categorys:any={};
   dataToPostBody: DataToPost;
+
+
 
 
   onMenuItemClick(name) {
@@ -492,7 +566,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
                 'LETTER_DESC':this.editItem.LETTER_DESC,
                 'LETTER_IN_OUT_TYPE':this.editItem.LETTER_IN_OUT_TYPE,
                 'LETTER_IS_SENT':  this.editItem.LETTER_IS_SENT,
-                'LOAD_MAIN_FILE':true}
+                'LOAD_MAIN_FILE':true,
+                'LETTER_PUB_PRIORITY_ID':this.editItem.LETTER_PUB_PRIORITY_ID}
                 , 'Detail': {'Attachments':this.Attachments,'Notes':this.Notes,'Category':this.Categorys,'Recivers':this.reciversDataSource}, 'InputParams': '' }
               }
             };
@@ -603,6 +678,39 @@ showGrafErjaat(){
                               queryParams: {letterType:this.GRID_SOURCE
                                                   }
 }); 
+}
+
+onreciversDataSourceSelectedDelete(e)
+{
+  const that = this;
+  
+  e.data.forEach(function (arrayItem) {
+    let found:any;
+    if (arrayItem.IS_IT_CMPN)
+    {
+      found = that.CompanydataSource.some(el => el.SUSR_ID === arrayItem.SUSR_ID);
+    }
+    else
+      found = that.CompanydataSource.some(el => el.CMPN_ID === arrayItem.CMPN_ID);      
+    if (!found) {
+      that.CompanydataSource.push(arrayItem); 
+    }
+  });
+}
+
+onreciversDataSourceRowRemoving(e)
+{
+  let found:any;
+  if (e.data.IS_IT_CMPN)
+  {
+    found = this.CompanydataSource.some(el => el.SUSR_ID === e.data.SUSR_ID);
+  }
+  else
+    found = this.CompanydataSource.some(el => el.CMPN_ID === e.data.CMPN_ID);    
+    
+    if (!found) {
+      this.CompanydataSource.push(e.data); 
+    }
 }
 
 }

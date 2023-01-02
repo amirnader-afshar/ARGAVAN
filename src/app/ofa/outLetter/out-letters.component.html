@@ -13,6 +13,18 @@
               <dxo-scrolling mode="virtual"></dxo-scrolling>
               <dxo-selection mode="single"></dxo-selection>
               
+              <dxi-column
+              dataField="LETTER_PUB_PRIORITY_ID"
+              caption = "{{'OFA_LETTER_PRIORITY'| translate}}"
+              [width]="85"
+              [allowFiltering]="false"
+              [allowSorting]="true"
+              cellTemplate="PRIORITYTemplate"
+              ></dxi-column>
+              <div class="" *dxTemplate="let data of 'PRIORITYTemplate'">
+                <i class="{{data.data.PUB_PRIORITY_ICON}} fa-2x "></i>
+                <span style="margin: 5px;">{{data.data.PRIORITY_CAPTION}}</span>
+              </div>               
               <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>

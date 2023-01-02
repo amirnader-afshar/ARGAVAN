@@ -60,7 +60,7 @@
             </div>
           </div>
           <panel-box [caption]=" 'پیوست' | translate">                    
-              <div class="row" >               
+              <!-- <div class="row" >               
                 <div class="col-md-4 col-sm-12">
                     <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
                       <div  *dxTemplate="let data of 'buttonTemplate'">  
@@ -70,7 +70,37 @@
                       </div>  
                     </dx-button>
                 </div>
-              </div>  
+              </div>   -->
+                          
+            <div class="row">
+              <div class="col-sm-6">
+                <dx-label *ngIf="(!this.editItem?.MSG_SENT)" text="{{'EMD_FILE'| translate}}">
+                    <input #mainfile type="file" [multiple]="true" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
+                    />
+                </dx-label>
+              </div>
+          </div>
+
+            
+            <div class="row" *ngIf="this.Attachments?.length" >                                
+                <div class="col-md-1 col-xs-6 items" *ngFor="let item of Attachments">
+                    <div class="card text-center" >
+                      <div class="card-header" style="padding-top: 5px;">
+                        <a *ngIf="(!this.editItem.MSG_SENT)" 
+                          [ngClass]="'fa fa-window-close text-danger fa-1x'"
+                          (click)="onDeleteClick(item.ID)">
+                        </a>
+                      </div>                      
+                        <div (click)="downloadFile(item.ID)" class="card-body file" style="padding: unset;">                                                                                      
+                            <a  [ngClass]="item.Icon+' fa-2x'"></a>                                                        
+                        </div>
+                        <div class="card-footer" style="padding: unset;">
+                          <small class="text-muted" style="font-size: 70%;">{{item.Title}}</small>
+                        </div>
+                    </div>                      
+                </div>                    
+            </div>
+        
           </panel-box>        
           
           <panel-box  [caption]=" 'گیرندگان' | translate">                    
@@ -88,10 +118,11 @@
             </div>
             <div class="row">
               <div class="col-sm-4">
+                تعداد {{CompanydataSource.length}}
                 <grid-toolbar>
-                <dx-data-grid #companygrid    (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
+                <dx-data-grid #companygrid   (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
                 [columnAutoWidth]="true" [height]="250">
-             
+                <dxo-filter-row [visible]="true"></dxo-filter-row> 
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
                 <dxo-selection mode="single"></dxo-selection>
                 <dxi-column  dataField="CMPN_NAM"   caption="{{'MSG_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
@@ -100,9 +131,9 @@
             </grid-toolbar>
               </div>
               <div class="col-sm-6">
-                <grid-toolbar>
-                  <dx-data-grid #grid  [dataSource]="dataSource" 
-                  
+                تعداد {{dataSource.length}}
+                <grid-toolbar (onSelectedDelete)="ondataSourceSelectedDelete($event) " (onDeleteEditRow)="ondataSourceRowRemoving($event)">
+                  <dx-data-grid #grid   [dataSource]="dataSource"                   
                     [columnAutoWidth]="true" [height]="250">
                     <dxo-editing 
                     mode="row"                    
@@ -110,8 +141,8 @@
                     [allowAdding]="false">
                     </dxo-editing>              
                     <dxo-scrolling mode="virtual"></dxo-scrolling>
-                    <dxo-selection mode="single"></dxo-selection>
-
+                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row> 
                     <dxi-column  dataField="MSG_RECIVER_CMPN_NAM"   caption="{{'MSG_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
                     <dxi-column  dataField="MSG_RECIVER_SUSR_NAM_USR"   caption="{{'MSG_RECIVER_USER'| translate}}" [width]="185"></dxi-column>
                     <dxi-column  dataField="RECIVER_READ"   caption="{{'MSG_RECIVER_RECIVER_READ'| translate}}" [width]="150"></dxi-column>

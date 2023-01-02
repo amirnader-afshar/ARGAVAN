@@ -46,6 +46,8 @@ export class GridRowDbClickEventArgs {
 })
 export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
 
+
+
   @ViewChild(DxMenuComponent, { static: true }) menu: DxMenuComponent;
   @ViewChild('resizable', { static: true }) resizable: DxResizableComponent;
   @ContentChild(DxDataGridComponent, { static: true }) grid: DxDataGridComponent;
@@ -58,7 +60,10 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
   @Output() onCancelEditRow = new EventEmitter<any>();
   @Output() onRowDbClick = new EventEmitter<GridRowDbClickEventArgs>();
 
+  @Output() onDeleteEditRow = new EventEmitter<any>();
+  @Output() onSelectedDelete = new EventEmitter<any>();
 
+  
   allowEdit: boolean | Function = false;
   allowDelete: boolean | Function = false;
   allowInsert: boolean = false;
@@ -279,6 +284,9 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
 
       }
     }
+
+
+    
   }
 
   ngAfterViewInit() {
@@ -288,6 +296,8 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
         this.grid.dataSource = this.createDynamicDataSource();
       else
         this.grid.dataSource = this.createDataSource();
+
+       
     }
 
     this.allowInsert = this.grid.editing.allowAdding;
@@ -619,7 +629,7 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
                   grid.refresh();
                 });
               }).final(() => {
-
+                this.onDeleteEditRow.emit(item);
                 grid.focus();
               });;
             }
@@ -637,7 +647,29 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
         }
       case 'DXSelectedDelete':
         {
+          let allDeleted = true;
           this.onMenuItemClick.emit(item);
+          if (item.handled == false) {
+            Dialog.delete().done(() => {
+                let key = grid.getSelectedRowKeys();
+                item.data=key;
+                key.forEach(function (arrayItem) {
+                  grid.deleteRow(arrayItem);
+                  grid.getDataSource().store().remove(arrayItem).then(() => {
+                    
+                  }).catch(()=>{
+                    allDeleted=false;
+                  });
+                });
+            
+            }).final(() => {
+              if(allDeleted){
+                grid.refresh();
+                this.onSelectedDelete.emit(item);                
+                }
+              grid.focus();
+            });;
+          }
           break;
         }
       case 'DXEdit':
@@ -853,6 +885,7 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
       update: (key, values) => {
         let deferred: Deferred<any> = new Deferred<any>();
         if (this.saveApi) {
+          this.grid.instance.totalCount();
           let row = this.grid.instance.getDataSource().items().find(c => c.ID == key);
           let data: any = Object.assign(row, values);
           this.service.post(this.saveApi, (result) => {
@@ -963,6 +996,7 @@ export class DXGridToolbarComponent implements AfterViewInit, OnChanges {
     else {
       Object.assign(this.localData, data);
     }
+    
   }
 
 

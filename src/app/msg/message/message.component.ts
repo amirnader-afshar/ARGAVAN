@@ -8,8 +8,10 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
 import { PopupBasePage } from '../../shared/BasePage';
 import { ServiceCaller } from '../../shared/services/ServiceCaller';
 import { CoreService } from "../../shared/services/CoreService";
-import { FileGroup } from "../../shared/components/fileExplorer/fileexplorer.util";
+import { FileExplorerInputConfig, fileExtensionConvertor, FileGroup } from "../../shared/components/fileExplorer/fileexplorer.util";
 import { Dialog } from '../../shared/util/Dialog';
+import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
+import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
 
 @Component({
   selector: 'app-message',
@@ -48,6 +50,8 @@ export class MessageComponent extends PopupBasePage implements OnInit {
  
   ];
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
+  config: FileExplorerInputConfig = new FileExplorerInputConfig();
+  AttachmentsFiles: FileDto = new FileDto();
   editItem: any = {};
   dataToPostBody: DataToPost;
   FilterCompanyCondition: any = { SUSR_CMPN_ID: null };
@@ -56,7 +60,7 @@ export class MessageComponent extends PopupBasePage implements OnInit {
   dataSource:any =[];
   CompanydataSource:any =[];
 
-  constructor(public router: Router,private route: ActivatedRoute,public translate: TranslateService, public service: ServiceCaller,public core: CoreService,) { 
+  constructor(private explorerService: FileExplorerService,public router: Router,private route: ActivatedRoute,public translate: TranslateService, public service: ServiceCaller,public core: CoreService,) { 
     super(translate); 
     this.route.queryParams.subscribe(params => {
 
@@ -122,7 +126,7 @@ export class MessageComponent extends PopupBasePage implements OnInit {
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0];
-        
+        this.Attachments=this.editItem.ATTACHMENTS;
       }   
       if (data.ReturnData.Data_Output[0].Detail.Detail!='is Empty') {
         this.dataSource = data.ReturnData.Data_Output[0].Detail;
@@ -137,7 +141,35 @@ export class MessageComponent extends PopupBasePage implements OnInit {
       SUSR_CMPN_ID: e.ID
     };
   }
+  ondataSourceRowRemoving(e)
+  {
+    var o =  {CMPN_NAM:e.data.MSG_RECIVER_CMPN_NAM
+      ,SUSR_NAM_USR:e.data.MSG_RECIVER_SUSR_NAM_USR
+      ,SUSR_ID:e.data.MSG_RECIVER_USER_ID
+      ,CMPN_ID:e.data.MSG_RECIVER_CMPN_ID}
+  
+      const found = this.CompanydataSource.some(el => el.SUSR_ID === e.data.MSG_RECIVER_USER_ID);
+      if (!found) {
+        this.CompanydataSource.push(o); 
+      }
+  }
 
+  ondataSourceSelectedDelete(e)
+  {
+    const that = this;
+  
+    e.data.forEach(function (arrayItem) {
+      var o =  {CMPN_NAM:arrayItem.MSG_RECIVER_CMPN_NAM
+        ,SUSR_NAM_USR:arrayItem.MSG_RECIVER_SUSR_NAM_USR
+        ,SUSR_ID:arrayItem.MSG_RECIVER_USER_ID
+        ,CMPN_ID:arrayItem.MSG_RECIVER_CMPN_ID}
+    
+        const found = that.CompanydataSource.some(el => el.SUSR_ID === arrayItem.MSG_RECIVER_USER_ID);
+        if (!found) {
+          that.CompanydataSource.push(o); 
+        }
+    });
+  }
   valueChange(value) {
     this.editItem.MSG_BODY = value;
 }
@@ -183,7 +215,60 @@ export class MessageComponent extends PopupBasePage implements OnInit {
     }
 
   }
+  fileExtensions(): string {
+    let extensions = '';
+    this.config.fileExtensions.forEach((item, index) => {
+        extensions += fileExtensionConvertor(item) + ',';
+    })
+    if (extensions.endsWith(','))
+        extensions.substr(extensions.length - 1);
+    return extensions;
+}
+onChangeMain(e) {
+  this.AttachmentsFiles.files = e.target.files;
+  this.upload();
+}
 
+onAttachClick(e) {
+  this.core.fileExplorer.open({ entityId: this.editItem.ID,tabelName:"MSG_MESSAGE"
+        , fileGroup: FileGroup.msgAttachments,multipleModeDisable:true,enableSecurityMode:false}).then((data) => {
+    this.Attachments=data;
+    this.editItem.count_Attach=data.length;
+
+  });    
+
+}
+onDeleteClick(id: any) {
+
+  Dialog.confirm('تایید حذف', 'آیا مایل به حذف هستید؟').okay(() => {
+    this.service.getPromise('/EDM/File/Delete', {id}).then(res => {
+      Notify.success('فایل با موفقیت حذف شد');  
+      let index = this.Attachments.findIndex(d => d.ID === id); //find index in your array
+      this.Attachments.splice(index, 1);//remove element from array
+        }).catch(err => {
+            Notify.error('عملیات با خطا مواجه شد')
+        });
+    });
+}
+downloadFile(id) {
+  debugger
+  this.service.getfile("/EDM/File/Download?fileId=" + id, (data) => {
+
+  });
+}
+upload(): void {        
+  this.AttachmentsFiles.fileGroup = FileGroup.msgAttachments.toString();
+  this.AttachmentsFiles.entityId = this.editItem.ID;
+  this.AttachmentsFiles.tabelName = "MSG_MESSAGE";
+  this.explorerService.uploadFile(this.AttachmentsFiles).then(res => {
+      if (res!=null){
+        console.log('res',res);
+        console.log('attach',this.Attachments);
+        this.Attachments=[...this.Attachments?.length?this.Attachments:[] ,...res.Result];
+      }
+          
+  });  
+}
   save()
   {
     if (!this.editItem.MSG_BODY){
@@ -215,28 +300,23 @@ export class MessageComponent extends PopupBasePage implements OnInit {
         });
     } 
   }
-  onAttachClick(e) {
-    this.core.fileExplorer.open({ entityId: this.editItem.ID,tabelName:"MSG_MESSAGE"
-          , fileGroup: FileGroup.msgAttachments,multipleModeDisable:true,enableSecurityMode:false}).then((data) => {
-      this.Attachments=data;
-      this.editItem.count_Attach=data.length;
-  
-    });    
-  
-  }
+
 
   onAddAllClick(e){
+    const that = this;
     let data : any=[];
     this.CompanydataSource.forEach(function (arrayItem) {
       var o =  {MSG_RECIVER_CMPN_NAM:arrayItem.CMPN_NAM
         ,MSG_RECIVER_SUSR_NAM_USR:arrayItem.SUSR_NAM_USR
         ,MSG_RECIVER_USER_ID:arrayItem.SUSR_ID
         ,MSG_RECIVER_CMPN_ID:arrayItem.CMPN_ID}
-    
-        data.push(o); 
+        const found = that.dataSource.some(el => el.MSG_RECIVER_USER_ID === arrayItem.SUSR_ID);
+        if (!found) {
+          data.push(o); 
+        }
   });
-  this.dataSource=[];
-  this.dataSource=data;
+  this.CompanydataSource=[];
+  this.dataSource=[...this.dataSource,...data];
   }
 
  onAddClick(e){
@@ -255,13 +335,13 @@ export class MessageComponent extends PopupBasePage implements OnInit {
     ,MSG_RECIVER_CMPN_ID:e.data.CMPN_ID}
 
     const found = this.dataSource.some(el => el.MSG_RECIVER_USER_ID === e.data.SUSR_ID);
-    if (!found) this.dataSource.push(o); 
+    if (!found) {
+      this.dataSource.push(o); 
+      let index = this.CompanydataSource.findIndex(d => d.SUSR_ID === o.MSG_RECIVER_USER_ID); //find index in your array
+      this.CompanydataSource.splice(index, 1);//remove element from array
+    }
   
  }
 
- onDataChange(e)
- {    
-     console.log(e)
- }
 }
 

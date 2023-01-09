@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxValidationGroupComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxValidationGroupComponent } from 'devextreme-angular';
 import {Router, ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '../../shared/services/TranslateService';
@@ -50,6 +50,8 @@ export class MessageComponent extends PopupBasePage implements OnInit {
  
   ];
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
+  @ViewChild(DxDataGridComponent, { static: false }) companygrid: DxDataGridComponent;
+
   config: FileExplorerInputConfig = new FileExplorerInputConfig();
   AttachmentsFiles: FileDto = new FileDto();
   editItem: any = {};
@@ -303,9 +305,10 @@ upload(): void {
 
 
   onAddAllClick(e){
+   let selectedData =  this.companygrid.instance.getSelectedRowKeys();  
     const that = this;
     let data : any=[];
-    this.CompanydataSource.forEach(function (arrayItem) {
+    selectedData.forEach(function (arrayItem) {
       var o =  {MSG_RECIVER_CMPN_NAM:arrayItem.CMPN_NAM
         ,MSG_RECIVER_SUSR_NAM_USR:arrayItem.SUSR_NAM_USR
         ,MSG_RECIVER_USER_ID:arrayItem.SUSR_ID
@@ -313,9 +316,11 @@ upload(): void {
         const found = that.dataSource.some(el => el.MSG_RECIVER_USER_ID === arrayItem.SUSR_ID);
         if (!found) {
           data.push(o); 
+          let index = that.CompanydataSource.findIndex(d => d.SUSR_ID === arrayItem.SUSR_ID); //find index in your array
+          that.CompanydataSource.splice(index, 1);//remove element from array
         }
   });
-  this.CompanydataSource=[];
+
   this.dataSource=[...this.dataSource,...data];
   }
 

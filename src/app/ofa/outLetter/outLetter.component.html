@@ -214,12 +214,12 @@
           <panel-box  [caption]=" 'گیرندگان' | translate">                    
  
             <div class="row">
-              <div class="col-md-4 col-sm-12">
+              <div style="direction: ltr !important;" class="col-md-5 col-sm-12">
 
-              <dx-button [width]="120" (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
+              <dx-button  (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
                 <div  *dxTemplate="let data of 'buttonTemplate'">  
                   <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
-                  <span style="margin: 5px;">افزودن همه</span>                  
+                  <span style="margin: 5px;">افزودن انتخاب شده ها </span>                  
                 </div>  
               </dx-button>  
               </div>
@@ -229,12 +229,23 @@
                 تعداد {{CompanydataSource.length}}
                 <grid-toolbar>
                 <dx-data-grid #companygrid    (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
-                [columnAutoWidth]="true" [height]="250">
+                [columnAutoWidth]="true" [height]="500">
                 <dxo-filter-row [visible]="true"></dxo-filter-row> 
-                <dxo-scrolling mode="virtual"></dxo-scrolling>
-                <dxo-selection mode="single"></dxo-selection>
-                <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="250"></dxi-column>
+                <dxo-paging [pageSize]="150"></dxo-paging>
+                <dxo-pager [visible]="true"></dxo-pager>
+                <dxo-selection [allowSelectAll]="true"></dxo-selection>                                               
+                <dxi-column [groupIndex]="0" dataField="IS_IT_CMPN_TEXT" caption="IS_IT_CMPN_TEXT" groupCellTemplate="groupCellTemplate"></dxi-column>
+                <div *dxTemplate="let cellInfo of 'groupCellTemplate'">
+                  <dx-check-box [(value)]="groupCheckboxModel[cellInfo.value]" [text]="cellInfo.value" (onValueChanged)="onParentChecked($event,cellInfo)">
+                  </dx-check-box>
+              </div>
+                <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="250" cellTemplate="companyNameTemplate"></dxi-column>
+                <div *dxTemplate="let cellInfo of 'companyNameTemplate'">
+                  <dx-check-box [value]="cellInfo.data.checked" [text]="cellInfo.value" (onValueChanged)="onChildChecked($event,cellInfo)">
+                  </dx-check-box>
+              </div>
                 <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="210"></dxi-column>                
+
               </dx-data-grid>
             </grid-toolbar>
               </div>
@@ -244,15 +255,16 @@
                 <grid-toolbar (onSelectedDelete)="onreciversDataSourceSelectedDelete($event) " (onDeleteEditRow)="onreciversDataSourceRowRemoving($event)" >
                   <dx-data-grid #grid  [dataSource]="reciversDataSource" 
                   
-                    [columnAutoWidth]="true" [height]="250">
+                    [columnAutoWidth]="true" [height]="500">
                     <dxo-editing 
                     mode="row"                    
                     [allowDeleting]="true"
                     [allowAdding]="false">
                     </dxo-editing>  
                     <dxo-filter-row [visible]="true"></dxo-filter-row>            
-                    <dxo-scrolling mode="virtual"></dxo-scrolling>
-                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxo-paging [pageSize]="8"></dxo-paging>
+                    <dxo-pager [visible]="true"></dxo-pager>
+                    <dxo-selection mode="multiple" [allowSelectAll]="true"></dxo-selection>
 
                     <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="200"></dxi-column>
                     <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="200"></dxi-column>

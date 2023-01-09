@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild,ElementRef } from '@angular
 import { BasePage } from '../../shared/BasePage';
 import { TranslateService } from '../../shared/services/TranslateService';
 import { Router,ActivatedRoute } from '@angular/router';
-import { DxValidationGroupComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxValidationGroupComponent } from 'devextreme-angular';
 
 import { Notify } from '../../shared/util/Dialog';
 
@@ -30,6 +30,8 @@ import {DocumenteEditorComponent} from './documente-editor/documente-editor.comp
 import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
 import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
 import { JsonPipe } from '@angular/common';
+import CustomStore from 'devextreme/data/custom_store';
+import { Deferred } from 'src/app/shared/Deferred';
 
 
 
@@ -53,13 +55,14 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   @ViewChild('viewer',{static: false}) vieweRef: ElementRef;
   @ViewChild(DocumenteEditorComponent) childcmp:DocumenteEditorComponent;
+  @ViewChild(DxDataGridComponent, { static: false }) companygrid: DxDataGridComponent;
   
   GRID_SOURCE;
   user;
   allcategoryItems: any[];
   categoryselected: string[]=[];
   categoryDataSource: any = {};
-  CompanydataSource:any =[];
+  CompanydataSource:any ={};
   reciversDataSource:any =[];
 
 
@@ -175,6 +178,9 @@ upload(): void {
 
    dblClick(e)
    {
+      if (!e.data.IS_IT_CMPN_TEXT)
+        {return;}
+
       let found:any;
       if (e.data.IS_IT_CMPN)
       {
@@ -196,23 +202,43 @@ upload(): void {
     
   }
    onAddAllClick(e){
+
+   let selectedData : any = [];
+    this.CompanydataSource.forEach(function (arrayItem) { 
+      if (arrayItem.checked)
+      {
+        selectedData.push(arrayItem); 
+      }
+
+    });
+    
     const that = this;
     let data : any=[];
     let found:any;
-    this.CompanydataSource.forEach(function (arrayItem) {   
+    selectedData.forEach(function (arrayItem) {   
       if (arrayItem.IS_IT_CMPN)
       {
         found = that.reciversDataSource.some(el => el.SUSR_ID === arrayItem.SUSR_ID);
       }
       else
         found = that.reciversDataSource.some(el => el.CMPN_ID === arrayItem.CMPN_ID);
-        if (!found) { 
-          data.push(arrayItem); 
+
+      if (!found) { 
+        data.push(arrayItem); 
+        let index;
+        if (arrayItem.IS_IT_CMPN)
+        {          
+           index = that.CompanydataSource.findIndex(d => d.SUSR_ID === arrayItem.SUSR_ID); //find index in your array
         }
+        else
+           index = that.CompanydataSource.findIndex(d => d.CMPN_ID === arrayItem.CMPN_ID); //find index in your array        
+
+        that.CompanydataSource.splice(index, 1);//remove element from array
+      }
   });
-  this.CompanydataSource=[];
   this.reciversDataSource=[...this.reciversDataSource,...data];
   }
+  groupCheckboxModel: any = {};
    loadCompanys(){
 
     this.dataToPostBody = {
@@ -224,7 +250,6 @@ upload(): void {
       }
       
     }
-
     this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
@@ -233,10 +258,15 @@ upload(): void {
         if (data.ReturnData.Data_Output[0].Detail.Detail!='is Empty') {
             Detail = data.ReturnData.Data_Output[0].Detail;
             this.CompanydataSource = [ ...this.CompanydataSource, ...Detail];  
+            this.CompanydataSource.forEach(c => {
+              c.checked = false
+              this.groupCheckboxModel[c.IS_IT_CMPN_TEXT] = false;
+          }); 
         }   
 
       }            
         });
+
    };
 
    loadCategory(){
@@ -693,7 +723,9 @@ onreciversDataSourceSelectedDelete(e)
     else
       found = that.CompanydataSource.some(el => el.CMPN_ID === arrayItem.CMPN_ID);      
     if (!found) {
+      arrayItem.checked = false;
       that.CompanydataSource.push(arrayItem); 
+      that.checkParent(arrayItem.IS_IT_CMPN_TEXT);
     }
   });
 }
@@ -709,8 +741,47 @@ onreciversDataSourceRowRemoving(e)
     found = this.CompanydataSource.some(el => el.CMPN_ID === e.data.CMPN_ID);    
     
     if (!found) {
+      e.checked=false;
       this.CompanydataSource.push(e.data); 
+      this.checkParent(e.data.IS_IT_CMPN_TEXT);
     }
 }
+
+onParentChecked(e, d) {
+  
+  if (e.event) {
+    if(d.data.collapsedItems)
+      d.data.collapsedItems.forEach(element => {
+          element.checked = e.value;
+      });
+    else
+    {
+      d.data.items.forEach(element => {
+        element.checked = e.value;
+    });      
+    }
+  }
+}
+onChildChecked(e, d) {
+  
+  if (e.event) {
+      d.data.checked = e.value;
+      this.checkParent(d.data.IS_IT_CMPN_TEXT)
+  }
+}
+checkParent(IS_IT_CMPN_TEXT) {
+  this.companygrid.instance.byKey([IS_IT_CMPN_TEXT]).then(group => {
+      const everyChecked = group.items.every(e => e.checked);
+      const someChecked = group.items.some(e => e.checked);
+      if (everyChecked) {
+          this.groupCheckboxModel[IS_IT_CMPN_TEXT] = true;
+      } else if (someChecked) {
+          this.groupCheckboxModel[IS_IT_CMPN_TEXT] = undefined;
+      } else {
+          this.groupCheckboxModel[IS_IT_CMPN_TEXT] = false;
+      }
+  })
+}
+
 
 }

@@ -262,6 +262,8 @@ export class DXLovComponent {
       that.detectFields();
 
       return res;
+    }).catch(e=>{
+      console.error('lov getFormList',e)
     })
   }
 

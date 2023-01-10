@@ -29,7 +29,9 @@ export const ROUTES: any = [
     CoreModule.forRoot({ storage: {} }),
     ADMModule,
     //TODO sm-edit: Module factory sharing
-    RouterModule.forRoot(ROUTES, { useHash: true }),
+    RouterModule.forRoot(ROUTES, { useHash: true,scrollPositionRestoration: 'enabled', // or 'top'
+    anchorScrolling: 'enabled',
+    scrollOffset: [0, 64]}),
     // RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     BrowserAnimationsModule
 

@@ -29,7 +29,7 @@ import {DocumenteEditorComponent} from './documente-editor/documente-editor.comp
 
 import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
 import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, ViewportScroller } from '@angular/common';
 import CustomStore from 'devextreme/data/custom_store';
 import { Deferred } from 'src/app/shared/Deferred';
 
@@ -67,7 +67,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
 
 
   constructor(private explorerService: FileExplorerService,public translate: TranslateService
-            , public router: Router,
+            , public router: Router,private readonly viewport: ViewportScroller,
             private route: ActivatedRoute
             , public service: ServiceCaller
             ,public permissionService: PermissionService,
@@ -191,8 +191,16 @@ upload(): void {
 
       if (!found) {
         this.reciversDataSource.push(e.data); 
-        let index = this.CompanydataSource.findIndex(d => d.SUSR_ID === e.data.SUSR_ID); //find index in your array
-        this.CompanydataSource.splice(index, 1);//remove element from array
+        let index;
+          if (e.data.IS_IT_CMPN)
+          {          
+            index = this.CompanydataSource.findIndex(d => d.SUSR_ID === e.data.SUSR_ID); //find index in your array
+          }
+          else
+            index = this.CompanydataSource.findIndex(d => d.CMPN_ID === e.data.CMPN_ID); //find index in your array        
+          
+          this.CompanydataSource.splice(index, 1);//remove element from array
+          this.checkParent(e.data.IS_IT_CMPN_TEXT);
       }
    }
 
@@ -202,7 +210,7 @@ upload(): void {
     
   }
    onAddAllClick(e){
-
+    this.viewport.scrollToAnchor('test');
    let selectedData : any = [];
     this.CompanydataSource.forEach(function (arrayItem) { 
       if (arrayItem.checked)
@@ -234,6 +242,31 @@ upload(): void {
            index = that.CompanydataSource.findIndex(d => d.CMPN_ID === arrayItem.CMPN_ID); //find index in your array        
 
         that.CompanydataSource.splice(index, 1);//remove element from array
+        that.companygrid.instance.byKey([arrayItem.IS_IT_CMPN_TEXT]).then(group => {
+          if (arrayItem.IS_IT_CMPN)
+          { 
+            if (group.items)         
+              index = group.items.findIndex(d => d.SUSR_ID === arrayItem.SUSR_ID); //find index in your array
+            else
+              index = group.collapsedItems.findIndex(d => d.SUSR_ID === arrayItem.SUSR_ID); //find index in your array
+
+          }
+          else
+          {
+            if (group.items)  
+              index = group.items.findIndex(d => d.CMPN_ID === arrayItem.CMPN_ID);  
+            else
+              index = group.collapsedItems.findIndex(d => d.CMPN_ID === arrayItem.CMPN_ID);  
+
+          }
+          if (group.items) 
+            group.items.splice(index,1);
+          else 
+            group.collapsedItems.splice(index,1);
+            
+        });
+        that.checkParent(arrayItem.IS_IT_CMPN_TEXT);
+
       }
   });
   this.reciversDataSource=[...this.reciversDataSource,...data];
@@ -379,6 +412,8 @@ upload(): void {
   }
 
   ngOnInit() {
+
+    
     this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
     this.editItem.FolderID = Guid.empty;    
     this.getBookNumber();
@@ -741,7 +776,7 @@ onreciversDataSourceRowRemoving(e)
     found = this.CompanydataSource.some(el => el.CMPN_ID === e.data.CMPN_ID);    
     
     if (!found) {
-      e.checked=false;
+      e.data.checked=false;
       this.CompanydataSource.push(e.data); 
       this.checkParent(e.data.IS_IT_CMPN_TEXT);
     }
@@ -771,8 +806,15 @@ onChildChecked(e, d) {
 }
 checkParent(IS_IT_CMPN_TEXT) {
   this.companygrid.instance.byKey([IS_IT_CMPN_TEXT]).then(group => {
-      const everyChecked = group.items.every(e => e.checked);
-      const someChecked = group.items.some(e => e.checked);
+      let data ;
+      if (group.items){
+          data = group.items
+      }
+      else
+      { data =group.collapsedItems }
+
+      const everyChecked = data.every(e => e.checked);
+      const someChecked = data.some(e => e.checked);
       if (everyChecked) {
           this.groupCheckboxModel[IS_IT_CMPN_TEXT] = true;
       } else if (someChecked) {

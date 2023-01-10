@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-sm-7">
               <dx-label text="{{ 'OFA_LETTER_TITEL' | translate }}">
-                <dx-text-box [readOnly]="docReadOnly" [(value)]="editItem.LETTER_TITEL">
+                <dx-text-box  id="test" [readOnly]="docReadOnly" [(value)]="editItem.LETTER_TITEL">
                   <dx-validator>
                     <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
                   </dx-validator>

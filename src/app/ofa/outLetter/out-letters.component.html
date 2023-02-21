@@ -10,6 +10,8 @@
               <dxo-sorting mode="multiple"></dxo-sorting>
               <dxo-filter-panel [visible]="true"></dxo-filter-panel>
               <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-paging [pageSize]="15"></dxo-paging>
+              <dxo-pager [visible]="true"></dxo-pager>              
               <dxo-scrolling mode="virtual"></dxo-scrolling>
               <dxo-selection mode="single"></dxo-selection>
               
@@ -33,7 +35,7 @@
               <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_DATE"  dataType="date" caption="{{'OFA_LETTER_DATE'| translate}}" [width]="100"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="100"></dxi-column>
-              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
+              <dxi-column dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>
             
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_CMPN_NAM"  caption="{{'OFA_LETTER_SENDER_CMPN'| translate}}" [width]="200"></dxi-column>

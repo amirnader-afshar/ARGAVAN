@@ -55,8 +55,13 @@
             </dx-label>
           </div>
           <div class="col-md-3">
-            <dx-button text="تعریف امضا" (click)="onSignatureClick($event)"></dx-button>
-            <img [src]="editItem.sign_FILE_BASE64STRING">
+            <!-- <dx-button text="تعریف امضا" (click)="onSignatureClick($event)"></dx-button>
+            <img [src]="editItem.sign_FILE_BASE64STRING"> -->
+            <dx-label *ngIf="(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA )" text="{{'EMD_FILE'| translate}}">
+              <input #mainfile type="file" [multiple]="true" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
+              />
+              <img [src]="editItem.sign_FILE_BASE64STRING"> 
+          </dx-label>
           </div>
         </div>
       </panel-box>

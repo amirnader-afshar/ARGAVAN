@@ -7,7 +7,8 @@ export enum DateTimeFormat {
   PersianDateTime,
   DateTime,
   Date,
-  Time
+  Time,
+  PersianDate_Revers
 }
 
 export class DateTime {
@@ -29,6 +30,8 @@ export class DateTime {
         return 'jYYYY/jMM/jDD HH:mm';
       case DateTimeFormat.Time:
         return 'HH:mm';
+      case DateTimeFormat.PersianDate_Revers:
+          return 'jDD/jMM/jYYYY';
     }
   }
 

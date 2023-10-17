@@ -3,6 +3,7 @@ import { BasePage } from '../../shared/BasePage';
 import { TranslateService } from '../../shared/services/TranslateService';
 import { Router,ActivatedRoute } from '@angular/router';
 import { DxDataGridComponent, DxValidationGroupComponent } from 'devextreme-angular';
+import { TemplateHandler } from 'easy-template-x';
 
 import { Notify } from '../../shared/util/Dialog';
 
@@ -12,7 +13,8 @@ import { CoreService } from "../../shared/services/CoreService";
 
 import { FileExplorerInputConfig } from "../../shared/components/fileExplorer/fileexplorer.util";
 import { DemisPopupService } from "../../shared/components/popup/demis-popup-service";
-import { UploadPopupComponent } from "../../shared/components/fileExplorer/upload.popup";
+
+import { JalaliPipe } from '../../shared/pipes/jalali_show_date_full_name';
 
 import { Guid } from 'src/app/shared/types/GUID';
 import { environment } from '../../../environments/environment';
@@ -25,13 +27,10 @@ import { LettrtErjaatComponent } from "../lettrt-erjaat/lettrt-erjaat.component"
 import { Dialog } from '../../shared/util/Dialog';
 import   { WebViewerInstance }  from '@pdftron/webviewer';
 
-import {DocumenteEditorComponent} from './documente-editor/documente-editor.component'
-
 import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
 import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
-import { JsonPipe, ViewportScroller } from '@angular/common';
-import CustomStore from 'devextreme/data/custom_store';
-import { Deferred } from 'src/app/shared/Deferred';
+import {  ViewportScroller } from '@angular/common';
+
 
 
 
@@ -44,6 +43,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
 
   
   AttachmentsFiles: FileDto = new FileDto();
+  MainFile: FileDto = new FileDto();
+
   filepath:string=environment.url;
   
   config: FileExplorerInputConfig = new FileExplorerInputConfig();
@@ -54,7 +55,6 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   OFA_AUTO_BOOK_NO;
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   @ViewChild('viewer',{static: false}) vieweRef: ElementRef;
-  @ViewChild(DocumenteEditorComponent) childcmp:DocumenteEditorComponent;
   @ViewChild(DxDataGridComponent, { static: false }) companygrid: DxDataGridComponent;
   
   GRID_SOURCE;
@@ -64,7 +64,8 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   categoryDataSource: any = {};
   CompanydataSource:any ={};
   reciversDataSource:any =[];
-
+  fileUrl;
+  allow_OFA_ACT_001;
 
   constructor(private explorerService: FileExplorerService,public translate: TranslateService
             , public router: Router,private readonly viewport: ViewportScroller,
@@ -74,6 +75,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             public core: CoreService,
             public popup: DemisPopupService,
             private routeData: RouteData, private confService: ConfigService,
+            private datepipe :JalaliPipe
             ) {
     super(translate);
 
@@ -142,6 +144,48 @@ onChangeMain(e) {
   this.upload();
 }
 
+OnMainFileChange(e){
+  this.MainFile.files= e.target.files;
+  this.Mainfileupload();
+
+}
+
+Mainfileupload(): void {   
+       
+  this.MainFile.fileGroup = FileGroup.ofaMainFile.toString();
+  this.MainFile.entityId = this.editItem.ID;
+  this.MainFile.tabelName = "OFA_LETTER";
+  this.MainFile.SaveAsPDF = true;
+  this.explorerService.uploadFile(this.MainFile).then(res => {
+      if (res!=null){
+        console.log('res MainFile',res);
+        var id,docxbase64 ;
+        
+        res.Result.forEach(function (arrayItem) { 
+          if (arrayItem.FileType==="WORD")
+          {
+            id=  arrayItem.ID;
+            docxbase64=arrayItem.FILE_BASE64STRING;
+          }
+        
+        });  
+        this.editItem.LETTER_MAIN_FILE_ID =id;   
+        this.DOCXbase64String=docxbase64;   
+
+
+        var base64 ;
+        res.Result.forEach(function (arrayItem) { 
+          if (arrayItem.FileType==="PDF")
+          {
+            base64 = arrayItem.FILE_BASE64STRING
+          }          
+        });
+        this.PDFbase64String=base64;
+      }
+          
+  });  
+}
+
 onDeleteClick(id: any) {
 
   Dialog.confirm('تایید حذف', 'آیا مایل به حذف هستید؟').okay(() => {
@@ -156,7 +200,7 @@ onDeleteClick(id: any) {
 }
 
 downloadFile(id) {
-  debugger
+  
   this.service.getfile("/EDM/File/Download?fileId=" + id, (data) => {
 
   });
@@ -408,11 +452,15 @@ upload(): void {
                   ,LETTER_DATE:this.editItem.LETTER_DATE}
     this.reciversDataSource=[];  
     this.Attachments=[];
-    this.getBookNumber();                  
+    this.getBookNumber();  
+    this.loadCompanys();        
+    this.DOCXbase64String="";
+    this.PDFbase64String="";
   }
 
   ngOnInit() {
 
+     this.allow_OFA_ACT_001 = this.permissionService.hasDefined('OFA-ACT-001');//چک دسترسی به امضای نامه 
     
     this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
     this.editItem.FolderID = Guid.empty;    
@@ -430,6 +478,7 @@ upload(): void {
   }
 
   loadLetter(){
+
     this.editItem.LOAD_MAIN_FILE=true;
     this.dataToPostBody = {
       'Data': {
@@ -446,26 +495,47 @@ upload(): void {
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0]; 
         this.Attachments=this.editItem.ATTACHMENTS; 
+        this.MainFiles=this.editItem.MAINFILES;
         // this.reciversDataSource =  [ ...this.editItem.LETTER_CMPNY_RECIVERS_DATA? this.editItem.LETTER_CMPNY_RECIVERS_DATA:[]
         //     , ...this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA?this.editItem.LETTER_NONE_CMPNY_RECIVERS_DATA:[]];  
+        if (this.MainFiles){
+            var pdfbase64,docxbase64 ;
 
-        this.childcmp.openDocument(this.editItem.FILE_PATH,this.editItem.FILE_NAME).then(
-          data => {
-            this.childcmp.updateDocFields('{number}',this.editItem.LETTER_BOOK_NUMBER);
-            this.childcmp.updateDocFields('{date}',this.editItem.LETTER_BOOK_DATE);
-            this.childcmp.updateDocFields('{attachment}',this.editItem.count_Attach>0?'دارد':'ندارد');
-          });   
+            this.MainFiles.forEach(function (arrayItem) { 
+              if (arrayItem.FileType==="PDF")
+              {
+                pdfbase64 = arrayItem.FILE_BASE64STRING
+              }
+
+              if (arrayItem.FileType==="WORD")
+              {
+                docxbase64 = arrayItem.FILE_BASE64STRING
+              }
+              
+            });
+            this.PDFbase64String=pdfbase64;
+            this.DOCXbase64String=docxbase64;
+
+
+        }
 
         this.docReadOnly=true;  
-        if (this.editItem.LETTER_IS_SENT)
-          this.docReadOnly=true;
-        if (this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_OWNER && this.editItem.LETTER_AM_I_ERJA)
-          this.docReadOnly=false;
-        if (!this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_OWNER)
-          this.docReadOnly=false;
 
-        this.menuItems[1].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA )
-        this.menuItems[0].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA ); 
+        if (this.editItem.LETTER_ONE_WAY_ERJA)
+          {
+            this.docReadOnly=true;
+            this.menuItems[1].visible=false;
+            this.menuItems[0].visible=false;
+          }
+        else
+          {
+            this.docReadOnly=false;
+            if(!this.editItem.LETTER_AM_I_ERJA)
+              this.docReadOnly=true;
+
+            this.menuItems[1].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA )
+            this.menuItems[0].visible=(!this.editItem.LETTER_IS_SENT) || ( this.editItem.LETTER_IS_SENT && this.editItem.LETTER_AM_I_ERJA ); 
+          }
         
         if(this.editItem.LETTER_IS_ARCHIVE){
           this.menuItems[4].text='بازگشت از آرشیو';          
@@ -483,9 +553,12 @@ upload(): void {
   filter: any = {};
   editItem: any = {};
   Attachments:any={};
+  MainFiles:any={};
   Notes:any={};
   Categorys:any={};
   dataToPostBody: DataToPost;
+  PDFbase64String:any;
+  DOCXbase64String:any;
 
 
 
@@ -510,8 +583,6 @@ upload(): void {
           this.editItem=data.ReturnData.Data_Output[0].Header[0];            
           this.loadLetter();
           Notify.success('اطلاعات با موفقیت ذخیره شد');
-
-
         }
         
       });
@@ -585,30 +656,25 @@ upload(): void {
   }
 
   Save(isSent: Boolean,mode :number): Promise<any> {
-    // if (!this.editItem.LETTER_MAIN_FILE_ID)
-    // {
-    //   Notify.error('!تصویر نامه را بارگزاری کنید');
-    //   return;
-    // }
+
     return new Promise((resolve, reject) => {
+      // if (!this.editItem.LETTER_MAIN_FILE_ID)
+      // {
+      //   Notify.error('!تصویر نامه را بارگزاری کنید');
+      //   reject('!تصویر نامه را بارگزاری کنید');
+      //   return;
+      // }
+
           var result = this.form.instance.validate();
           if (result.isValid) 
           {    
-          this.childcmp.saveDocument('ofa',this.editItem.LETTER_MAIN_FILE_ID).then((data) => {
 
-          if (data==Guid.empty) 
-          {
-              Notify.error('خطا در بارگزاری متن نامه');
-              return;
-          }
-          this.editItem.LETTER_MAIN_FILE_ID = data.fileid;
+  
           if (this.categoryselected.length>0)
           { 
             this.Categorys=[];
             this.Categorys=this.categoryDataSource.filter(el => this.categoryselected.includes(el.CATEGORY_CAPTION));
           }
-
-
             
             this.editItem.LETTER_IS_SENT=isSent;
             this.dataToPostBody = {
@@ -643,7 +709,7 @@ upload(): void {
               resolve (true) ;
               
             });          
-        }); 
+
       
           }
   });
@@ -664,7 +730,6 @@ upload(): void {
 
 onTemplateChange(e) {
   console.log('Template',e);
-  this.childcmp.openDocument(e.FILE_PATH,!this.editItem.FILE_NAME?'unknow.docx':this.editItem.FILE_NAME);
 }
 
 
@@ -678,29 +743,6 @@ onAttachClick(e) {
 
 }
 
-uploadfile(e) {
-  this.config.fileGroup=FileGroup.ofaMainFile;
-  this.config.multipleModeDisable=true;
-  this.config.enableSecurityMode=false;
-  this.popup.open(UploadPopupComponent, {
-    title: 'بارگذاری فایل',
-    data: {
-        entityId:'kkkk',// this.editItem.LETTER_ID,
-        folderid: this.editItem.FolderID,        
-        ...this.config
-    } //TODO add entity id from explorer
-}).then(res => {
-  console.log(res);
-  this.editItem.LETTER_MAIN_FILE_ID = res.Result[0].ID;
-  this.editItem.MainFilePatch=environment.url+res.Result[0].Patch;
-  this.editItem.FILE_BASE64STRING=res.Result[0].FILE_BASE64STRING;
-  this.editItem.FLTP_ICON=res.Result[0].Icon;
-  this.editItem.FLTP_DES=res.Result[0].FileType;
-  this.editItem.FILE_TITLE=res.Result[0].Title;
-  // this.wvinstance.loadDocument(this.editItem.MainFilePatch,{    
-  // })
-})
-}
 
 showNote(e) {
   
@@ -735,7 +777,102 @@ showErjaat(e){
   
 }) 
 }
+getBlobFromUrl(url)
+{
+  return new Promise<File>((resolve, reject) => {
 
+    var json = atob(this.DOCXbase64String);
+        var ia = new Uint8Array(json.length);
+        for (var i = 0; i < json.length; i++) {
+          ia[i] = json.charCodeAt(i);
+        }
+        var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+        resolve(blob as File);
+        //var url = window.URL.createObjectURL(blob);
+        //window.open(url); 
+
+  // this.service.get("/EDM/File/GetFileBase64?entityId=72760809-985f-ee11-9c93-f816541c96c9", (data) => {
+  //   console.log("getfile",data);
+  //     var json = atob(data.FILE_BASE64STRING);
+  //     var ia = new Uint8Array(json.length);
+  //     for (var i = 0; i < json.length; i++) {
+  //       ia[i] = json.charCodeAt(i);
+  //     }
+  //     var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  //     resolve(blob as File);
+  //     var url = window.URL.createObjectURL(blob);
+  //     window.open(url); 
+         
+  //     });
+  });
+};
+
+getSignBlobFromUrl()
+{
+  return new Promise<Blob>((resolve, reject) => {
+    var json = atob(localStorage.getItem('Sign_FILE_BASE64STRING'));
+    var ia = new Uint8Array(json.length);
+    for (var i = 0; i < json.length; i++) {
+      ia[i] = json.charCodeAt(i);
+    }
+    var imgblob = new Blob([ia], { type: 'image/png'});
+    resolve(imgblob);
+  });
+};
+
+async  genReport(e) {
+
+  const templateFile = await this.getBlobFromUrl("");
+  const imgblob = await this.getSignBlobFromUrl();
+  this.editItem.sh = this.datepipe.transform(this.editItem.LETTER_BOOK_DATE);
+  // 2. process the template
+  const data = {
+      "محل امضاء": {
+        _type: "image",
+        source: imgblob,
+        format: 'image/png',
+        altText: "sign", // Optional
+        width: 300,
+        height: 150
+    }
+  ,"شماره":this.editItem.LETTER_BOOK_NUMBER,
+  "تاریخ":this.editItem.sh,
+  "پیوست": this.Attachments? this.Attachments.length>0?'دارد':'ندارد':'ندارد'
+  };
+  
+
+  const handler = new TemplateHandler();
+  const doc = await handler.process(templateFile, data);
+  this.saveFile(this.editItem.ID+' - signed.docx', doc);
+}
+ saveFile(filename, blob) {
+  var file = new File([blob], filename, {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', lastModified: Date.now()});
+  let list = new DataTransfer();
+  list.items.add(file);
+  this.MainFile.files=list.files;
+  this.Mainfileupload();
+
+  // // see: https://stackoverflow.com/questions/19327749/javascript-blob-filename-without-link
+
+  // // get downloadable url from the blob
+  // const blobUrl = URL.createObjectURL(blob);
+
+  // // create temp link element
+  // let link = document.createElement("a");
+  // link.download = filename;
+  // link.href = blobUrl;
+
+  // // use the link to invoke a download
+  // document.body.appendChild(link);
+  // link.click();
+
+  // // remove the link
+  // setTimeout(() => {
+  //     link.remove();
+  //     window.URL.revokeObjectURL(blobUrl);
+  //     link = null;
+  // }, 0);
+}
 
 showGrafErjaat(){
   this.routeData.push('ofa_outLetter',this.editItem);

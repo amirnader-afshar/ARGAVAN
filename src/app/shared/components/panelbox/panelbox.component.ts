@@ -52,6 +52,9 @@ export class PanelBoxComponent {
     @Input()
     allowCollapse: boolean = true;
 
+    @Input()
+    visible: boolean = true;
+
     toggle() {
         this.collapsed = !this.collapsed;
     }

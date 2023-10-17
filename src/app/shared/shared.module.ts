@@ -237,6 +237,7 @@ export const ROUTES: any = [
     EventsServiceModule.forRoot(),
   ],
   providers: [HistoryService,
+    JalaliPipe,
     DatePipe,
     CoreService,
     ServiceCaller,

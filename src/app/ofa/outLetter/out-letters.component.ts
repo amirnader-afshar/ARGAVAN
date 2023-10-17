@@ -9,6 +9,8 @@ import CustomStore from 'devextreme/data/custom_store';
 import { Deferred } from '../../shared/Deferred';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
 
+import { locale, loadMessages, formatMessage } from 'devextreme/localization';
+
 
 @Component({
   selector: 'app-out-letters',
@@ -64,37 +66,76 @@ import { DataToPost } from "../../shared/services/data-to-post.interface";
       , public service: ServiceCaller,private route: ActivatedRoute) {
       
       super(translate);      
+      //locale('fa');
 
     }
   
    loadGrid(){
-    this.dataToPostBody = {
-      'Data': {
-        'SPName': '[OFA].[OFA_Sp_letter]',
-        'Data_Input': { 'Mode': 4,          
-         'Header': this.editItem
-        , 'Detail': '', 'InputParams': '' }
-      }
-      
-    }
 
-    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
-    then((data) => {     
-      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
-        this.dataSource=data.ReturnData.Data_Output[0].Header;  
-        this.dataSource.store = new CustomStore({
-          key: "LETTER_ID",
-          load: (loadOptions) => {
-            let deferred: Deferred<any> = new Deferred<any>();
-            console.log("dataSource", this.dataSource);
-            deferred.resolve(this.dataSource);
-            return deferred.promise;        
-          },
-          });        
-      }
-      
-    });
+    this.dataSource = new CustomStore({
+      key: "LETTER_ID",
+      load: (loadOptions) => {
+        let deferred: Deferred<any> = new Deferred<any>();
+        this.editItem.PageNumber=loadOptions.skip/loadOptions.take;
+        this.editItem.filter={};
+        this.editItem.RowspPage=loadOptions.take;
+        if (loadOptions.filter)
+         {
+          if (!Array.isArray(loadOptions.filter[0]))
+           {
+            this.editItem.filter[loadOptions.filter[0]] = loadOptions.filter[2];
+           }
+           else {
+              loadOptions.filter.forEach(f => {
+                if(Array.isArray(f))
+                {
 
+                  let result = this.editItem.filter.hasOwnProperty(f[0]);
+                  if (result==false)
+                    {
+                      if(Array.isArray(f[0]))   
+                        {
+                          this.editItem.filter[f[0][0]] = f[0][2];
+                        } 
+                      else               
+                        this.editItem.filter[f[0]] = f[2];
+                    }
+                }
+              });
+           }
+        }
+
+        this.dataToPostBody = {
+          'Data': {
+            'SPName': '[OFA].[OFA_Sp_letter]',
+            'Data_Input': { 'Mode': 4,          
+             'Header': this.editItem
+            , 'Detail': '', 'InputParams': '' }
+          }
+          
+        }        
+        this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+        then((data) => {     
+          if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+            //this.dataSource=data.ReturnData.Data_Output[0].Header;  
+            console.log("loadOptions", loadOptions);
+            deferred.resolve({data:data.ReturnData.Data_Output[0].Header,
+              totalCount: data.ReturnData.Data_Output[0].Detail[0].TOTALCOUNT });       
+          }  
+          else
+          {
+            deferred.reject("No data Found!");
+          }        
+        });
+    
+
+      
+        
+        return deferred.promise;        
+      },
+      }); 
+
+   
   
    };
   

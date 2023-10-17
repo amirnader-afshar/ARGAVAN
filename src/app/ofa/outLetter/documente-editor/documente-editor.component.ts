@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Guid } from 'src/app/shared/types/GUID';
 import { TitleBar } from './title-bar';
 import { PermissionService } from 'src/app/shared/permission';
+import notify from 'devextreme/ui/notify';
 @Component({
   selector: 'app-documente-editor',
   template: `
@@ -27,7 +28,14 @@ import { PermissionService } from 'src/app/shared/permission';
   providers: [ToolbarService]
 })
 export class DocumenteEditorComponent implements OnInit {
-public fontFamilies={fontFamilies :['IRANSansNum','Algerian', 'Arial', 'Calibri', 'Cambria']};
+public fontFamilies={fontFamilies :[' B Arabic Style', ' B Arash', ' B Aria', ' B Arshia',
+ ' B Aseman', ' B Badkonak', ' B Badr', ' B Baran', ' B Baran Outline', ' B Bardiya',
+  ' B Cheshmeh', ' B Chini', ' B Compset', ' B Davat', ' B Elham', ' B Elm', ' B Elm Border',
+   ' B Esfehan', ' B Fantezy', ' B Farnaz', ' B Ferdosi', ' B Haleh', ' B Hamid', ' B Helal',
+    ' B Homa', ' B Jadid', ' B Jalal', ' B Johar', ' B Kaj', ' B Kamran', ' B Kamran Outline',
+     ' B Karim', ' B Kaveh', ' B Kidnap', ' B Koodak', ' B Koodak Outline', ' B Kourosh',
+      ' B Lotus', ' B Mah', ' B Mahsa', ' B Majid Shadow', ' B Mashhad', ' B Masjed', ' B Medad',
+       ' B Mehr', ' B Mitra', ' B Moj', ' B Morvarid', ' B Narenj', ' B Narm', ' B Nasim', ' B Nazanin', ' B Nazanin Outline', ' B Niki Border', ' B Niki Outline', ' B Niki Shadow', ' B Nikoo', ' B Paatch', ' B Rose', ' B Roya', ' B Sahar', ' B Sahra', ' B Sara', ' B Sepideh', ' B Sepideh Outline', ' B Setareh', ' B Shadi', ' B Shiraz', ' B Siavash', ' B Sina', ' B Sooreh', ' B Sorkhpust', ' B Tabassom', ' B Tanab', ' B Tawfig Outline', ' B Tehran', ' B Tir', ' B Titr', ' B Traffic', ' B Vahid', ' B Vosta', ' B Yagut', ' B Yas', ' B Yekan', ' B Zaman', ' B Zar', ' B Ziba','IRANSansNum','Algerian', 'Arial', 'Calibri', 'Cambria']};
  defaultCharacterFormat: CharacterFormatProperties = {   
     bold: false,   
     italic: false,   
@@ -91,7 +99,7 @@ public fontFamilies={fontFamilies :['IRANSansNum','Algerian', 'Arial', 'Calibri'
                 this.container.documentEditor.search.searchResults.index = i;
                 // Replace it with some text
                 this.container.documentEditor.editor.insertText('');
-                this.container.documentEditor.editor.insertImage('data:image/jpg;base64,'+this.user.Sign_FILE_BASE64STRING,
+                this.container.documentEditor.editor.insertImage('data:image/jpg;base64,'+localStorage.getItem('Sign_FILE_BASE64STRING'),
                   210,90);
               }              
               this.container.documentEditor.search.searchResults.clear();
@@ -104,7 +112,7 @@ public fontFamilies={fontFamilies :['IRANSansNum','Algerian', 'Arial', 'Calibri'
   };
 
   public hostUrl: string =  environment.syncfusion_api_url ;
-  public culture: string = '';
+  public culture: string = 'ar-AE';
 
   public fileid : Guid =Guid.empty;
 
@@ -154,9 +162,17 @@ public fontFamilies={fontFamilies :['IRANSansNum','Algerian', 'Arial', 'Calibri'
   
 }
 
+    opennew(){
+        var documenteditor = this.container.documentEditor;
+        documenteditor.openBlank();
+    }
   openDocument(FilePath,FileName):Promise<any>{
     
-
+    if (!FilePath)
+    {
+        return;        
+    }
+    
     this.docName=FileName;
     var httpRequest = new XMLHttpRequest();
     var documenteditor = this.container.documentEditor;
@@ -187,6 +203,9 @@ public fontFamilies={fontFamilies :['IRANSansNum','Algerian', 'Arial', 'Calibri'
     });
   
   }
+
+
+  
 
 onDocumentChange(): void {  
 
@@ -222,17 +241,14 @@ onDocumentChange(): void {
         this.container.toolbar.enableItems(0, false);
     }
 }
-  user;
+
   constructor( public service: ServiceCaller,public permissionService: PermissionService) { 
-    this.service.getPromise("/ADM/Security/User/GetUserByToken", { token: localStorage.getItem('token') }).then(
-      data => {
-        this.user = data;
-      });   
+
        
   }
 
   ngOnInit(): void {
-    
+ 
     L10n.load({
       "ar-AE": {
           "tab": {

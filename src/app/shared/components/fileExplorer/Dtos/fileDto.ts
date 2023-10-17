@@ -111,6 +111,7 @@ interface IFileDto {
     fileGroup: string;
     isPublic: boolean;
     FILE_BASE64STRING:string[];
+    SaveAsPDF:boolean;
 
 }
 
@@ -132,6 +133,7 @@ export class FileDto implements IFileDto {
     isPublic: boolean = false;
     fileName: string[];
     FILE_BASE64STRING :string[];
+    SaveAsPDF:boolean=false;
 
     constructor(data?: IFileDto) {
         if (data) {
@@ -159,6 +161,7 @@ export class FileDto implements IFileDto {
             this.entityId = data["EntityId"];
             this.icon = data["Icon"];
             this.FILE_BASE64STRING =data["FILE_BASE64STRING"];
+            this.SaveAsPDF=data["SaveAsPDF"];
         }
     }
 
@@ -184,7 +187,8 @@ export class FileDto implements IFileDto {
         data["Thumbnail"] = this.thumbnail;
         data["EntityId"] = this.entityId;
         data["Icon"] = this.icon;
-        data["FILE_BASE64STRING"] = this.FILE_BASE64STRING
+        data["FILE_BASE64STRING"] = this.FILE_BASE64STRING;
+        data["SaveAsPDF"]=this.SaveAsPDF;
         return data;
     }
 }

@@ -12,7 +12,9 @@ import {
 import { Router, ActivatedRoute } from "@angular/router";
 import { Notify } from "../../../shared/util/Dialog";
 import { CoreService } from "../../../shared/services/CoreService";
-import { FileGroup } from "../../../shared/components/fileExplorer/fileexplorer.util";
+import { FileExplorerInputConfig, FileGroup, fileExtensionConvertor } from "../../../shared/components/fileExplorer/fileexplorer.util";
+import { FileDto } from "src/app/shared/components/fileExplorer/Dtos/fileDto";
+import { FileExplorerService } from "src/app/shared/components/fileExplorer/fileexplorer.service.proxy";
 
 @Component({
   selector: "adm-page-user",
@@ -36,9 +38,10 @@ export class ADMEditUserPage extends BasePage {
   editItem: any = {};
   selectedId: any = {};
   readOnlyUsername: boolean = false;
+  AttachmentsFiles: FileDto = new FileDto();
+  config: FileExplorerInputConfig = new FileExplorerInputConfig();
 
-
-  constructor(
+  constructor(private explorerService: FileExplorerService,
     public service: ServiceCaller,
     public translate: TranslateService,
     public core: CoreService,
@@ -80,14 +83,42 @@ export class ADMEditUserPage extends BasePage {
   }
 
   onSignatureClick(e) {
-    this.core.fileExplorer.open({ tabelName:'ADM_USERS',entityId: this.editItem.ID, fileGroup: FileGroup.Signature}).then((data) => {
+    // this.core.fileExplorer.open({ tabelName:'ADM_USERS',entityId: this.editItem.ID, fileGroup: FileGroup.Signature}).then((data) => {
       
-      this.editItem.SUSR_SIGN_FILE_ID = data[0].id;
-      this.editItem.sign_FILE_BASE64STRING = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
-      + data[0].FILE_BASE64STRING); 
+    //   this.editItem.SUSR_SIGN_FILE_ID = data[0].id;
+    //   this.editItem.sign_FILE_BASE64STRING = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+    //   + data[0].FILE_BASE64STRING); 
       
-    });
+    // });
+
   }
+  onChangeMain(e) {
+    this.AttachmentsFiles.files = e.target.files;
+    this.upload();
+  }
+
+  upload(): void {        
+    this.AttachmentsFiles.fileGroup = FileGroup.Signature.toString();
+    this.AttachmentsFiles.entityId = this.selectedId ;
+    this.AttachmentsFiles.tabelName = "ADM_USERS";
+    this.explorerService.uploadFile(this.AttachmentsFiles).then(res => {
+        if (res!=null){
+          console.log('res',res);
+          this.editItem.SUSR_SIGN_FILE_ID = res.Result[0].ID;
+          this.editItem.sign_FILE_BASE64STRING= this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+            + res.Result[0].FILE_BASE64STRING); 
+        }            
+    });  
+}
+fileExtensions(): string {
+  let extensions = '';
+  this.config.fileExtensions.forEach((item, index) => {
+      extensions += fileExtensionConvertor(item) + ',';
+  })
+  if (extensions.endsWith(','))
+      extensions.substr(extensions.length - 1);
+  return extensions;
+}
 
   onMenuItemClick(name) {
     if (name == "Save") {

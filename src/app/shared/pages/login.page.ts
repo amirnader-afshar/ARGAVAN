@@ -48,5 +48,9 @@ export class LoginPage {
             });
         }
     }
+
+    signup() {
+        this.router.navigate(['/signup']);
+    }
 }
 

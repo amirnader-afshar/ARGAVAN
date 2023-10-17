@@ -53,6 +53,7 @@ export class AuthService {
         let that = this;
         this.service.postPromise('/ADM/Security/SignOut').then(res => {
             localStorage.removeItem('token');
+            localStorage.removeItem('Sign_FILE_BASE64STRING');
             localStorage.removeItem('USER_DIS')
             localStorage.removeItem('USER_DES')
             localStorage.removeItem('USER_COM')
@@ -73,6 +74,7 @@ export class AuthService {
         return this.service.postPromise('/ADM/Security/SignIn', input).then(data => {
             this.initLogin(data, true);
             localStorage.setItem('token', data.Token);
+            localStorage.setItem('Sign_FILE_BASE64STRING', data.Sign_FILE_BASE64STRING);
         });
     }
 

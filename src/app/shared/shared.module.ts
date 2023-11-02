@@ -149,6 +149,7 @@ export const ROUTES: any = [
       { path: 'pub/report', component: ReportPage },
       { path: 'adm/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'ADM-CNF-10' } },
       { path: 'ofa/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'OFA' } },
+      { path: 'ofa/userconfigs', component: ADMConfigsPage, data: { mode: ConfigType.User, subject: 'OFA' } },
       { path: 'edu/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'EDU' } },
       { path: 'msg/configs', component: ADMConfigsPage, data: { mode: ConfigType.Company, subject: 'MSG' } },
       // { path: 'mfg/configs', component: ADMConfigsPage, data: { mode: ConfigType.User, subject: 'BOM' } },

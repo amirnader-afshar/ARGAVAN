@@ -437,12 +437,18 @@ upload(): void {
     this.OFA_AUTO_BOOK_NO = Boolean(JSON.parse(this.confService.get('OFA-AUTO-BOOK-NO')));
     if (this.OFA_AUTO_BOOK_NO && !this.editItem.LETTER_ID ) {
      this.confService.reload().then(() => {
-      this.editItem.LETTER_BOOK_NUMBER =this.confService.get('OFA-BOOK-PREFIX')
-                                          +this.confService.get('OFA-LAST-FREE-NO')
-                                          +this.confService.get('OFA-BOOK-SUFFIX')
+      var suffix = this.confService.get('OFA-BOOK-SUFFIX');
+      var PREFIX1 = this.confService.get('OFA-BOOK-PREFIX1');
+      var PREFIX2 = this.confService.get('OFA-BOOK-PREFIX2');
+      var FREENO = this.confService.get('OFA-LAST-FREE-NO');
+
+      var PREFIX = PREFIX1.trim()+(PREFIX2.trim() !='' ? '/' : '' )+ PREFIX2.trim();  
+
+      var BN = PREFIX + '/'+FREENO;
+      suffix = (suffix.trim() !='' ? '/' : '' )+ suffix.trim();  
+      this.editItem.LETTER_BOOK_NUMBER = BN+suffix;
     
-           })
-                            
+           })                            
       }
   }
 
@@ -826,16 +832,18 @@ async  genReport(e) {
   const imgblob = await this.getSignBlobFromUrl();
   this.editItem.sh = this.datepipe.transform(this.editItem.LETTER_BOOK_DATE);
   // 2. process the template
+  var swith= +this.confService.get('OFA-USER-SIGN-WIDTH');
+  var shight =+this.confService.get('OFA-USER-SIGN-HIGHT');
   const data = {
       "محل امضاء": {
         _type: "image",
         source: imgblob,
         format: 'image/png',
         altText: "sign", // Optional
-        width: 300,
-        height: 150
+        width: swith,
+        height: shight
     }
-  ,"شماره":this.editItem.LETTER_BOOK_NUMBER,
+  ,"شماره":this.editItem.LETTER_BOOK_NUMBER_REVERSE,
   "تاریخ":this.editItem.sh,
   "پیوست": this.Attachments? this.Attachments.length>0?'دارد':'ندارد':'ندارد'
   };

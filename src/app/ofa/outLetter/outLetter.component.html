@@ -154,7 +154,7 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-3">
           <panel-box [collapsed]="false" [caption]=" 'پیوستها' | translate"> 
             
             <div class="row">
@@ -168,7 +168,7 @@
 
             
             <div class="row" *ngIf="this.Attachments?.length" >                                
-                <div class="col-md-1 col-xs-6 items" *ngFor="let item of Attachments">
+                <div class="col-md-3 col-xs-3 items" *ngFor="let item of Attachments">
                     <div class="card text-center" >
                       <div class="card-header" style="padding-top: 5px;">    
                         <a *ngIf="!this.docReadOnly" 
@@ -189,10 +189,7 @@
             
           </panel-box>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-9">
 
           <panel-box [collapsed]="true" [visible]="!docReadOnly" [caption]=" 'گیرندگان' | translate">                    
  
@@ -259,15 +256,19 @@
               </div>
             </div>
 
-        </panel-box>    
+          </panel-box>    
 
         </div>
+      </div>
+
+      <div class="row">
+
 
       </div>
 
       <div class="row"  >
         <div class="col-sm-12">  
-          <panel-box [collapsed]="false" [caption]=" 'متن نامه' | translate">  
+          <panel-box [collapsed]="true" [caption]=" 'متن نامه' | translate">  
             
             <div class="row" >  
               <div class="col-sm-6">         
@@ -278,7 +279,7 @@
             </div>
               
               <div class="col-sm-6">         
-                  <dx-button class="btn btn-lg btn-success" *ngIf="allow_OFA_ACT_001 || !this.docReadOnly" [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
+                  <dx-button class="btn btn-lg btn-success" *ngIf="allow_OFA_ACT_001" [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
                     <div  *dxTemplate="let data of 'buttonTemplate'">                  
                       <span class="fa fa-pencil" aria-hidden="true" style="margin: 5px;"></span>
                       <span style="margin: 5px;font-size: 11px;">امضاء نامه</span>                  

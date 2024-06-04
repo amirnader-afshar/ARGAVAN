@@ -4,319 +4,392 @@
   <page-content>
     <dx-validation-group #form>
       <div class="row">
+          <div class="col-sm-10">
+              <div class="row">
 
-        <div class="col-sm-10">
-          <div class="row">
-            <div class="col-sm-7">
-              <dx-label text="{{ 'OFA_LETTER_TITEL' | translate }}">
-                <dx-text-box  id="test" [readOnly]="docReadOnly" [(value)]="editItem.LETTER_TITEL">
-                  <dx-validator>
-                    <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
-                  </dx-validator>
-                </dx-text-box>
-              </dx-label>
-            </div>
+                <div class="col-sm-10">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      <dx-label text="{{ 'OFA_LETTER_TITEL' | translate }}">
+                        <dx-text-box  id="test" [readOnly]="docReadOnly" [(value)]="editItem.LETTER_TITEL">
+                          <dx-validator>
+                            <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                          </dx-validator>
+                        </dx-text-box>
+                      </dx-label>
+                    </div>
 
-            <div class="col-sm-2">            
-              <dx-label text="{{ 'OFA_LETTER_PRIORITY' | translate }}">
-                <dx-lov [readOnly]="docReadOnly"  [(value)]="editItem.LETTER_PUB_PRIORITY_ID" 
-                     formCode="FRM-PUB-PRIORITY"
-                    [displayMode]="'ComboBox'"
-                    (dataChange)="onPRIORITYChange($event)">
-              </dx-lov>
-              </dx-label>
-            </div> 
-            <div class="col-sm-1">
-              <i class="{{editItem.PUB_PRIORITY_ICON}} fa-2x "></i>
-            </div>
+                    <div class="col-sm-2">            
+                      <dx-label text="{{ 'OFA_LETTER_PRIORITY' | translate }}">
+                        <dx-lov [readOnly]="docReadOnly"  [(value)]="editItem.LETTER_PUB_PRIORITY_ID" 
+                            formCode="FRM-PUB-PRIORITY"
+                            [displayMode]="'ComboBox'"
+                            (dataChange)="onPRIORITYChange($event)">
+                      </dx-lov>
+                      </dx-label>
+                    </div> 
+                    <div class="col-sm-1">
+                      <i class="{{editItem.PUB_PRIORITY_ICON}} fa-2x "></i>
+                    </div>
 
-            <div class="col-sm-2" >
-              <dx-label text="{{ 'OFA_LETTER_CREATOR_SUSR_NAM_USR' | translate }}">
-                <dx-text-box [readOnly]="true" [(value)]="editItem.LETTER_CREATOR_SUSR_NAM_USR"></dx-text-box>
-              </dx-label>
-            </div>
-
-
-          </div>  
-          <div class="row">
-            <div class="col-sm-2" >
-              <dx-label text="{{ 'OFA_LETTER_BOOK_NUMBER' | translate }}">
-                <dx-text-box [readOnly]="OFA_AUTO_BOOK_NO" [(value)]="editItem.LETTER_BOOK_NUMBER"></dx-text-box>
-              </dx-label>
-            </div>
+                    <div class="col-sm-2" >
+                      <dx-label text="{{ 'OFA_LETTER_CREATOR_SUSR_NAM_USR' | translate }}">
+                        <dx-text-box [readOnly]="true" [(value)]="editItem.LETTER_CREATOR_SUSR_NAM_USR"></dx-text-box>
+                      </dx-label>
+                    </div>
 
 
-            <div class="col-sm-2">
-              <dx-label text="{{ 'OFA_LETTER_BOOK_DATE' | translate }}">
-                <sun_popup_datepicker  
-                    [readOnly]="docReadOnly"
-                    [(ngModel)]="editItem.LETTER_BOOK_DATE"  
-                    [name]="'LETTER_BOOK_DATE'" 
-                    [required]="true" 
-                    [showToday] ="true" > 
-                 </sun_popup_datepicker>
-              </dx-label>
-            </div>
-             
-            <div class="col-sm-1" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
-              <dx-label text="{{ 'OFA_LETTER_NUMBER' | translate }}">
-                <dx-text-box [readOnly]="docReadOnly" [(value)]="editItem.LETTER_NUMBER"></dx-text-box>
-              </dx-label>
-            </div>
+                  </div>  
+                  <div class="row">
+                    <div class="col-sm-2" >
+                      <dx-label text="{{ 'OFA_LETTER_BOOK_NUMBER' | translate }}">
+                        <dx-text-box [readOnly]="OFA_AUTO_BOOK_NO" [(value)]="editItem.LETTER_BOOK_NUMBER"></dx-text-box>
+                      </dx-label>
+                    </div>
 
-            <div class="col-sm-2" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
-              <dx-label text="{{ 'OFA_LETTER_DATE' | translate }}">
-                <sun_popup_datepicker  
-                [readOnly]="docReadOnly"
-                    [(ngModel)]="editItem.LETTER_DATE"  
-                    [name]="'Person_Acnfl_Ide_Date'" 
-                    [required]="true" 
-                    [showToday] ="true" > 
-                 </sun_popup_datepicker>
-              </dx-label>
-            </div>
 
-            <div class="col-sm-3" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
-              <dx-label text="{{ 'OFA_LETTER_SENDER_CMPN' | translate }}">
-                <dx-lov formCode="LOV-OFA-003" 
-                    [readOnly]="docReadOnly"
-                        [displayMode]="'ComboBox'"
-                        [(value)]="editItem.LETTER_SENDER_ID" 
-                        [(text)]="editItem.LETTER_SENDER_CMPN"                       
-                       [required]="true"></dx-lov>
-              </dx-label>
-            </div>
-              
-    
-          </div>
-          <div class="row">
-            <div class="col-sm-10" style="padding: 10px;">              
-                <dx-text-area 
-                [readOnly]="docReadOnly"
-                  [height]="50"
-                  [(value)]="editItem.LETTER_DESC"
-                  placeholder="{{ 'DESCRIPTION' | translate }}">
-                </dx-text-area>              
-            </div>   
+                    <div class="col-sm-2">
+                      <dx-label text="{{ 'OFA_LETTER_BOOK_DATE' | translate }}">
+                        <sun_popup_datepicker  
+                            [readOnly]="docReadOnly"
+                            [(ngModel)]="editItem.LETTER_BOOK_DATE"  
+                            [name]="'LETTER_BOOK_DATE'" 
+                            [required]="true" 
+                            [showToday] ="true" > 
+                        </sun_popup_datepicker>
+                      </dx-label>
+                    </div>
+                    
+                    <div class="col-sm-1" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+                      <dx-label text="{{ 'OFA_LETTER_NUMBER' | translate }}">
+                        <dx-text-box [readOnly]="docReadOnly" [(value)]="editItem.LETTER_NUMBER"></dx-text-box>
+                      </dx-label>
+                    </div>
+
+                    <div class="col-sm-2" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+                      <dx-label text="{{ 'OFA_LETTER_DATE' | translate }}">
+                        <sun_popup_datepicker  
+                        [readOnly]="docReadOnly"
+                            [(ngModel)]="editItem.LETTER_DATE"  
+                            [name]="'Person_Acnfl_Ide_Date'" 
+                            [required]="true" 
+                            [showToday] ="true" > 
+                        </sun_popup_datepicker>
+                      </dx-label>
+                    </div>
+
+                    <div class="col-sm-3" *ngIf="editItem.LETTER_IN_OUT_TYPE=='in'">
+                      <dx-label text="{{ 'OFA_LETTER_SENDER_CMPN' | translate }}">
+                        <dx-lov formCode="LOV-OFA-003" 
+                            [readOnly]="docReadOnly"
+                                [displayMode]="'ComboBox'"
+                                [(value)]="editItem.LETTER_SENDER_ID" 
+                                [(text)]="editItem.LETTER_SENDER_CMPN"                       
+                              [required]="true"></dx-lov>
+                      </dx-label>
+                    </div>
+                      
             
-            <div class="col-sm-2">
-              <dx-label text="{{ 'OFA_LETTER_CATEGORY' | translate }}">  
-                <dx-tag-box [items]="allcategoryItems" [value]="categoryselected"
-                [showSelectionControls]="true"
-                applyValueMode="useButtons"
-                (onSelectionChanged)="onSelectionChanged($event)">
-              </dx-tag-box>
-              </dx-label> 
-            </div> 
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-10" style="padding: 10px;">              
+                        <dx-text-area 
+                        [readOnly]="docReadOnly"
+                          [height]="50"
+                          [(value)]="editItem.LETTER_DESC"
+                          placeholder="{{ 'DESCRIPTION' | translate }}">
+                        </dx-text-area>              
+                    </div>   
+                    
+                    <div class="col-sm-2">
+                      <dx-label text="{{ 'OFA_LETTER_CATEGORY' | translate }}">  
+                        <dx-tag-box [items]="allcategoryItems" [value]="categoryselected"
+                        [showSelectionControls]="true"
+                        applyValueMode="useButtons"
+                        (onSelectionChanged)="onSelectionChanged($event)">
+                      </dx-tag-box>
+                      </dx-label> 
+                    </div> 
 
-          </div>           
+                  </div>           
 
+                </div>
+                <div class="col-sm-2">
+                  <!-- <div class="row" >
+                    <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
+                      <div  *dxTemplate="let data of 'buttonTemplate'">  
+                        <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span>
+                        <span style="margin: 5px;">پیوستها</span>
+                        <span *ngIf="editItem.count_Attach" style="margin: 2px;" class="notification-number">{{editItem.count_Attach}}</span>
+                      </div>  
+                  </dx-button>
+                  </div> -->
+                  <!-- <div class="row" >            
+                    <dx-button [width]="120" (click)="showNote($event)" [template]="'buttonTemplate'">  
+                      <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                        <span class="fa fa-sticky-note" aria-hidden="true" style="margin: 5px;"></span>
+                        <span style="margin: 5px;">یادداشتها</span>
+                          <span *ngIf="editItem.count_Notes" style="margin: 2px;" class="notification-number">{{editItem.count_Notes}}</span>
+                      </div>  
+                    </dx-button>  
+                  </div> -->
+                  
+                  <div class="row" >            
+                    <dx-button [width]="120" (click)="showErjaat($event)" [template]="'buttonTemplate'">  
+                      <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                        <span class="fa fa-random" aria-hidden="true" style="margin: 5px;"></span>
+                        <span style="margin: 5px;font-size: 11px;">لیست ارجاعات</span>                  
+                      </div>  
+                    </dx-button>  
+                  </div>
+
+                  <div class="row">        
+                    <dx-button [width]="120"  (click)="showGrafErjaat()" [template]="'buttonTemplate'">  
+                      <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                        <span class="fa fa-recycle" aria-hidden="true" style="margin: 5px;"></span>
+                        <span style="margin: 5px;font-size: 11px;"> گراف ارجاعات</span>                  
+                      </div>  
+                    </dx-button>  
+                  </div>
+                  
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <panel-box [collapsed]="false" [caption]=" 'پیوستها' | translate"> 
+                    
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <dx-label *ngIf="!this.docReadOnly" text="{{'EMD_FILE'| translate}}">
+                            <input #mainfile type="file" [multiple]="true" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
+                            />
+                        </dx-label>
+                      </div>
+                  </div>
+
+                    
+                    <div class="row" *ngIf="this.Attachments?.length" >                                
+                        <div class="col-md-3 col-xs-3 items" *ngFor="let item of Attachments">
+                            <div class="card text-center" >
+                              <div class="card-header" style="padding-top: 5px;">    
+                                <a *ngIf="!this.docReadOnly" 
+                                  [ngClass]="'fa fa-window-close text-danger fa-1x'"
+                                  (click)="onDeleteClick(item.ID)">
+                                </a>
+                              </div>                      
+                                <div (click)="downloadFile(item.ID)" class="card-body file" style="padding: unset;">                                                                                      
+                                    <a  [ngClass]="item.Icon+' fa-2x'"></a>                                                        
+                                </div>
+                                <div class="card-footer" style="padding: unset;">
+                                  <small class="text-muted" style="font-size: 70%;">{{item.Title}}</small>
+                                </div>
+                            </div>                      
+                        </div>                    
+                    </div>
+                
+                    
+                  </panel-box>
+                </div>
+                <div class="col-sm-9">
+
+                  <panel-box [collapsed]="true" [visible]="!docReadOnly" [caption]=" 'گیرندگان' | translate">                    
+        
+                    <div class="row">
+                      <div style="direction: ltr !important;" class="col-md-5 col-sm-12">
+
+                      <dx-button  (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
+                        <div  *dxTemplate="let data of 'buttonTemplate'">  
+                          <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
+                          <span style="margin: 5px;">افزودن انتخاب شده ها </span>                  
+                        </div>  
+                      </dx-button>  
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-5">
+                        تعداد {{CompanydataSource.length}}
+                        <grid-toolbar>
+                        <dx-data-grid #companygrid    (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
+                        [columnAutoWidth]="true" [height]="500">
+                        <dxo-filter-row [visible]="true"></dxo-filter-row> 
+                        <dxo-paging [pageSize]="150"></dxo-paging>
+                        <dxo-pager [visible]="true"></dxo-pager>
+                        <dxo-selection [allowSelectAll]="true"></dxo-selection>                                               
+                        <dxi-column [groupIndex]="0" dataField="IS_IT_CMPN_TEXT" caption="IS_IT_CMPN_TEXT" groupCellTemplate="groupCellTemplate"></dxi-column>
+                        <div *dxTemplate="let cellInfo of 'groupCellTemplate'">
+                          <dx-check-box [(value)]="groupCheckboxModel[cellInfo.value]" [text]="cellInfo.value" (onValueChanged)="onParentChecked($event,cellInfo)">
+                          </dx-check-box>
+                      </div>
+                      <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="180"></dxi-column>                
+
+                        <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="250" cellTemplate="companyNameTemplate"></dxi-column>
+                        <div *dxTemplate="let cellInfo of 'companyNameTemplate'">
+                          <dx-check-box [value]="cellInfo.data.checked" [text]="cellInfo.value" (onValueChanged)="onChildChecked($event,cellInfo)">
+                          </dx-check-box>
+                      </div>
+
+                      </dx-data-grid>
+                    </grid-toolbar>
+                      </div>
+                      <div class="col-sm-7">
+                        تعداد {{reciversDataSource.length}}
+
+                        <grid-toolbar (onSelectedDelete)="onreciversDataSourceSelectedDelete($event) " (onDeleteEditRow)="onreciversDataSourceRowRemoving($event)" >
+                          <dx-data-grid #grid  [dataSource]="reciversDataSource" 
+                          
+                            [columnAutoWidth]="true" [height]="500">
+                            <dxo-editing 
+                            mode="row"                    
+                            [allowDeleting]="true"
+                            [allowAdding]="false">
+                            </dxo-editing>  
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>            
+                            <dxo-paging [pageSize]="8"></dxo-paging>
+                            <dxo-pager [visible]="true"></dxo-pager>
+                            <dxo-selection mode="multiple" [allowSelectAll]="true"></dxo-selection>
+
+                            <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="200"></dxi-column>
+                            <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="200"></dxi-column>
+                            <dxi-column  dataField="IS_IT_CMPN"  dataType="boolean"  caption="{{'OFA_IS_IT_CMPNY'| translate}}" [width]="120"></dxi-column>
+                            <dxi-column  dataField="LETTER_ERJA_IS_READED"  dataType="boolean"  caption="{{'OFA_LETTER_ERJA_IS_READED'| translate}}" [width]="100"></dxi-column>
+                                              
+                          </dx-data-grid>
+                        </grid-toolbar>
+                      </div>
+                    </div>
+
+                  </panel-box>    
+
+                </div>
+              </div>
+
+              <div class="row">
+
+
+              </div>
+
+              <div class="row"  >
+                <div class="col-sm-12">  
+                  <panel-box [collapsed]="true" [caption]=" 'متن نامه' | translate">  
+                    
+                    <div class="row" >  
+                      <div class="col-sm-6">         
+                        <dx-label *ngIf="!this.docReadOnly" text="بارگزاری فایل نامه">
+                          <input #mainfile type="file" [multiple]="false" (change)="OnMainFileChange($event)" accept=".Docx"
+                          />
+                      </dx-label> 
+                    </div>
+                      
+                      <div class="col-sm-6">         
+                          <dx-button class="btn btn-lg btn-success" *ngIf="allow_OFA_ACT_001" [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
+                            <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                              <span class="fa fa-pencil" aria-hidden="true" style="margin: 5px;"></span>
+                              <span style="margin: 5px;font-size: 11px;">امضاء نامه</span>                  
+                            </div>  
+                      </dx-button>  
+                    </div> 
+                    </div>
+          
+                    <!-- <app-documente-editor [readonly]="docReadOnly"></app-documente-editor>         -->
+                      <ngx-extended-pdf-viewer  
+                        [base64Src]="PDFbase64String"   backgroundColor="#ffffff"
+                        [height]="'90vh'"
+                        [useBrowserLocale]="false"
+                        *ngIf="!hidePdfViewer"
+                        [language]="language"
+                        textLayer="false"                
+                      >            
+                      </ngx-extended-pdf-viewer>      
+                      
+                      <!-- <div class="row justify-content-center" *ngIf="editItem.FLTP_DES!='PDF'"                                >
+                        <div class="card" style="width: 18rem;">
+                                            
+                          <div class="card-header" id="headingOne">
+                            <h5 class="text-center">فایل نامه</h5> 
+                          </div>
+                
+                          <div class="card-body text-center">
+                            <i [ngClass]="editItem.FLTP_ICON+' fa-3x'" aria-hidden="true" style="margin: 5px;"></i>
+                            <h5 class="card-title">نام فایل : {{editItem.FILE_TITLE}} </h5>                    
+                            <button (click)="downloadFile(editItem.LETTER_MAIN_FILE_ID)" class="btn btn-success">دانلود فایل</button>
+                          </div>
+                        </div>
+                      </div>         -->
+                  </panel-box>  
+                </div>
+              </div>
         </div>
         <div class="col-sm-2">
-          <!-- <div class="row" >
-            <dx-button [width]="120" (click)="onAttachClick($event)" [template]="'buttonTemplate'">  
-              <div  *dxTemplate="let data of 'buttonTemplate'">  
-                <span class="fa fa-paperclip" aria-hidden="true" style="margin: 5px;"></span>
-                <span style="margin: 5px;">پیوستها</span>
-                <span *ngIf="editItem.count_Attach" style="margin: 2px;" class="notification-number">{{editItem.count_Attach}}</span>
-              </div>  
-          </dx-button>
-          </div> -->
-          <div class="row" >            
-            <dx-button [width]="120" (click)="showNote($event)" [template]="'buttonTemplate'">  
-              <div  *dxTemplate="let data of 'buttonTemplate'">                  
-                <span class="fa fa-sticky-note" aria-hidden="true" style="margin: 5px;"></span>
-                <span style="margin: 5px;">یادداشتها</span>
-                  <span *ngIf="editItem.count_Notes" style="margin: 2px;" class="notification-number">{{editItem.count_Notes}}</span>
-              </div>  
-            </dx-button>  
-          </div>
-          
-          <div class="row" >            
-            <dx-button [width]="120" (click)="showErjaat($event)" [template]="'buttonTemplate'">  
-              <div  *dxTemplate="let data of 'buttonTemplate'">                  
-                <span class="fa fa-random" aria-hidden="true" style="margin: 5px;"></span>
-                <span style="margin: 5px;font-size: 11px;">لیست ارجاعات</span>                  
-              </div>  
-            </dx-button>  
-          </div>
+          <div class="col-sm-12">  
+            <panel-box  [collapsed]="false" [caption]=" 'یادداشتها' | translate"> 
 
-          <div class="row">        
-            <dx-button [width]="120"  (click)="showGrafErjaat()" [template]="'buttonTemplate'">  
-              <div  *dxTemplate="let data of 'buttonTemplate'">                  
-                <span class="fa fa-recycle" aria-hidden="true" style="margin: 5px;"></span>
-                <span style="margin: 5px;font-size: 11px;"> گراف ارجاعات</span>                  
-              </div>  
-            </dx-button>  
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-3">
-          <panel-box [collapsed]="false" [caption]=" 'پیوستها' | translate"> 
-            
-            <div class="row">
-              <div class="col-sm-6">
-                <dx-label *ngIf="!this.docReadOnly" text="{{'EMD_FILE'| translate}}">
-                    <input #mainfile type="file" [multiple]="true" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
-                    />
-                </dx-label>
-              </div>
-          </div>
-
-            
-            <div class="row" *ngIf="this.Attachments?.length" >                                
-                <div class="col-md-3 col-xs-3 items" *ngFor="let item of Attachments">
-                    <div class="card text-center" >
-                      <div class="card-header" style="padding-top: 5px;">    
-                        <a *ngIf="!this.docReadOnly" 
-                          [ngClass]="'fa fa-window-close text-danger fa-1x'"
-                          (click)="onDeleteClick(item.ID)">
-                        </a>
-                      </div>                      
-                        <div (click)="downloadFile(item.ID)" class="card-body file" style="padding: unset;">                                                                                      
-                            <a  [ngClass]="item.Icon+' fa-2x'"></a>                                                        
-                        </div>
-                        <div class="card-footer" style="padding: unset;">
-                          <small class="text-muted" style="font-size: 70%;">{{item.Title}}</small>
-                        </div>
-                    </div>                      
-                </div>                    
-            </div>
-        
-            
-          </panel-box>
-        </div>
-        <div class="col-sm-9">
-
-          <panel-box [collapsed]="true" [visible]="!docReadOnly" [caption]=" 'گیرندگان' | translate">                    
- 
-            <div class="row">
-              <div style="direction: ltr !important;" class="col-md-5 col-sm-12">
-
-              <dx-button  (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
-                <div  *dxTemplate="let data of 'buttonTemplate'">  
-                  <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
-                  <span style="margin: 5px;">افزودن انتخاب شده ها </span>                  
-                </div>  
-              </dx-button>  
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-5">
-                تعداد {{CompanydataSource.length}}
-                <grid-toolbar>
-                <dx-data-grid #companygrid    (onRowDblClick)="dblClick($event)" [dataSource]="CompanydataSource"                   
-                [columnAutoWidth]="true" [height]="500">
-                <dxo-filter-row [visible]="true"></dxo-filter-row> 
-                <dxo-paging [pageSize]="150"></dxo-paging>
-                <dxo-pager [visible]="true"></dxo-pager>
-                <dxo-selection [allowSelectAll]="true"></dxo-selection>                                               
-                <dxi-column [groupIndex]="0" dataField="IS_IT_CMPN_TEXT" caption="IS_IT_CMPN_TEXT" groupCellTemplate="groupCellTemplate"></dxi-column>
-                <div *dxTemplate="let cellInfo of 'groupCellTemplate'">
-                  <dx-check-box [(value)]="groupCheckboxModel[cellInfo.value]" [text]="cellInfo.value" (onValueChanged)="onParentChecked($event,cellInfo)">
-                  </dx-check-box>
-              </div>
-                <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="250" cellTemplate="companyNameTemplate"></dxi-column>
-                <div *dxTemplate="let cellInfo of 'companyNameTemplate'">
-                  <dx-check-box [value]="cellInfo.data.checked" [text]="cellInfo.value" (onValueChanged)="onChildChecked($event,cellInfo)">
-                  </dx-check-box>
-              </div>
-                <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="210"></dxi-column>                
-
-              </dx-data-grid>
-            </grid-toolbar>
-              </div>
-              <div class="col-sm-7">
-                تعداد {{reciversDataSource.length}}
-
-                <grid-toolbar (onSelectedDelete)="onreciversDataSourceSelectedDelete($event) " (onDeleteEditRow)="onreciversDataSourceRowRemoving($event)" >
-                  <dx-data-grid #grid  [dataSource]="reciversDataSource" 
-                  
-                    [columnAutoWidth]="true" [height]="500">
-                    <dxo-editing 
-                    mode="row"                    
-                    [allowDeleting]="true"
-                    [allowAdding]="false">
-                    </dxo-editing>  
-                    <dxo-filter-row [visible]="true"></dxo-filter-row>            
-                    <dxo-paging [pageSize]="8"></dxo-paging>
-                    <dxo-pager [visible]="true"></dxo-pager>
-                    <dxo-selection mode="multiple" [allowSelectAll]="true"></dxo-selection>
-
-                    <dxi-column  dataField="CMPN_NAM"   caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="200"></dxi-column>
-                    <dxi-column  dataField="SUSR_NAM_USR"   caption="{{'OFA_LETTER_RECIVER_USER'| translate}}" [width]="200"></dxi-column>
-                    <dxi-column  dataField="IS_IT_CMPN"  dataType="boolean"  caption="{{'OFA_IS_IT_CMPNY'| translate}}" [width]="120"></dxi-column>
-                    <dxi-column  dataField="LETTER_ERJA_IS_READED"  dataType="boolean"  caption="{{'OFA_LETTER_ERJA_IS_READED'| translate}}" [width]="100"></dxi-column>
-                                      
-                  </dx-data-grid>
-                </grid-toolbar>
-              </div>
-            </div>
-
-          </panel-box>    
-
-        </div>
-      </div>
-
-      <div class="row">
-
-
-      </div>
-
-      <div class="row"  >
-        <div class="col-sm-12">  
-          <panel-box [collapsed]="true" [caption]=" 'متن نامه' | translate">  
-            
-            <div class="row" >  
-              <div class="col-sm-6">         
-                <dx-label *ngIf="!this.docReadOnly" text="بارگزاری فایل نامه">
-                  <input #mainfile type="file" [multiple]="false" (change)="OnMainFileChange($event)" accept=".Docx"
-                  />
-              </dx-label> 
-            </div>
-              
-              <div class="col-sm-6">         
-                  <dx-button class="btn btn-lg btn-success" *ngIf="allow_OFA_ACT_001" [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
-                    <div  *dxTemplate="let data of 'buttonTemplate'">                  
-                      <span class="fa fa-pencil" aria-hidden="true" style="margin: 5px;"></span>
-                      <span style="margin: 5px;font-size: 11px;">امضاء نامه</span>                  
-                    </div>  
-              </dx-button>  
-            </div> 
-            </div>
-  
-            <!-- <app-documente-editor [readonly]="docReadOnly"></app-documente-editor>         -->
-              <ngx-extended-pdf-viewer  
-                [base64Src]="PDFbase64String"   backgroundColor="#ffffff"
-                [height]="'90vh'"
-                [useBrowserLocale]="false"
-                *ngIf="!hidePdfViewer"
-                [language]="language"
-                textLayer="false"                
-              >            
-              </ngx-extended-pdf-viewer>      
-              
-              <!-- <div class="row justify-content-center" *ngIf="editItem.FLTP_DES!='PDF'"                                >
-                <div class="card" style="width: 18rem;">
-                                    
-                  <div class="card-header" id="headingOne">
-                    <h5 class="text-center">فایل نامه</h5> 
-                  </div>
-        
-                  <div class="card-body text-center">
-                    <i [ngClass]="editItem.FLTP_ICON+' fa-3x'" aria-hidden="true" style="margin: 5px;"></i>
-                    <h5 class="card-title">نام فایل : {{editItem.FILE_TITLE}} </h5>                    
-                    <button (click)="downloadFile(editItem.LETTER_MAIN_FILE_ID)" class="btn btn-success">دانلود فایل</button>
+              <div class="row">
+                <div class="col-sm-12" >
+                    <dx-select-box                    
+                      #selectBox
+                      [dataSource]="StaredDataSource"
+                      [inputAttr]="{ 'aria-label': 'Custom Product' }"
+                      [acceptCustomValue]="true"
+                      displayExpr="LETTER_NOTE_CONTENT"
+                      valueExpr="ID"
+                      [value]="LETTER_NOTE_SELECTED" 
+                      (onCustomItemCreating)="addCustomItem($event)"  
+                      [disabled]="!editItem.LETTER_ID"               
+                  ></dx-select-box>
+                </div>
+                <div >
+                  <div class="col-sm-12">
+                    <dx-button
+                    stylingMode="contained"
+                    text="+ اضافه"
+                    type="success"
+                    [disabled]="!editItem.LETTER_ID" 
+                    (onClick)="onNoteAdd(selectBox.selectedItem)"
+                     >
+                    </dx-button>
+                    <dx-check-box [(value)]="Note_add_checkBoxValue" text="ذخیره برای استفاده مجدد"></dx-check-box>
                   </div>
                 </div>
-              </div>         -->
-          </panel-box>  
-        </div>
-      </div>
+              </div>
 
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <grid-toolbar>
+                    <dx-data-grid #notegrid  [dataSource]="NoteDataSource" 
+                      [columnAutoWidth]="true" [height]="400">
+                      <dxo-sorting mode="multiple"></dxo-sorting>
+                      <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                      <dxo-filter-row [visible]="true"></dxo-filter-row>
+                      <dxo-scrolling mode="virtual"></dxo-scrolling>
+                      <dxo-selection mode="single"></dxo-selection>                                                             
+                      <dxi-column dataField="LETTER_NOTE_CONTENT" caption="{{'PUB_NOTE'| translate}}"  [allowFiltering]="translate"
+                      [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+                      <div *dxTemplate="let data of 'cellTemplate'">
+                        <div [innerHtml]="data.value"></div>                
+                    </div>
+                    </dx-data-grid>
+                  </grid-toolbar>
+                </div>
+                <div >
+                  <div class="col-sm-12">
+                    <dx-button
+                    stylingMode="contained"
+                    text="- حذف"
+                    type="danger"
+                    [disabled]="!editItem.LETTER_ID" 
+                    (onClick)="onNoteDelete(notegrid.instance.getSelectedRowsData()[0])"
+                    >
+                    </dx-button>
+                  </div>
+                </div>
+              </div>
+
+           </panel-box>
+          </div>    
+        </div>
+    </div>
     </dx-validation-group>
   </page-content>
 </page>

@@ -1,0 +1,30 @@
+<page>
+    <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+    </page-toolbar>
+    <page-content>
+      <div class="row">
+        <div class="col-sm-12">
+          <grid-toolbar>
+            <dx-data-grid #grid  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+              [columnAutoWidth]="true" [height]="600" (onRowPrepared)="onRowPrepared($event)">              
+              <dxo-sorting mode="multiple"></dxo-sorting>
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-scrolling mode="virtual"></dxo-scrolling>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxi-column  dataField="INVOICE_H_ACC"   caption="{{'CRM_CENTER_NAME'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_NO"   caption="{{'CRM_INVOICE_H_NO'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_EXPERT"   caption="{{'CRM_SELLMAN_TITEL'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_DATE"  dataType="date" caption="{{'CRM_INVOICE_H_DATE'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_IS_BRANCH"  dataType="boolean" caption="{{'CRM_INVOICE_H_IS_BRANCH'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_PURCHASE_TYPE"   caption="{{'CRM_INVOICE_H_PURCHASE_TYPE'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_IRC"  dataType="boolean"   caption="{{'CRM_INVOICE_H_IRC'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_ORGIN_LABEL"  dataType="boolean" caption="{{'CRM_INVOICE_H_ORGIN_LABEL'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="INVOICE_H_PUB_PRIORITY"   caption="{{'CRM_INVOICE_H_PUB_PRIORITY'| translate}}" [width]="150"></dxi-column>  
+              <dxi-column  dataField="INVOICE_H_MAJOR_CHANAL"   caption="{{'CRM_INVOICE_H_MAJOR_CHANAL'| translate}}" [width]="150"></dxi-column>
+            </dx-data-grid>
+          </grid-toolbar>
+        </div>
+      </div>
+    </page-content>
+  </page>

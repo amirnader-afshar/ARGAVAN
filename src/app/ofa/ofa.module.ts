@@ -41,6 +41,7 @@ export const ROUTES: any = [
              
             { path: 'ofa/home', component: ModuleHomePage , data: { code: "ofa" }},
             { path: 'ofa/outLetters', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'out'}}, 
+            { path: 'ofa/enternal_letters', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'in',FLG_ENTERNAL:true}},
             { path: 'ofa/outLetters_archive', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'out',archive:true}}, 
             { path: 'ofa/outLetter', component: outLettercomponent ,data:{LETTER_IN_OUT_TYPE:'out'}},
             { path: 'ofa/inLetters', component: OutLettersComponent ,data:{LETTER_IN_OUT_TYPE:'in'}}, 

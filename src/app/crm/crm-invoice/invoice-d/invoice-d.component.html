@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-sm-12">
+      <grid-toolbar (onDeleteEditRow)="rowRemove($event)">
+        <dx-data-grid  #detailGrid  
+          keyExpr="INVOICE_D_ID"       
+          [dataSource]="DetailDataSource"            
+          [hoverStateEnabled]="true"
+          showBorders="true"
+          [(selectedRowKeys)]="editItem.detailGridValue"
+          height="450"
+          (onRowInserted)="$event.component.navigateToRow($event.key)"
+          (onSaving)="onSaving($event)"
+
+        >
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" ></dxo-editing>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-scrolling mode="virtual"></dxo-scrolling>
+        <dxi-column  editCellTemplate="singleDropDownBoxEditor" dataField="INVOICE_D_ITEM_ID"   caption="{{'CRM_INVOICE_D_ITEM'| translate}}" [width]="240">
+          <dxo-lookup [dataSource]="ItemDatasource" displayExpr="ITEM_NAME" valueExpr="ID">
+          </dxo-lookup>
+          <dxi-validation-rule type="required"></dxi-validation-rule>  
+
+        </dxi-column>
+        <dxi-column  dataField="INVOICE_D_DETAIL"   caption="{{'CRM_INVOICE_D_DETAIL'| translate}}" [width]="120">          
+        </dxi-column>
+        <dxi-column  dataField="INVOICE_D_SUGEST_BRAND"   caption="{{'CRM_INVOICE_D_SUGEST_BRAND'| translate}}" ></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_SUGEST_PRICE"   caption="{{'CRM_INVOICE_D_SUGEST_PRICE'| translate}}" [width]="120"></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_REQ_QTY"   caption="{{'CRM_INVOICE_D_REQ_QTY'| translate}}" ></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_REQ_TIME"   caption="{{'CRM_INVOICE_D_REQ_TIME'| translate}}" ></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_EDM_FILE_ID"  cellTemplate="odbTemplate"  caption="{{'CRM_INVOICE_D_EDM_FILE'| translate}}" [width]="80"></dxi-column>      
+        <div *dxTemplate="let data of 'odbTemplate'">
+          <img src="https://www.w3schools.com/images/lamp.jpg" alt="Lamp" width="32" height="32">
+        </div>
+
+        <dxi-column  dataField="INVOICE_D_IRC"  caption="{{'CRM_INVOICE_D_IRC'| translate}}" [visible]='INVOICE_D_IRC' ></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_CACH_PRICE"  [setCellValue]="setCachPriceValue" caption="{{'CRM_INVOICE_D_CACH_PRICE'| translate}}" [visible]='INVOICE_D_CACH_PRICE'></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_TARGET_PERCENT"  caption="{{'CRM_INVOICE_D_TARGET_PERCENT'| translate}}" 
+          [visible]='INVOICE_D_CACH_PRICE' [setCellValue]="setTotalPriceValue"></dxi-column>   
+        <dxi-column  [visible]='INVOICE_D_FINAL_PRICE' dataField="INVOICE_D_FINAL_PRICE"  caption="{{'CRM_INVOICE_D_FINAL_PRICE'| translate}}" [allowEditing]="false"></dxi-column>      
+
+        <dxi-column  [visible]='INVOICE_D_MIN_ORDER' dataField="INVOICE_D_MIN_ORDER"  caption="{{'CRM_INVOICE_D_MIN_ORDER'| translate}}" ></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_EXPIRE' dataField="INVOICE_D_EXPIRE"  caption="{{'CRM_INVOICE_D_EXPIRE'| translate}}" [width]="80"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_VALIDATE' dataField="INVOICE_D_VALIDATE"  caption="{{'CRM_INVOICE_D_VALIDATE'| translate}}" [width]="80"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_PREPER' dataField="INVOICE_D_PREPER"  caption="{{'CRM_INVOICE_D_PREPER'| translate}}" [width]="80"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_SITE_PRICE' dataField="INVOICE_D_SITE_PRICE"  caption="{{'CRM_INVOICE_D_SITE_PRICE'| translate}}" [width]="80"></dxi-column>      
+      
+        <div *dxTemplate="let cellInfo of 'singleDropDownBoxEditor'">
+          <dx-drop-down-box
+          [dropDownOptions]="dropDownOptions"
+          [dataSource]="ItemDatasource"
+          [(value)]="cellInfo.value"
+          [inputAttr]="{ 'aria-label': 'ITEM_NAME' }"
+          displayExpr="ITEM_NAME"
+          valueExpr="ID"
+          contentTemplate="contentTemplate"
+        >
+          <div *dxTemplate="let e of 'contentTemplate'">
+            <grid-toolbar>
+              <dx-data-grid
+                [dataSource]="ItemDatasource"
+                [remoteOperations]="true"
+                [height]="250"
+                [selectedRowKeys]="[cellInfo.value]"
+                [focusedRowEnabled]="true"
+                [focusedRowKey]="cellInfo.value"
+                [hoverStateEnabled]="true"
+                (onSelectionChanged)="
+                  onSelectionChanged($event.selectedRowKeys, cellInfo, e.component)"
+              >
+              <dxo-editing mode="row" [allowUpdating]='CRM_ITEM_UPDATE' [allowDeleting]='CRM_ITEM_DELETE' [allowAdding]='CRM_ITEM_INSERT' ></dxo-editing>
+
+                <dxi-column dataField="ITEM_NAME" [width]="120" caption="{{'CRM_INVOICE_D_ITEM'| translate}}">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>  
+                </dxi-column>
+                <dxi-column dataField="ITEM_BRAND_NAME" caption="{{'CRM_ITEM_BRAND_NAME'| translate}}"></dxi-column>
+                <dxi-column dataField="ITEM_QTY_BOX" caption="{{'CRM_ITEM_QTY_BOX'| translate}}"></dxi-column>
+                <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+                <dxo-scrolling mode="virtual"></dxo-scrolling>
+                <dxo-selection mode="single"></dxo-selection>
+              </dx-data-grid>
+            </grid-toolbar>
+          </div>
+        </dx-drop-down-box>
+          </div>
+        </dx-data-grid>
+      </grid-toolbar>    
+      
+    </div>
+  </div>      
+ 

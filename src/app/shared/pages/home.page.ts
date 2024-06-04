@@ -7,6 +7,7 @@ import { MenuService } from '../services/MenuService';
 import { Router } from '@angular/router';
 
 import { DataToPost } from "../../shared/services/data-to-post.interface";
+import { PermissionService } from '../permission';
 
 declare function home_refresh_menu(): any;
 
@@ -34,7 +35,7 @@ export class HomePage implements OnInit {
         private service: ServiceCaller, 
         private routeData: RouteData, 
         private router: Router, 
-        private _menuService: MenuService) {
+        private _menuService: MenuService,public permissionService: PermissionService,) {
 
     }
 
@@ -45,6 +46,8 @@ export class HomePage implements OnInit {
 
     loadUnreadLetter()
     {
+      if (this.permissionService.hasDefined('ofa') )
+        {
         var dataToPostBody: DataToPost;
         var Header :any ={};  
         Header.LETTER_IN_OUT_TYPE = 'in'
@@ -65,9 +68,12 @@ export class HomePage implements OnInit {
             }
             
           });
+        }
     }
     loadUnreadMessage()
     {
+      if (this.permissionService.hasDefined('msg') )
+      {
         var dataToPostBody: DataToPost;
         var Header :any ={};
         Header.MSG_IN_OUT_TYPE='in'
@@ -88,5 +94,6 @@ export class HomePage implements OnInit {
             }
             
           });          
-    }    
+      }  
+  }  
 }

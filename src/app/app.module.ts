@@ -19,6 +19,9 @@ export const ROUTES: any = [
   { path: '', loadChildren: () => import('./ofa/ofa.module').then(m => m.ofaModule) },
   { path: '', loadChildren: () => import('./msg/msg.module').then(m => m.msgModule) },
   { path: '', loadChildren: () => import('./edu/edu.module').then(m => m.eduModule) },
+  { path: '', loadChildren: () => import('./reim/reim.module').then(m => m.reimModule) },
+  { path: '', loadChildren: () => import('./crm/crm.module').then(m => m.CrmModule) },
+
 ];
 
 @NgModule({

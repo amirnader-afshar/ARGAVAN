@@ -1,0 +1,58 @@
+<page>
+    <page-content>
+      <dx-validation-group #form>
+        <div class="row">  
+                <div class="col-sm-12">
+                    
+                        <panel-box [collapsed]="false" [caption]=" 'فیلتر' | translate"> 
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <dx-label text="{{ 'PUP_YEARE' | translate }}">
+                                        <dx-number-box
+                                        [(value)]="editItem.YEARE"
+                                        [showSpinButtons]="true"
+                                        [inputAttr]="{ 'aria-label': 'With Spin And Buttons' }"
+                                      >
+                                      <dx-validator>
+                                        <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                                    </dx-validator>
+                                    
+                                    </dx-number-box>
+                   
+                                    </dx-label>
+                                </div>
+                            
+                                
+                                <div class="col-sm-1">              
+                                    <dx-label text="{{ 'PUP_MONTH' | translate }}">
+                                        <dx-select-box
+                                        [items]="months"
+                                        [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                                        (onValueChanged)="onValueChanged($event)"
+                                      >
+                                      <dx-validator>
+                                        <dxi-validation-rule type="required" message="این فیلد اجباری است"></dxi-validation-rule>
+                                    </dx-validator>
+                                    </dx-select-box>
+                 
+                                    </dx-label>             
+                                </div>      
+
+                                <div class="col-sm-3">
+                                    <dx-button class="btn btn-lg btn-success"  [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
+                                        <div  *dxTemplate="let data of 'buttonTemplate'">                  
+                                          <span class="fa fa-printer" aria-hidden="true" style="margin: 5px;"></span>
+                                          <span style="margin: 5px;font-size: 11px;">دریافت فیش</span>                  
+                                        </div>  
+                                      </dx-button> 
+                                </div>
+                            </div>  
+                    </panel-box>   
+                
+            </div>   
+        </div>
+ 
+      </dx-validation-group>
+    </page-content>
+  </page>
+  

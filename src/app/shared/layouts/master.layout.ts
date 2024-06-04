@@ -11,6 +11,7 @@ import * as screenfull from 'screenfull';
 import { Dialog } from '../util/Dialog';
 import { DataToPost } from "../../shared/services/data-to-post.interface";
 import * as internal from 'node:stream';
+import { PermissionService } from '../permission';
 declare function page_init(): any;
 declare function sidemenu_hide(): any;
 
@@ -78,7 +79,7 @@ export class MasterLayoutComponent implements AfterViewInit {
         private cdr: ChangeDetectorRef,
         private viewContainerRef: ViewContainerRef,
         private demisPopupService: DemisPopupService,
-        private themeService: ThemeService
+        private themeService: ThemeService,public permissionService: PermissionService
 
 
     ) {
@@ -184,6 +185,8 @@ export class MasterLayoutComponent implements AfterViewInit {
 
     loadUnreadLetter()
     {
+        if (this.permissionService.hasDefined('ofa') )
+        {
         var dataToPostBody: DataToPost;
         var Header :any ={};  
         Header.LETTER_IN_OUT_TYPE = 'in'
@@ -205,10 +208,13 @@ export class MasterLayoutComponent implements AfterViewInit {
             }
             
           });
+        }
     }
 
     loadUnreadMessage()
     {
+        if (this.permissionService.hasDefined('msg') )
+        {
         var dataToPostBody: DataToPost;
         var Header :any ={};
         Header.MSG_IN_OUT_TYPE='in'
@@ -231,6 +237,6 @@ export class MasterLayoutComponent implements AfterViewInit {
             }
             
           });          
+        }
     }
-
 }

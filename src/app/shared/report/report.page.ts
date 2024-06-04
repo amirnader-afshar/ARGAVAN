@@ -31,8 +31,13 @@ export class ReportPage implements OnInit {
     this.translate = translate;
     this.paramsChange = new EventEmitter<any>();
     REPORTCOMPONENT.set(ReportPage, this)
-    this.reportCode = this.route.snapshot.data["reportCode"];
-    
+    //this.reportCode = this.route.snapshot.data["reportCode"];
+    this.route.queryParams.subscribe(params => {
+
+      this.reportCode = params['reportCode'];
+  
+
+  });
 
   }
   ngOnInit(): void {
@@ -308,8 +313,6 @@ export class ReportPage implements OnInit {
   }
 
   bindData() {
-   
-
     var result = this.form.instance.validate();
     if (result.isValid) {
       this.service.postPromise("/ADM/Report/List", this.getFilter()).then((data) => {

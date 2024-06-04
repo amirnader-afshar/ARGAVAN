@@ -30,6 +30,9 @@ import   { WebViewerInstance }  from '@pdftron/webviewer';
 import { FileDto } from 'src/app/shared/components/fileExplorer/Dtos/fileDto';
 import { FileExplorerService } from 'src/app/shared/components/fileExplorer/fileexplorer.service.proxy';
 import {  ViewportScroller } from '@angular/common';
+import CustomStore from 'devextreme/data/custom_store';
+import { Deferred } from 'src/app/shared/Deferred';
+import DataSource from 'devextreme/data/data_source';
 
 
 
@@ -123,6 +126,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       if(this.editItem.LETTER_ID)
       {
         this.loadLetter();
+        this.loadNoteGrid();
       }
 
       this.loadCategory();
@@ -346,6 +350,8 @@ upload(): void {
 
    };
 
+
+
    loadCategory(){
     this.dataToPostBody = {
       'Data': {
@@ -472,6 +478,7 @@ upload(): void {
     this.editItem.FolderID = Guid.empty;    
     this.getBookNumber();
     this.loadCompanys();
+    this.LoadStaredNotes();
    
     // let deferred: Deferred<any> = new Deferred<any>();
     // this.ALLOW_PRG_UFIF_001 = this.permissionService.hasDefined('PRG_UFIF_001');//چک دسترسی به ویرایش قسمت کاست و تلرانس
@@ -970,5 +977,127 @@ checkParent(IS_IT_CMPN_TEXT) {
   })
 }
 
+NoteDataSource: any = {};
+StaredDataSource: any = {};
+LETTER_NOTE_SELECTED ;
+Note_add_checkBoxValue: boolean =false;
+
+loadNoteGrid(){
+  this.dataToPostBody = {
+    'Data': {
+      'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
+      'Data_Input': { 'Mode': 4,          
+       'Header': {'LETTER_NOTE_LETTER_ID':this.editItem.LETTER_ID
+                   }
+      , 'Detail': '', 'InputParams': '' }
+    }
+    
+  }
+
+  this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+  then((data) => {   
+    if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {  
+      this.NoteDataSource=data.ReturnData.Data_Output[0].Header;  
+      this.NoteDataSource.store = new CustomStore({
+        key: "LETTER_NOTE_ID",
+        load: (loadOptions) => {
+          let deferred: Deferred<any> = new Deferred<any>();
+          console.log("dataSource", this.NoteDataSource);
+          deferred.resolve(this.NoteDataSource);
+          return deferred.promise;        
+      },
+      });
+     }     
+  });
+
+
+ };
+
+
+ LoadStaredNotes ()
+ {
+   this.dataToPostBody = {
+     'Data': {
+       'SPName': '[OFA].[OFA_SP_GET_USER_STARED_NOTES]',
+       'Data_Input': { 'Mode': 4,          
+        'Header': ''
+       , 'Detail': '', 'InputParams': '' }
+     }      
+   }    
+   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+   then((data) => {     
+
+      let empty = [];
+       this.StaredDataSource = new DataSource({
+        store: {
+          data: data.ReturnData.Data_Output[0].Header.Header !='is Empty' ? data.ReturnData.Data_Output[0].Header:empty,
+          type: 'array',
+          key: 'ID',
+        },
+      });             
+     
+     
+   });
+
+ }
+ addCustomItem(data) {
+  if (!data.text) {
+    data.customItem = null;
+    return;
+  }
+
+  let u = Date.now().toString(16)+Math.random().toString(16)+'0'.repeat(16);
+  let guid = [u.substr(0,8), u.substr(8,4), '4000-8' + u.substr(13,3), u.substr(16,12)].join('-');
+  const newItem = {
+    LETTER_NOTE_CONTENT: data.text,
+    ID: guid,
+  };
+
+  data.customItem = this.StaredDataSource.store().insert(newItem)
+    .then(() => this.StaredDataSource.load())
+    .then(() => newItem)
+    .catch((error) => {
+      throw error;
+    });
+}
+
+onNoteAdd(item)
+{
+  item.LETTER_NOTE_LETTER_ID=this.editItem.LETTER_ID;
+  item.LETTER_NOTE_STARED=this.Note_add_checkBoxValue;
+  item.LETTER_NOTE_IS_PUBLIC=true;
+  this.dataToPostBody = {
+    'Data': {
+      'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
+      'Data_Input': { 'Mode': 1,          
+       'Header': item 
+      , 'Detail': {}, 'InputParams': '' }
+    }
+  };
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+      then((data) => {                        
+
+        Notify.success('اطلاعات با موفقیت ذخیره شد');
+        this.loadNoteGrid();
+      });
+}
+
+onNoteDelete(item)
+{
+  this.dataToPostBody = {
+    'Data': {
+      'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
+      'Data_Input': { 'Mode': 3,          
+       'Header': item 
+      , 'Detail': {}, 'InputParams': '' }
+    }
+  };
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+      then((data) => {                        
+
+        Notify.success('اطلاعات با موفقیت حذف شد');
+        this.loadNoteGrid();
+      });
+}
 
 }

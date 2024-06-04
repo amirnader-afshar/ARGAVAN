@@ -1,0 +1,217 @@
+<page>
+  <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event)">
+  </page-toolbar>
+  <page-content>
+    <dx-validation-group #form>  
+      <panel-box [collapsed]="false" [caption]=" 'درخواست' | translate">       
+            <div class="row">  
+              <div class="col-sm-6">
+                  <dx-label text="{{ 'CRM_CENTER_NAME' | translate }}">
+                    <dx-drop-down-box
+            
+                    [(value)]="editItem.ACCgridBoxValue"
+                    [(opened)]="isGridBoxOpened"
+                    valueExpr="ID"
+                    [deferRendering]="true"
+                    [displayExpr]="gridBox_displayExpr"
+                    placeholder="...... انتخاب کنيد"
+                    [inputAttr]="{ 'aria-label': 'Owner' }"
+                    [showClearButton]="true"
+                    [dataSource]="accgridDataSource"
+                    (onOptionChanged)="onGridBoxOptionChanged($event)"
+                  >
+                    <div *dxTemplate="let data of 'content'">
+                      <grid-toolbar>
+                        <dx-data-grid  #ACCgrid         
+                          [dataSource]="accgridDataSource"            
+                          [hoverStateEnabled]="true"
+                          showBorders="true"
+                          [(selectedRowKeys)]="editItem.ACCgridBoxValue"
+                          height="150%"
+                          (onEditorPreparing)="onEditorPreparing($event)"
+                        >
+                        <dxo-editing mode="row" [allowUpdating]='CRM_ACC_UPDATE' [allowDeleting]='CRM_ACC_DELETE' [allowAdding]='CRM_ACC_INSERT' ></dxo-editing>
+                          <dxo-selection mode="single"></dxo-selection>
+                          <dxo-filter-row [visible]="true"></dxo-filter-row>
+                          <dxo-scrolling mode="virtual"></dxo-scrolling>
+                          <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+                          <dxi-column  dataField="ACC_NAME"   caption="{{'CRM_CENTER_NAME'| translate}}" [width]="150">
+                            <dxi-validation-rule type="required"></dxi-validation-rule>  
+                          </dxi-column>
+                          <dxi-column  dataField="ACC_CLIENT_CODE"   caption="{{'ACC_CLIENT_CODE'| translate}}" [width]="120"></dxi-column>
+                          <dxi-column  dataField="ACC_FORMAL"   dataType="boolean" caption="{{'ACC_FORMAL'| translate}}" [width]="80"></dxi-column>
+                          <dxi-column
+                            dataField="ACC_STATE" caption="{{'ACC_STATE'| translate}}"
+                            [setCellValue]="setStateValue" [width]="90" 
+                            > 
+                            <dxi-validation-rule type="required"></dxi-validation-rule>  
+                            <dxo-lookup
+                                [dataSource]="acc_state_lookupData"
+                                valueExpr="Loca_Id" 
+                                displayExpr="name">
+                            </dxo-lookup>
+                          </dxi-column>    
+                          <dxi-column dataField="ACC_CITY" caption="{{'ACC_CITY'| translate}}" [width]="90">
+                            <dxi-validation-rule type="required"></dxi-validation-rule>  
+                            <dxo-lookup
+                              [dataSource]="getFilteredCities"
+                              valueExpr="Loca_Id"
+                              displayExpr="name"
+                            >
+                            </dxo-lookup>
+                          </dxi-column>        
+                        </dx-data-grid>
+                      </grid-toolbar>
+                    </div>
+                    </dx-drop-down-box>
+                  </dx-label>
+              </div> 
+
+              <div class="col-sm-2">
+                  <dx-label text="{{ 'CRM_INVOICE_H_MAJOR_CHANAL' | translate }}">
+                    <dx-text-box [(value)]="editItem.INVOICE_H_MAJOR_CHANAL">
+                      <dx-validator>
+                        <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
+                      </dx-validator>
+                    </dx-text-box>
+                  </dx-label>
+              </div> 
+
+              <div class="col-sm-2">
+                <dx-label text="{{ 'CRM_INVOICE_H_NO' | translate }}">
+                  <dx-text-box [(value)]="editItem.INVOICE_H_NO">
+                    <dx-validator>
+                      <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
+                    </dx-validator>
+                  </dx-text-box>
+                </dx-label>
+              </div> 
+
+              <div class="col-sm-2">
+                <dx-label text="{{ 'CRM_INVOICE_H_DATE' | translate }}">
+                  <sun_popup_datepicker                  
+                      [(ngModel)]="editItem.INVOICE_H_DATE"  
+                      [name]="'INVOICE_H_DATE'" 
+                      [required]="true" 
+                      [showToday] ="true" > 
+                  </sun_popup_datepicker>
+                </dx-label>
+              </div>              
+
+            </div>              
+
+            <div class="row">  
+              <div class="col-sm-4">
+                  <dx-label text="{{ 'CRM_SELLMAN_TITEL' | translate }}">
+                    <dx-drop-down-box
+            
+                    [(value)]="editItem.SELLMANgridBoxValue"
+                    [(opened)]="isSELLMANGridBoxOpened"
+                    valueExpr="ID"
+                    [deferRendering]="true"
+                    [displayExpr]="SELLMANgridBox_displayExpr"
+                    placeholder=".... انتخاب کنيد"
+                    [inputAttr]="{ 'aria-label': 'Owner' }"
+                    [showClearButton]="true"
+                    [dataSource]="SELLMANgridDataSource"
+                    (onOptionChanged)="onSELLMANGridBoxOptionChanged($event)"
+                  >
+                    <div *dxTemplate="let data of 'content'">
+                      <grid-toolbar>
+                        <dx-data-grid  #SELLMANgrid         
+                          [dataSource]="SELLMANgridDataSource"            
+                          [hoverStateEnabled]="true"
+                          showBorders="true"
+                          [(selectedRowKeys)]="editItem.SELLMANgridBoxValue"
+                          height="150%"                     
+                        >
+                        <dxo-editing mode="row" [allowUpdating]='CRM_SELLMAN_UPDATE' [allowDeleting]='CRM_SELLMAN_DELETE' [allowAdding]='CRM_SELLMAN_INSERT' ></dxo-editing>
+                          <dxo-selection mode="single"></dxo-selection>
+                          <dxo-filter-row [visible]="true"></dxo-filter-row>
+                          <dxo-scrolling mode="virtual"></dxo-scrolling>
+                          <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+                          <dxi-column  dataField="SELLMAN_TITEL"   caption="{{'CRM_SELLMAN_TITEL'| translate}}" [width]="150">
+                            <dxi-validation-rule type="required"></dxi-validation-rule>  
+                          </dxi-column>
+                          <dxi-column  dataField="SELLMAN_CODE"   caption="{{'CRM_SELLMAN_CODE'| translate}}" [width]="120">
+                            <dxi-validation-rule type="required"></dxi-validation-rule>  
+                          </dxi-column>
+                          <dxi-column  dataField="SELLMAN_DESC"   caption="{{'CRM_SELLMAN_DESC'| translate}}" [width]="120"></dxi-column>
+                          
+      
+                        </dx-data-grid>
+                      </grid-toolbar>
+                    </div>
+                    </dx-drop-down-box>
+                  </dx-label>
+              </div> 
+
+              <div class="col-sm-1">
+                <dx-check-box [(value)]="editItem.INVOICE_H_IS_BRANCH" [text]="'CRM_INVOICE_H_IS_BRANCH' | translate"></dx-check-box>          
+              </div>
+              <div class="col-sm-1">
+                <dx-check-box [(value)]="editItem.INVOICE_H_IRC" [text]="'CRM_INVOICE_H_IRC' | translate"></dx-check-box>          
+              </div>
+              <div class="col-sm-2">
+                <dx-check-box [(value)]="editItem.INVOICE_H_ORGIN_LABEL" [text]="'CRM_INVOICE_H_ORGIN_LABEL' | translate"></dx-check-box>          
+              </div>
+              <div class="col-sm-2">
+                <dx-label text="{{ 'CRM_INVOICE_H_PURCHASE_TYPE' | translate }}">
+                  <dx-text-box [(value)]="editItem.INVOICE_H_PURCHASE_TYPE">
+                    <dx-validator>
+                      <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
+                    </dx-validator>
+                  </dx-text-box>
+                </dx-label>
+              </div> 
+              <div class="col-sm-2">            
+                <dx-label text="{{ 'CRM_INVOICE_H_PUB_PRIORITY' | translate }}">
+                  <dx-lov  [(value)]="editItem.INVOICE_H_PUB_PRIORITY_ID" 
+                      formCode="FRM-PUB-PRIORITY"
+                      [displayMode]="'ComboBox'">
+                  </dx-lov>
+                </dx-label>
+              </div>  
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">              
+                  <dx-text-area             
+                    [height]="50"
+                    [(value)]="editItem.INVOICE_H_DESC"
+                    placeholder="{{ 'DESCRIPTION' | translate }}">
+                  </dx-text-area>              
+              </div>     
+            </div>
+      </panel-box>           
+
+      <app-invoice-d   [item]="editItem.INVOICE_H_ID"  (detailData)='OndetailDataChange($event)' (deletedData)='OndetailDaleteChange($event)'></app-invoice-d>
+
+      <panel-box [collapsed]="false" [caption]=" 'ارجاع' | translate" >
+        <div class="row">
+
+          <div class="col-sm-4">            
+            <dx-label text="{{ 'CRM_INVOICE_H_PUB_RECIVER_USER' | translate }}">
+              <dx-lov  [(value)]="editItem.INVOICE_RECIVER_USER_ID" 
+                  formCode="CRM_ERJA_USERS_RECIVER"
+                  [displayMode]="'ComboBox'">
+              </dx-lov>
+            </dx-label>
+          </div>  
+
+          <div class="col-sm-6">            
+            <dx-button  (click)="onErjaClick($event)" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">  
+                <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;">ارجاع به کاربر انتخابی</span>                  
+              </div>  
+            </dx-button>              
+          </div>  
+
+        </div>
+      </panel-box>
+    </dx-validation-group>
+  </page-content>
+</page>
+
+

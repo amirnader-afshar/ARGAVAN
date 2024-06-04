@@ -29,6 +29,7 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
     }
     ngOnInit():void{
       this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];  
+      this.editItem.FLG_ENTERNAL = this.route.snapshot.data["FLG_ENTERNAL"];  
       this.editItem.archive = this.route.snapshot.data["archive"]; 
       this.loadGrid();
     
@@ -198,6 +199,18 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
       }
     }
   
-  
+    onRowPrepared(e) {
+      if (e.rowType === "data") {
+          if (e.data.LETTER_IS_READED) {
+            e.rowElement.style.backgroundColor = 'rgb(102, 204, 255)';  
+            e.rowElement.className = e.rowElement.className.replace("dx-row-alt", "");  
+          }
+          else{
+            e.rowElement.style.backgroundColor = 'rgb(255, 207, 102)';  
+            e.rowElement.className = e.rowElement.className.replace("dx-row-alt", "");  
+          }
+      }
+  }
+
   }
    

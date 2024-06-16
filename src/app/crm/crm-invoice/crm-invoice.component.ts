@@ -36,6 +36,9 @@ export class CrmInvoiceComponent implements OnInit {
   CRM_SELLMAN_DELETE; 
   CRM_SELLMAN_UPDATE; 
 
+  CRM_ERJA_INSERT;
+  CRM_ERJA_DELETE;
+
 
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   @ViewChild('ACCgrid',{static: false}) ACCgrid: DxDataGridComponent;
@@ -55,6 +58,9 @@ export class CrmInvoiceComponent implements OnInit {
     this.CRM_SELLMAN_INSERT = this.permissionService.hasDefined('CRM_SELLMAN_INSERT');
     this.CRM_SELLMAN_DELETE = this.permissionService.hasDefined('CRM_SELLMAN_DELETE');
     this.CRM_SELLMAN_UPDATE = this.permissionService.hasDefined('CRM_SELLMAN_UPDATE');
+    
+    this.CRM_ERJA_INSERT = this.permissionService.hasDefined('CRM_ERJA_INSERT');
+    this.CRM_ERJA_DELETE = this.permissionService.hasDefined('CRM_ERJA_DELETE');
 
     if (this.editItem.INVOICE_H_ID){
 
@@ -347,9 +353,26 @@ export class CrmInvoiceComponent implements OnInit {
     }
   }
 
-  onErjaClick(e)
+  onErjaClick(mode)
   {
-    
+    let _datatopost= {
+      'Data': {
+        'SPName': '[CRM].[CRM_SpERJA]',
+        'Data_Input': { 'Mode': mode,          
+         'Header': {'ERJA_INVOICE_H_ID':this.editItem.INVOICE_H_ID,'ERJA_RECIVER_USER_ID':this.editItem.INVOICE_RECIVER_USER_ID,
+         'ERJA_ARGHAVAN_TIME_STAMP':1
+         }
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
+
+    this.service.postPromise("/adm/CommenContext/Run", _datatopost).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Response=1) {
+        Notify.success('اطلاعات با موفقیت ذخیره شد');
+      }            
+        });
   }
 
 

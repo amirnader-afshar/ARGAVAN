@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-sm-12">    
+        <grid-toolbar > 
+        <dx-data-grid #subDetailGrid
+          keyExpr="INVOICE_D_SUBDETAIL_ID"       
+          [dataSource]="subDetailDataSource"
+          [hoverStateEnabled]="true"
+          showBorders="true"
+          [(selectedRowKeys)]="SubDetailGridValue"
+          height="200"
+          (onSaving)="onSaving($event)"
+        >
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" ></dxo-editing>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-scrolling mode="virtual"></dxo-scrolling>  
+        <dxi-column  [visible]='INVOICE_D_CACH_PRICE' dataField="INVOICE_D_SUBDETAIL_CACH_PRICE"  [setCellValue]="setCachPriceValue" [width]="120" caption="{{'CRM_INVOICE_D_CACH_PRICE'| translate}}" ></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_CACH_PRICE' dataField="INVOICE_D_SUBDETAIL_TARGET_PERCENT"  [width]="120" caption="{{'CRM_INVOICE_D_TARGET_PERCENT'| translate}}"  [setCellValue]="setTotalPriceValue"></dxi-column>   
+        <dxi-column  [visible]='INVOICE_D_FINAL_PRICE' dataField="INVOICE_D_SUBDETAIL_FINAL_PRICE"  [width]="120" caption="{{'CRM_INVOICE_D_FINAL_PRICE'| translate}}" [allowEditing]="false"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_MIN_ORDER' dataField="INVOICE_D_SUBDETAIL_MIN_ORDER"  [width]="120" caption="{{'CRM_INVOICE_D_MIN_ORDER'| translate}}" ></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_EXPIRE' dataField="INVOICE_D_SUBDETAIL_EXPIRE"  caption="{{'CRM_INVOICE_D_EXPIRE'| translate}}" [width]="120"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_VALIDATE' dataField="INVOICE_D_SUBDETAIL_VALIDATE"  caption="{{'CRM_INVOICE_D_VALIDATE'| translate}}" [width]="120"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_PREPER' dataField="INVOICE_D_SUBDETAIL_PREPER"  caption="{{'CRM_INVOICE_D_PREPER'| translate}}" [width]="120"></dxi-column>      
+        <dxi-column  [visible]='INVOICE_D_SITE_PRICE' dataField="INVOICE_D_SITE_SUBDETAIL_PRICE"  caption="{{'CRM_INVOICE_D_SITE_PRICE'| translate}}" [width]="120"></dxi-column>      
+      
+        </dx-data-grid>
+      </grid-toolbar>    
+      
+    </div>
+  </div>      
+ 

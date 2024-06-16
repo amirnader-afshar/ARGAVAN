@@ -187,12 +187,12 @@
 
       <app-invoice-d   [item]="editItem.INVOICE_H_ID"  (detailData)='OndetailDataChange($event)' (deletedData)='OndetailDaleteChange($event)'></app-invoice-d>
 
-      <panel-box [collapsed]="false" [caption]=" 'ارجاع' | translate" >
+      <panel-box  [visible] ="editItem.INVOICE_H_ID" [collapsed]="false" [caption]=" 'ارجاع' | translate" >
         <div class="row">
 
-          <div class="col-sm-4">            
+          <div class="col-sm-3">            
             <dx-label text="{{ 'CRM_INVOICE_H_PUB_RECIVER_USER' | translate }}">
-              <dx-lov  [(value)]="editItem.INVOICE_RECIVER_USER_ID" 
+              <dx-lov  [readOnly]="editItem.IS_ERJAED" [(value)]="editItem.INVOICE_RECIVER_USER_ID" 
                   formCode="CRM_ERJA_USERS_RECIVER"
                   [displayMode]="'ComboBox'">
               </dx-lov>
@@ -200,10 +200,19 @@
           </div>  
 
           <div class="col-sm-6">            
-            <dx-button  (click)="onErjaClick($event)" [template]="'buttonTemplate'">  
+            <dx-button  [disabled]="editItem.IS_ERJAED || !CRM_ERJA_INSERT" (click)="onErjaClick(1)" [template]="'buttonTemplate'">  
               <div  *dxTemplate="let data of 'buttonTemplate'">  
-                <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
+                <span class="fa fa-hand-o-left green" aria-hidden="true" style="margin: 5px;"></span>
                 <span style="margin: 5px;">ارجاع به کاربر انتخابی</span>                  
+              </div>  
+            </dx-button>              
+          </div> 
+          
+          <div class="col-sm-3">            
+            <dx-button  [disabled]="!editItem.IS_ERJA_OWNER  || !editItem.IS_ERJAED || !CRM_ERJA_DELETE" (click)="onErjaClick(3)" [template]="'buttonTemplate'">  
+              <div  *dxTemplate="let data of 'buttonTemplate'">  
+                <span class="fa fa-trash red" aria-hidden="true" style="margin: 5px;"></span>
+                <span style="margin: 5px;">حذف ارجاع</span>                  
               </div>  
             </dx-button>              
           </div>  

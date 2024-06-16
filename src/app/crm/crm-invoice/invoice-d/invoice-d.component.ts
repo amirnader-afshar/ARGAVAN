@@ -39,8 +39,10 @@ export class InvoiceDComponent implements OnInit {
   INVOICE_D_PREPER;
   INVOICE_D_SITE_PRICE;
 
+  CRM_INVOICE_D_SUBDETAIL_VIEW;
+
   @ViewChild('detailGrid',{static: false}) detailGrid: DxDataGridComponent;
-  @ViewChild('itemGrid',{static: false}) itemGrid: DxDataGridComponent;
+  @ViewChild('itemGrid',{static: true}) itemGrid: DxDataGridComponent;
 
   constructor(public service: ServiceCaller,public permissionService: PermissionService) { 
 
@@ -58,6 +60,9 @@ export class InvoiceDComponent implements OnInit {
     this.INVOICE_D_PREPER =this.permissionService.hasDefined('INVOICE_D_PREPER');
     this.INVOICE_D_SITE_PRICE =this.permissionService.hasDefined('INVOICE_D_SITE_PRICE');
 
+    this.CRM_INVOICE_D_SUBDETAIL_VIEW =this.permissionService.hasDefined('CRM_INVOICE_D_SUBDETAIL_VIEW');
+
+
 
       
     this.ItemDatasource = this.MakeDatasource(this.service,'[CRM].[CRM_Spitem]');
@@ -70,6 +75,7 @@ export class InvoiceDComponent implements OnInit {
       this.DetailDataSource = this.loadGrid(); 
 
   }
+
 
   onSaving(e){
     this.detailData.emit(this.DetailDataSource);

@@ -56,7 +56,7 @@
         >
           <div *dxTemplate="let e of 'contentTemplate'">
             <grid-toolbar>
-              <dx-data-grid
+              <dx-data-grid #itemGrid
                 [dataSource]="ItemDatasource"
                 [remoteOperations]="true"
                 [height]="250"
@@ -82,6 +82,18 @@
           </div>
         </dx-drop-down-box>
           </div>
+
+          <dxo-master-detail
+          [enabled]="item && CRM_INVOICE_D_SUBDETAIL_VIEW"
+          template="masterDetail"
+        ></dxo-master-detail>
+
+        <div *dxTemplate="let masterDetailItem of 'masterDetail'">
+          <crm-invoice-d-subdetail           
+            [rowData]="masterDetailItem.data"
+          ></crm-invoice-d-subdetail>
+        </div>
+
         </dx-data-grid>
       </grid-toolbar>    
       

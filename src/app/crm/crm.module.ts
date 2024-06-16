@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 
 import { InvoiceDComponent } from './crm-invoice/invoice-d/invoice-d.component';
 import { InvoiceListComponent } from './crm-invoice/invoice-list/invoice-list.component';
+import { InvoiceDSubdetailComponent } from './crm-invoice/invoice-d/invoice-d-subdetail/invoice-d-subdetail.component';
 
 
 export const ROUTES: any = [
@@ -36,6 +37,7 @@ export const ROUTES: any = [
     CrmInvoiceComponent,
         InvoiceDComponent,
         InvoiceListComponent,
+        InvoiceDSubdetailComponent,
   ],
   imports: [
     CommonModule,

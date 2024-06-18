@@ -22,6 +22,23 @@
         <dxi-column  [visible]='INVOICE_D_PREPER' dataField="INVOICE_D_SUBDETAIL_PREPER"  caption="{{'CRM_INVOICE_D_PREPER'| translate}}" [width]="120"></dxi-column>      
         <dxi-column  [visible]='INVOICE_D_SITE_PRICE' dataField="INVOICE_D_SITE_SUBDETAIL_PRICE"  caption="{{'CRM_INVOICE_D_SITE_PRICE'| translate}}" [width]="120"></dxi-column>      
       
+        <dxi-column
+        dataField="ID"
+        caption = ""
+        [width]="110"
+        [allowFiltering]="false"
+        [allowSorting]="false"
+        cellTemplate="cellTemplate"
+      ></dxi-column>
+        <div *dxTemplate="let data of 'cellTemplate'">
+          <dx-button [ngStyle]="{'background-color': data.data.INVOICE_D_SUBDETAIL_CONFIRM ? 'greenyellow' : 'none' }" [width]="120" (click)="onCheckClick(data.data)" [template]="'buttonTemplate'">  
+            <div  *dxTemplate="let data of 'buttonTemplate'">  
+              <span class="fa fa-check green" aria-hidden="true" style="margin: 5px;"></span>
+              <span style="margin: 5px; color: darkgreen;">تائید</span>                    
+            </div> 
+          </dx-button>
+        </div>
+
         </dx-data-grid>
       </grid-toolbar>    
       

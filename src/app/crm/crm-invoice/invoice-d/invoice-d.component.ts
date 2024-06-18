@@ -198,15 +198,15 @@ export class InvoiceDComponent implements OnInit {
    }
 
    setTotalPriceValue(newData, value, currentRowData) {
-    newData.INVOICE_D_TARGET_PERCENT = value;
-    if (currentRowData.INVOICE_D_CACH_PRICE )
-      newData.INVOICE_D_FINAL_PRICE = +currentRowData.INVOICE_D_CACH_PRICE + ((currentRowData.INVOICE_D_CACH_PRICE * value)/100);
+    // newData.INVOICE_D_TARGET_PERCENT = value;
+    // if (currentRowData.INVOICE_D_CACH_PRICE )
+    //   newData.INVOICE_D_FINAL_PRICE = +currentRowData.INVOICE_D_CACH_PRICE + ((currentRowData.INVOICE_D_CACH_PRICE * value)/100);
    }
 
    setCachPriceValue(newData, value, currentRowData) {
-    newData.INVOICE_D_CACH_PRICE = value;
-    if(currentRowData.INVOICE_D_TARGET_PERCENT)
-      newData.INVOICE_D_FINAL_PRICE = +value + ((currentRowData.INVOICE_D_TARGET_PERCENT * value)/100);
+    // newData.INVOICE_D_CACH_PRICE = value;
+    // if(currentRowData.INVOICE_D_TARGET_PERCENT)
+    //   newData.INVOICE_D_FINAL_PRICE = +value + ((currentRowData.INVOICE_D_TARGET_PERCENT * value)/100);
    }
 
 }

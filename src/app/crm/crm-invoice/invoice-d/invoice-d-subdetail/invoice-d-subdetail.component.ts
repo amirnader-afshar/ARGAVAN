@@ -80,18 +80,36 @@ export class InvoiceDSubdetailComponent implements OnInit {
    }
 
   setTotalPriceValue(newData, value, currentRowData) {
-    newData.INVOICE_D_TARGET_PERCENT = value;
-    if (currentRowData.INVOICE_D_CACH_PRICE )
-      newData.INVOICE_D_FINAL_PRICE = +currentRowData.INVOICE_D_CACH_PRICE + ((currentRowData.INVOICE_D_CACH_PRICE * value)/100);
+    newData.INVOICE_D_SUBDETAIL_TARGET_PERCENT = value;
+    if (currentRowData.INVOICE_D_SUBDETAIL_CACH_PRICE )
+      newData.INVOICE_D_SUBDETAIL_FINAL_PRICE = +currentRowData.INVOICE_D_SUBDETAIL_CACH_PRICE + ((currentRowData.INVOICE_D_SUBDETAIL_CACH_PRICE * value)/100);
    }
 
    setCachPriceValue(newData, value, currentRowData) {
-    newData.INVOICE_D_CACH_PRICE = value;
-    if(currentRowData.INVOICE_D_TARGET_PERCENT)
-      newData.INVOICE_D_FINAL_PRICE = +value + ((currentRowData.INVOICE_D_TARGET_PERCENT * value)/100);
+    newData.INVOICE_D_SUBDETAIL_CACH_PRICE = value;
+    if(currentRowData.INVOICE_D_SUBDETAIL_TARGET_PERCENT)
+      newData.INVOICE_D_SUBDETAIL_FINAL_PRICE = +value + ((currentRowData.INVOICE_D_SUBDETAIL_TARGET_PERCENT * value)/100);
    }
 
+   onCheckClick(data){
+    let _datatopost= {
+      'Data': {
+        'SPName': '[CRM].[CRM_SpINVOICE_D_SUBDETAIL]',
+        'Data_Input': { 'Mode': 5,          
+         'Header': data//{'INVOICE_D_SUBDETAIL_INVOICE_D_ID':data.INVOICE_D_SUBDETAIL_INVOICE_D_ID,'INVOICE_D_SUBDETAIL_ID':data.ID}
+        , 'Detail': '', 'InputParams': '' }
+      }
+      
+    }
 
+    this.service.postPromise("/adm/CommenContext/Run", _datatopost).
+    then((data) => {     
+      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+        
+      }  
+      this.subDetailGrid.instance.refresh();          
+        });
+   }
    MakeDatasource(ser:ServiceCaller,SPName:string,_rowData){
     let _datatopost={
         'Data': {

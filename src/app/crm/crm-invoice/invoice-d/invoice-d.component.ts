@@ -16,7 +16,21 @@ export class InvoiceDComponent implements OnInit {
   @Output() detailData : EventEmitter<any>= new EventEmitter<any>();
   @Output() deletedData : EventEmitter<any>= new EventEmitter<any>();
 
-  @Input() item: any = {};
+
+  private _itemID: string;
+    
+  @Input() set item(value: string) {
+  
+     this._itemID = value;
+    
+  }
+  
+  get item(): string {
+  
+      return this._itemID;
+  
+  }
+
 
   DetailDataSource: any = [];
   ItemDatasource:any = {};
@@ -62,23 +76,20 @@ export class InvoiceDComponent implements OnInit {
 
     this.CRM_INVOICE_D_SUBDETAIL_VIEW =this.permissionService.hasDefined('CRM_INVOICE_D_SUBDETAIL_VIEW');
 
-
-
-      
-    this.ItemDatasource = this.MakeDatasource(this.service,'[CRM].[CRM_Spitem]');
+     this.ItemDatasource = this.MakeDatasource(this.service,'[CRM].[CRM_Spitem]','');
 
     }
 
   ngOnInit(): void {
-
-    if (this.item)
-      this.DetailDataSource = this.loadGrid(); 
-
+    if (this._itemID) {
+      this.DetailDataSource = this.MakeDatasource(this.service,'[CRM].[CRM_SpINVOICE_D]',this.item);
+     }
   }
 
 
   onSaving(e){
-    this.detailData.emit(this.DetailDataSource);
+    if (!this._itemID)
+      this.detailData.emit(this.DetailDataSource);
   }
 
   onSelectionChanged(selectedRowKeys, cellInfo, dropDownBoxComponent) {
@@ -88,7 +99,7 @@ export class InvoiceDComponent implements OnInit {
     }
   }
 
-  MakeDatasource(ser:ServiceCaller,SPName:string){
+  MakeDatasource(ser:ServiceCaller,SPName:string,id:string){
     let _datatopost={
         'Data': {
           'SPName':SPName,
@@ -103,7 +114,11 @@ export class InvoiceDComponent implements OnInit {
         load() {
           let deferred: Deferred<any> = new Deferred<any>();
           _datatopost.Data.Data_Input.Mode=4;
-          _datatopost.Data.Data_Input.Header={};
+          if (_datatopost.Data.SPName==='[CRM].[CRM_SpINVOICE_D]')  {  
+            _datatopost.Data.Data_Input.Header={'INVOICE_D_INVOICE_H_ID':id};
+          }
+          else
+            _datatopost.Data.Data_Input.Header={};
           ser.postPromise("/adm/CommenContext/Run", _datatopost).
           then((data) => {   
             if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {  
@@ -140,7 +155,7 @@ export class InvoiceDComponent implements OnInit {
         insert: ( values) => {
         let deferred: Deferred<any> = new Deferred<any>();     
         _datatopost.Data.Data_Input.Mode=1;
-        _datatopost.Data.Data_Input.Header=values;
+        _datatopost.Data.Data_Input.Header={...values,'INVOICE_D_INVOICE_H_ID':this._itemID};
         this.service.postPromise("/adm/CommenContext/Run", _datatopost).
         then((data) => {            
           deferred.resolve(data);        
@@ -152,6 +167,12 @@ export class InvoiceDComponent implements OnInit {
         ,remove:(key)=> {
       let deferred: Deferred<any> = new Deferred<any>();   
       let row:any;
+      if (_datatopost.Data.SPName==='[CRM].[CRM_SpINVOICE_D]')  {        
+        row = this.detailGrid.instance.getDataSource().items().filter(c => c.ID == key)[0];
+      } 
+     else if (_datatopost.Data.SPName==='[CRM].[CRM_Spitem]')  {    
+       row = this.itemGrid.instance.getDataSource().items().filter(c => c.ID == key)[0];
+      }        
       _datatopost.Data.Data_Input.Mode=3;
       _datatopost.Data.Data_Input.Header=row;
       this.service.postPromise("/adm/CommenContext/Run", _datatopost).
@@ -172,7 +193,7 @@ export class InvoiceDComponent implements OnInit {
       'Data': {
         'SPName': '[CRM].[CRM_SpINVOICE_D]',
         'Data_Input': { 'Mode': 4,          
-         'Header': {'INVOICE_D_INVOICE_H_ID':this.item
+         'Header': {'INVOICE_D_INVOICE_H_ID':this._itemID
                      }
         , 'Detail': '', 'InputParams': '' }
       }
@@ -193,8 +214,10 @@ export class InvoiceDComponent implements OnInit {
    };  
 
    rowRemove(e){
-    this.detailData.emit(this.DetailDataSource);
-    this.deletedData.emit(e.data);
+    if (!this._itemID){
+        this.detailData.emit(this.DetailDataSource);
+        this.deletedData.emit(e.data);
+    }
    }
 
    setTotalPriceValue(newData, value, currentRowData) {
@@ -207,6 +230,11 @@ export class InvoiceDComponent implements OnInit {
     // newData.INVOICE_D_CACH_PRICE = value;
     // if(currentRowData.INVOICE_D_TARGET_PERCENT)
     //   newData.INVOICE_D_FINAL_PRICE = +value + ((currentRowData.INVOICE_D_TARGET_PERCENT * value)/100);
+   }
+
+   onRefreshMasterGrid()
+   {
+    this.detailGrid.instance.refresh();  
    }
 
 }

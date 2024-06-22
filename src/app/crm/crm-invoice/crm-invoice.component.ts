@@ -39,6 +39,8 @@ export class CrmInvoiceComponent implements OnInit {
   CRM_ERJA_INSERT;
   CRM_ERJA_DELETE;
 
+  CRM_INVOICE_STATUS_UPDATE;
+
 
   @ViewChild('form',{static: false}) form: DxValidationGroupComponent;
   @ViewChild('ACCgrid',{static: false}) ACCgrid: DxDataGridComponent;
@@ -61,6 +63,8 @@ export class CrmInvoiceComponent implements OnInit {
     
     this.CRM_ERJA_INSERT = this.permissionService.hasDefined('CRM_ERJA_INSERT');
     this.CRM_ERJA_DELETE = this.permissionService.hasDefined('CRM_ERJA_DELETE');
+
+    this.CRM_INVOICE_STATUS_UPDATE= this.permissionService.hasDefined('CRM_INVOICE_STATUS_UPDATE');
 
     if (this.editItem.INVOICE_H_ID){
 

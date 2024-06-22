@@ -69,20 +69,16 @@
 
               <div class="col-sm-2">
                   <dx-label text="{{ 'CRM_INVOICE_H_MAJOR_CHANAL' | translate }}">
-                    <dx-text-box [(value)]="editItem.INVOICE_H_MAJOR_CHANAL">
-                      <dx-validator>
-                        <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
-                      </dx-validator>
-                    </dx-text-box>
+                    <dx-lov  [(value)]="editItem.INVOICE_H_MAJOR_CHANAL" 
+                        formCode="CRM_INVOICE_SELL_CANAL"
+                        [displayMode]="'ComboBox'">
+                    </dx-lov>
                   </dx-label>
               </div> 
 
               <div class="col-sm-2">
                 <dx-label text="{{ 'CRM_INVOICE_H_NO' | translate }}">
-                  <dx-text-box [(value)]="editItem.INVOICE_H_NO">
-                    <dx-validator>
-                      <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
-                    </dx-validator>
+                  <dx-text-box [readOnly]="true" [(value)]="editItem.INVOICE_H_NO">
                   </dx-text-box>
                 </dx-label>
               </div> 
@@ -157,11 +153,10 @@
               </div>
               <div class="col-sm-2">
                 <dx-label text="{{ 'CRM_INVOICE_H_PURCHASE_TYPE' | translate }}">
-                  <dx-text-box [(value)]="editItem.INVOICE_H_PURCHASE_TYPE">
-                    <dx-validator>
-                      <dxi-validation-rule type="required" message="اين فيلد اجباري است"></dxi-validation-rule>
-                    </dx-validator>
-                  </dx-text-box>
+                  <dx-lov  [(value)]="editItem.INVOICE_H_PURCHASE_TYPE" 
+                    formCode="CRM_INVOICE_PURCHASE_TYPE"
+                    [displayMode]="'ComboBox'">
+                  </dx-lov>
                 </dx-label>
               </div> 
               <div class="col-sm-2">            
@@ -175,13 +170,22 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">              
+                <div class="col-sm-8">              
                   <dx-text-area             
                     [height]="50"
                     [(value)]="editItem.INVOICE_H_DESC"
                     placeholder="{{ 'DESCRIPTION' | translate }}">
                   </dx-text-area>              
-              </div>     
+              </div>    
+              <div class="col-sm-4">              
+                <dx-label text="{{ 'CRM_INVOICE_STATUS_CAPTION' | translate }}">
+                  <dx-lov  [(value)]="editItem.INVOICE_H_FINAL_STATUS"
+                      [readOnly]="!CRM_INVOICE_STATUS_UPDATE" 
+                      formCode="CRM_INVOICE_HEADER_STATUS"
+                      [displayMode]="'ComboBox'">
+                  </dx-lov>
+                </dx-label>                  
+              </div>  
             </div>
       </panel-box>           
 

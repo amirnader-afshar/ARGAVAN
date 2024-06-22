@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
+import { log } from 'node:console';
 import { Deferred } from 'src/app/shared/Deferred';
 import { PermissionService } from 'src/app/shared/permission';
 import { ServiceCaller } from 'src/app/shared/services/ServiceCaller';
 import { Guid } from 'src/app/shared/types/GUID';
+import { Dialog, Notify } from 'src/app/shared/util/Dialog';
 
 @Component({
   selector: 'crm-invoice-d-subdetail',
@@ -16,7 +18,7 @@ export class InvoiceDSubdetailComponent implements OnInit {
   @Output() subDetailData : EventEmitter<any>= new EventEmitter<any>();
   @Output() subDeletedData : EventEmitter<any>= new EventEmitter<any>();
 
- 
+  @Output() refreshMasterGrid : EventEmitter<any>= new EventEmitter<any>();
 
 
   private _rowData: string;
@@ -92,11 +94,24 @@ export class InvoiceDSubdetailComponent implements OnInit {
    }
 
    onCheckClick(data){
+    let updateMainRow:boolean = false;
+
+    Dialog.confirm('؟', 'آیا مایل هستید اطلاعات مربوط به ردیف اصلی هم به روز شود؟').okay(() => {
+      this.updateConfirm(data,true);
+      
+  }).cancel(()=>{
+    this.updateConfirm(data,false);
+  });
+
+   }
+
+   updateConfirm(data,_update:boolean){
+
     let _datatopost= {
       'Data': {
         'SPName': '[CRM].[CRM_SpINVOICE_D_SUBDETAIL]',
         'Data_Input': { 'Mode': 5,          
-         'Header': data//{'INVOICE_D_SUBDETAIL_INVOICE_D_ID':data.INVOICE_D_SUBDETAIL_INVOICE_D_ID,'INVOICE_D_SUBDETAIL_ID':data.ID}
+        'Header': {...data,'updateMainRow':_update}
         , 'Detail': '', 'InputParams': '' }
       }
       
@@ -104,12 +119,17 @@ export class InvoiceDSubdetailComponent implements OnInit {
 
     this.service.postPromise("/adm/CommenContext/Run", _datatopost).
     then((data) => {     
-      if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
-        
-      }  
-      this.subDetailGrid.instance.refresh();          
-        });
+        if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+          if (_update)
+            this.refreshMasterGrid.emit(this.subDetailDataSource);
+          Notify.success('ثبت شد');
+        }  
+        this.subDetailGrid.instance.refresh();                  
+        }); 
+
    }
+    
+
    MakeDatasource(ser:ServiceCaller,SPName:string,_rowData){
     let _datatopost={
         'Data': {
@@ -172,6 +192,8 @@ export class InvoiceDSubdetailComponent implements OnInit {
         ,remove:(key)=> {
       let deferred: Deferred<any> = new Deferred<any>();   
       let row:any;
+      row = this.subDetailGrid.instance.getDataSource().items().filter(c => c.ID == key)[0];
+      
       _datatopost.Data.Data_Input.Mode=3;
       _datatopost.Data.Data_Input.Header=row;
       this.service.postPromise("/adm/CommenContext/Run", _datatopost).

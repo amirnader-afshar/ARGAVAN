@@ -33,9 +33,8 @@
         </div>
 
         <dxi-column  dataField="INVOICE_D_IRC"  caption="{{'CRM_INVOICE_D_IRC'| translate}}" [visible]='INVOICE_D_IRC' ></dxi-column>      
-        <dxi-column  dataField="INVOICE_D_CACH_PRICE"  [setCellValue]="setCachPriceValue" caption="{{'CRM_INVOICE_D_CACH_PRICE'| translate}}" [visible]='INVOICE_D_CACH_PRICE'></dxi-column>      
-        <dxi-column  dataField="INVOICE_D_TARGET_PERCENT"  caption="{{'CRM_INVOICE_D_TARGET_PERCENT'| translate}}" 
-          [visible]='INVOICE_D_CACH_PRICE' [setCellValue]="setTotalPriceValue"></dxi-column>   
+        <dxi-column  dataField="INVOICE_D_CACH_PRICE"  caption="{{'CRM_INVOICE_D_CACH_PRICE'| translate}}" [visible]='INVOICE_D_CACH_PRICE'></dxi-column>      
+        <dxi-column  dataField="INVOICE_D_TARGET_PERCENT"  caption="{{'CRM_INVOICE_D_TARGET_PERCENT'| translate}}" [visible]='INVOICE_D_CACH_PRICE' ></dxi-column>   
         <dxi-column  [visible]='INVOICE_D_FINAL_PRICE' dataField="INVOICE_D_FINAL_PRICE"  caption="{{'CRM_INVOICE_D_FINAL_PRICE'| translate}}" [allowEditing]="false"></dxi-column>      
 
         <dxi-column  [visible]='INVOICE_D_MIN_ORDER' dataField="INVOICE_D_MIN_ORDER"  caption="{{'CRM_INVOICE_D_MIN_ORDER'| translate}}" ></dxi-column>      
@@ -89,10 +88,11 @@
         ></dxo-master-detail>
 
         <div *dxTemplate="let masterDetailItem of 'masterDetail'">
-          <crm-invoice-d-subdetail           
+          <crm-invoice-d-subdetail      
+            (refreshMasterGrid)="onRefreshMasterGrid($event)"     
             [rowData]="masterDetailItem.data"
           ></crm-invoice-d-subdetail>
-        </div>
+        </div> 
 
         </dx-data-grid>
       </grid-toolbar>    

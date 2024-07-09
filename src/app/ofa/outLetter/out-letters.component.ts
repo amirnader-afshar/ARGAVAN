@@ -59,6 +59,12 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
         icon: "fa fa-trash red",
         text: 'حذف',
         visible: false
+      },
+      {
+        name: "Refresh",
+        icon: "fa fa-refresh blue",
+        text: 'خالی کردن فیلترها',
+        visible: true
       }
     ]
   
@@ -180,6 +186,9 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
             this.loadGrid();          
           
         });
+      }
+      else if (name="Refresh"){
+        this.dataGrid.instance.state(null);
       }
     }
     selectionChangedHandler() {

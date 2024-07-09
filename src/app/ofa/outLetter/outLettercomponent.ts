@@ -801,8 +801,8 @@ getBlobFromUrl(url)
         }
         var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
         resolve(blob as File);
-        //var url = window.URL.createObjectURL(blob);
-        //window.open(url); 
+        // var url = window.URL.createObjectURL(blob);
+        // window.open(url); 
 
   // this.service.get("/EDM/File/GetFileBase64?entityId=72760809-985f-ee11-9c93-f816541c96c9", (data) => {
   //   console.log("getfile",data);
@@ -867,26 +867,26 @@ async  genReport(e) {
   this.MainFile.files=list.files;
   this.Mainfileupload();
 
-  // // see: https://stackoverflow.com/questions/19327749/javascript-blob-filename-without-link
+  // // // see: https://stackoverflow.com/questions/19327749/javascript-blob-filename-without-link
 
-  // // get downloadable url from the blob
-  // const blobUrl = URL.createObjectURL(blob);
+  // // // get downloadable url from the blob
+  //  const blobUrl = URL.createObjectURL(blob);
 
-  // // create temp link element
-  // let link = document.createElement("a");
-  // link.download = filename;
-  // link.href = blobUrl;
+  // // // create temp link element
+  //  let link = document.createElement("a");
+  //  link.download = filename;
+  //  link.href = blobUrl;
 
-  // // use the link to invoke a download
-  // document.body.appendChild(link);
-  // link.click();
+  // // // use the link to invoke a download
+  //  document.body.appendChild(link);
+  //  link.click();
 
-  // // remove the link
-  // setTimeout(() => {
-  //     link.remove();
-  //     window.URL.revokeObjectURL(blobUrl);
-  //     link = null;
-  // }, 0);
+  // // // remove the link
+  //  setTimeout(() => {
+  //      link.remove();
+  //      window.URL.revokeObjectURL(blobUrl);
+  //      link = null;
+  //  }, 0);
 }
 
 showGrafErjaat(){

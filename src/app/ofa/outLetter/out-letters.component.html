@@ -16,6 +16,11 @@
               <dxo-pager [visible]="true"></dxo-pager>              
               <!-- <dxo-scrolling rowRenderingMode="virtual" mode="virtual"></dxo-scrolling> -->
               <dxo-selection mode="single"></dxo-selection>
+              <dxo-state-storing
+                [enabled]="true"
+                type="localStorage"
+                storageKey="outLettersStorage"
+              ></dxo-state-storing>
               <dxi-column
               dataField="LETTER_PUB_PRIORITY_ID"
               caption = "{{'OFA_LETTER_PRIORITY'| translate}}"
@@ -34,6 +39,7 @@
               </div> -->
               <!-- <dxi-column dataField="LETTER_SENDER_GRP_TXT" [groupIndex]="0"></dxi-column> -->
               <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_IS_READED"  dataType="boolean" caption="{{'LETTER_IS_READED'| translate}}" [width]="100"></dxi-column>
+              <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataType="boolean" dataField="LETTER_SIGNED"   caption="{{'OFA_LETTER_SIGNED'| translate}}" [width]="100"></dxi-column>
               <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_DATE"  dataType="date" caption="{{'OFA_LETTER_DATE'| translate}}" [width]="100"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="100"></dxi-column>

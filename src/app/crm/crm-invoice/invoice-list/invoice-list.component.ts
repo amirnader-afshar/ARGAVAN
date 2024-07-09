@@ -35,6 +35,12 @@ export class InvoiceListComponent   extends BasePage  implements OnInit {
       icon: "fa fa-edit blue",
       text: 'ویرایش ',
       visible: true
+    },
+    {
+      name: "Refresh",
+      icon: "fa fa-refresh blue",
+      text: 'خالی کردن فیلترها',
+      visible: true
     }
   ]
 
@@ -61,7 +67,9 @@ export class InvoiceListComponent   extends BasePage  implements OnInit {
       this.router.navigate(["crm/invoice"] ,{ queryParams: qp }  );
 
     }
-       
+    else if (name="Refresh"){
+      this.dataGrid.instance.state(null);
+    }       
   }
     
   loadGrid(){

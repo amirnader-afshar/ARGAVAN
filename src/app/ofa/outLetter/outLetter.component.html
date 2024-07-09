@@ -274,12 +274,12 @@
                   <panel-box [collapsed]="true" [caption]=" 'متن نامه' | translate">  
                     
                     <div class="row" >  
-                      <div class="col-sm-6">         
+                      <div class="col-sm-3">         
                         <dx-label *ngIf="!this.docReadOnly" text="بارگزاری فایل نامه">
                           <input #mainfile type="file" [multiple]="false" (change)="OnMainFileChange($event)" accept=".Docx"
                           />
-                      </dx-label> 
-                    </div>
+                        </dx-label> 
+                      </div>
                       
                       <div class="col-sm-6">         
                           <dx-button class="btn btn-lg btn-success" *ngIf="allow_OFA_ACT_001" [width]="120" (click)="genReport($event)" [template]="'buttonTemplate'">  
@@ -287,10 +287,23 @@
                               <span class="fa fa-pencil" aria-hidden="true" style="margin: 5px;"></span>
                               <span style="margin: 5px;font-size: 11px;">امضاء نامه</span>                  
                             </div>  
-                      </dx-button>  
-                    </div> 
+                        </dx-button>  
+                      </div> 
+
+                      <div class="col-sm-3">         
+                        <dx-button
+                        stylingMode="contained"
+                        text="دانلود فایل نامه"
+                        type="success"
+                        [disabled]="!editItem.LETTER_ID || this.docReadOnly || !editItem.LETTER_AM_I_OWNER" 
+                        (onClick)="downloadFile(editItem.LETTER_MAIN_FILE_ID)"
+                         >
+                        </dx-button>
+                      </div>
+
                     </div>
-          
+
+            
                     <!-- <app-documente-editor [readonly]="docReadOnly"></app-documente-editor>         -->
                       <ngx-extended-pdf-viewer  
                         [base64Src]="PDFbase64String"   backgroundColor="#ffffff"

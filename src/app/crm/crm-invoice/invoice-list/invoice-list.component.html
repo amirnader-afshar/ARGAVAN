@@ -12,6 +12,11 @@
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-scrolling mode="virtual"></dxo-scrolling>
               <dxo-selection mode="single"></dxo-selection>
+              <dxo-state-storing
+              [enabled]="true"
+              type="localStorage"
+              storageKey="crmInvoiceListStorage"
+            ></dxo-state-storing>
               <dxi-column  dataField="INVOICE_H_ACC"   caption="{{'CRM_CENTER_NAME'| translate}}" [width]="150"></dxi-column>
               <dxi-column  dataField="INVOICE_H_NO"   caption="{{'CRM_INVOICE_H_NO'| translate}}" [width]="150"></dxi-column>
               <dxi-column  dataField="INVOICE_H_EXPERT"   caption="{{'CRM_SELLMAN_TITEL'| translate}}" [width]="150"></dxi-column>

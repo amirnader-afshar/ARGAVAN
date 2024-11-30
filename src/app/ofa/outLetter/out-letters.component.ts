@@ -41,6 +41,8 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
     selectedRow: any = {};
     jasem: any = [];
     dataToPostBody: DataToPost;
+    notSignedCount:number;
+    notReadedCount:number;
     menuItems = [
       {
         name: "New",
@@ -127,7 +129,9 @@ import { locale, loadMessages, formatMessage } from 'devextreme/localization';
             //this.dataSource=data.ReturnData.Data_Output[0].Header;  
             console.log("loadOptions", loadOptions);
             deferred.resolve({data:data.ReturnData.Data_Output[0].Header,
-              totalCount: data.ReturnData.Data_Output[0].Detail[0].TOTALCOUNT });       
+              totalCount: data.ReturnData.Data_Output[0].Detail[0].TOTALCOUNT });  
+              this.notSignedCount =   data.ReturnData.Data_Output[0].Detail[0].COUNT_LETTER_NOT_SIGNED;   
+              this.notReadedCount =   data.ReturnData.Data_Output[0].Detail[0].COUNT_LETTER_NOT_READED;   
           }  
           else
           {

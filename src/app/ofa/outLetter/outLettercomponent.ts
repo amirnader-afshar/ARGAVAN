@@ -33,6 +33,8 @@ import {  ViewportScroller } from '@angular/common';
 import CustomStore from 'devextreme/data/custom_store';
 import { Deferred } from 'src/app/shared/Deferred';
 import DataSource from 'devextreme/data/data_source';
+import { ScanService } from 'src/app/shared/services/ScanService';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -70,6 +72,17 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   fileUrl;
   allow_OFA_ACT_001;
 
+  save_sent_button;
+
+  scanedFiles = [];
+  imgsrc;
+  file: FileDto = new FileDto();
+
+  onChangeMain(e) {
+    this.AttachmentsFiles.scanedFiles=[];
+    this.AttachmentsFiles.files = e.target.files;
+    this.upload();
+  }
   constructor(private explorerService: FileExplorerService,public translate: TranslateService
             , public router: Router,private readonly viewport: ViewportScroller,
             private route: ActivatedRoute
@@ -78,7 +91,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
             public core: CoreService,
             public popup: DemisPopupService,
             private routeData: RouteData, private confService: ConfigService,
-            private datepipe :JalaliPipe
+            private datepipe :JalaliPipe,private scanservice :ScanService,private domSanitizer: DomSanitizer
             ) {
     super(translate);
 
@@ -87,9 +100,45 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       this.editItem.LETTER_ID = params['LETTER_ID'];
       this.editItem.archive = params['archive'];
       this.GRID_SOURCE = params['GRID_SOURCE'];
+      
 
   });
-     
+  
+          scanservice.messages.subscribe(msg => {
+
+            if (typeof msg.data.data === "string") {
+                //IF Received Data is String
+            }
+            else if (msg.data.data instanceof ArrayBuffer) {
+              //IF Received Data is ArrayBuffer
+            }
+            else if (msg.data.data instanceof Blob) {   
+                var f = msg.data.data;
+                this.scanedFiles.push(f);
+                              
+                var reader = new FileReader();
+                var html ;
+                reader.onload =  (e) =>{
+                    html =  e.target.result 
+                    this.imgsrc = this.domSanitizer.bypassSecurityTrustUrl(html);
+                    this.file.scanedFiles=[];
+                    this.file.scanedFiles.push(new File([f], 'Scan'+f.size+'.jpg', { lastModified: new Date().getTime(), type: f.type })) ;
+                    this.AttachmentsFiles=this.file;              
+                    this.upload();
+                }          
+                reader.readAsDataURL(f);
+
+            }         
+            
+          },error=>{
+            const _scanerSteupAddress = environment.url+"Downloads/Scan_App_SetUp.msi"
+            Dialog.alert("ADM_SCANER_SERVISE_CONNECTION_FAILD",'<p>'+this.translate.instant("ADM_SCANER_SERVISE_CONNECTION_FAILD_Body")
+            +'</p> <br> <a href='+_scanerSteupAddress+' download>دانلود برنامک اتصال به اسکنر</a>')
+            });
+
+
+
+
    this.menuItems=[ {
       name: "save",
       icon: "fa fa-floppy-o green",
@@ -99,7 +148,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     {
       name: "save_sent",
       icon: "fa fa-floppy-o green",
-      text: 'ارسال نامه',
+      text: this.save_sent_button,
       visible: true
     },
     {
@@ -133,6 +182,12 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
               
    }
 
+   scan() {
+    console.log("new message from client to websocket: ");
+    this.scanservice.messages.next();
+    
+  }
+
    fileExtensions(): string {
     let extensions = '';
     this.config.fileExtensions.forEach((item, index) => {
@@ -143,10 +198,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
     return extensions;
 }
 
-onChangeMain(e) {
-  this.AttachmentsFiles.files = e.target.files;
-  this.upload();
-}
+
 
 OnMainFileChange(e){
   this.MainFile.files= e.target.files;
@@ -475,6 +527,12 @@ upload(): void {
      this.allow_OFA_ACT_001 = this.permissionService.hasDefined('OFA-ACT-001');//چک دسترسی به امضای نامه 
     
     this.editItem.LETTER_IN_OUT_TYPE = this.route.snapshot.data["LETTER_IN_OUT_TYPE"];
+    this.save_sent_button = this.editItem.LETTER_IN_OUT_TYPE == 'in' ?  'ثبت نامه':'ارسال نامه' ;
+    const element = this.menuItems.find(e => e.name === 'save_sent');
+    if (element) {
+        element.text =  this.save_sent_button;
+    }
+ 
     this.editItem.FolderID = Guid.empty;    
     this.getBookNumber();
     this.loadCompanys();

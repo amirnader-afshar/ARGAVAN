@@ -1,14 +1,27 @@
 <page>
+  
     <page-toolbar helpUrl="http://google.com" [items]="menuItems" (onItemClick)="onMenuItemClick($event,'')">
     </page-toolbar>
     <page-content>
       <div class="row">
+        <div *ngIf='this.editItem.FLG_ENTERNAL==true' class="col-sm-4">
+          <b> تعداد امضا نشده ها : </b>
+          {{this.notSignedCount}}
+        </div>        
+        <div *ngIf='this.editItem.FLG_ENTERNAL==true' class="col-sm-8">
+          <b> تعداد خوانده نشده ها : </b>
+          {{this.notReadedCount}}
+        </div>
+      </div>
+      <div class="row">
         <div class="col-sm-12">
           <grid-toolbar>
+            
             <dx-data-grid #grid [remoteOperations]="true"  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
             (onRowDblClick)="onMenuItemClick('Edit',$event.data.ID)"  [columnAutoWidth]="true" [height]="650" 
             (onRowPrepared)="onRowPrepared($event)">
             >              
+            
               <dxo-sorting mode="multiple"></dxo-sorting>
               <!-- <dxo-filter-panel [visible]="true"></dxo-filter-panel> -->
               <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -39,16 +52,25 @@
               </div> -->
               <!-- <dxi-column dataField="LETTER_SENDER_GRP_TXT" [groupIndex]="0"></dxi-column> -->
               <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_IS_READED"  dataType="boolean" caption="{{'LETTER_IS_READED'| translate}}" [width]="100"></dxi-column>
-              <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataType="boolean" dataField="LETTER_SIGNED"   caption="{{'OFA_LETTER_SIGNED'| translate}}" [width]="100"></dxi-column>
+
+              <dxi-column  [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out" || this.editItem.FLG_ENTERNAL==true' 
+              dataType="boolean"  dataField="LETTER_SIGNED"   caption="{{'OFA_LETTER_SIGNED'| translate}}" [width]="100"
+              cellTemplate="LETTER_SIGNEDcellTemplate">              
+              </dxi-column>
+              <div *dxTemplate="let data of 'LETTER_SIGNEDcellTemplate'">
+                <b class="text-success" *ngIf='data.data.LETTER_SIGNED==true'> امضاشده </b>
+                <b  class="text-danger" *ngIf='data.data.LETTER_SIGNED==false'> امضا نشده </b>
+              </div>  
+
               <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_DATE"  dataType="date" caption="{{'OFA_LETTER_DATE'| translate}}" [width]="100"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="100"></dxi-column>
-              <dxi-column dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="150"></dxi-column>
+              <dxi-column dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="140"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>
             
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_CMPN_NAM"  caption="{{'OFA_LETTER_SENDER_CMPN'| translate}}" [width]="200"></dxi-column>
-              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_SUSR_NAM_USR"   caption="{{'OFA_LETTER_SENDER_USER'| translate}}" [width]="200"></dxi-column>
-              <dxi-column  dataField="LETTER_AM_I_ERJA"  dataType="boolean" caption="{{'LETTER_AM_I_ERJA'| translate}}" [width]="150"></dxi-column>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_SUSR_NAM_USR"   caption="{{'OFA_LETTER_SENDER_USER'| translate}}" [width]="150"></dxi-column>
+              <dxi-column  dataField="LETTER_AM_I_ERJA"  dataType="boolean" caption="{{'LETTER_AM_I_ERJA'| translate}}" [width]="100"></dxi-column>
 
               <dxi-column  dataField="LETTER_CATEGORYS"  caption="{{'LETTER_CATEGORYS'| translate}}" [width]="150"></dxi-column>              
               <dxi-column  dataField="LETTER_CMPNY_RECIVERS"  caption="{{'OFA_LETTER_RECIVER_CMPN'| translate}}" [width]="150"></dxi-column>              

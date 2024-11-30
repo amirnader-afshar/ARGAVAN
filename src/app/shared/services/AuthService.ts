@@ -75,6 +75,7 @@ export class AuthService {
             this.initLogin(data, true);
             localStorage.setItem('token', data.Token);
             localStorage.setItem('Sign_FILE_BASE64STRING', data.Sign_FILE_BASE64STRING);
+            localStorage.setItem('outLettersStorage',null);
         });
     }
 

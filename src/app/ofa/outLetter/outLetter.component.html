@@ -160,17 +160,21 @@
                   <panel-box [collapsed]="false" [caption]=" 'پیوستها' | translate"> 
                     
                     <div class="row">
-                      <div class="col-sm-6">
+                      <div class="col-sm-8">
                         <dx-label *ngIf="!this.docReadOnly" text="{{'EMD_FILE'| translate}}">
                             <input #mainfile type="file" [multiple]="true" (change)="onChangeMain($event)" accept="{{fileExtensions()}}"
                             />
                         </dx-label>
                       </div>
+                      <div class="col-sm-4">                        
+                        <dx-button *ngIf="!this.docReadOnly" type="success" text="{{ 'PUB_SCAN' | translate }}" (onClick)="scan()"></dx-button>                       
+                        
+                    </div>
                   </div>
 
                     
                     <div class="row" *ngIf="this.Attachments?.length" >                                
-                        <div class="col-md-3 col-xs-3 items" *ngFor="let item of Attachments">
+                        <div class="col-md-5 col-xs-5 items" *ngFor="let item of Attachments">
                             <div class="card text-center" >
                               <div class="card-header" style="padding-top: 5px;">    
                                 <a *ngIf="!this.docReadOnly" 
@@ -179,10 +183,11 @@
                                 </a>
                               </div>                      
                                 <div (click)="downloadFile(item.ID)" class="card-body file" style="padding: unset;">                                                                                      
-                                    <a  [ngClass]="item.Icon+' fa-2x'"></a>                                                        
+                                  <a data-toggle="tooltip" data-placement="top" title="{{item.Title}}" [ngClass]="item.Icon+' fa-2x'"></a> 
                                 </div>
                                 <div class="card-footer" style="padding: unset;">
-                                  <small class="text-muted" style="font-size: 70%;">{{item.Title}}</small>
+                                  <!-- <small class="text-muted" style="font-size: 70%;">{{item.Title}}</small> -->
+                                  {{ item.Title.length>9 ? item.Title.slice(0, 5)+'...' : item.Title }}
                                 </div>
                             </div>                      
                         </div>                    

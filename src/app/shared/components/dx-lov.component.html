@@ -54,10 +54,18 @@
     </div>
   </div>
   <div *ngSwitchCase="displayModeEnum[displayModeEnum.ComboBox]">
-    <dx-select-box  [searchEnabled]="true" #comboBox [dataSource]="localData" [displayExpr]="comboDisplayExpr" [valueExpr]="valueField"
-      [(value)]="value" [placeholder]="placeholder" [readOnly]="readOnly" [showClearButton]="allowClear"  (onContentReady)="onComboInit($event)">
-      <dx-validator #comboBoxValidator>
-      </dx-validator>
-    </dx-select-box>
+
+    <div class="d-flex">
+        <dx-select-box  [searchEnabled]="true" #comboBox [dataSource]="localData" [displayExpr]="comboDisplayExpr" [valueExpr]="valueField"
+          [(value)]="value" [placeholder]="placeholder" [readOnly]="readOnly" [showClearButton]="allowClear"  (onContentReady)="onComboInit($event)">
+          <dx-validator #comboBoxValidator>
+          </dx-validator>
+        </dx-select-box>
+
+        <button (click)="onRefreshClick()" type="button" aria-label="به روز رسانی" >
+          <i class="fa fa-refresh green"></i>
+        </button>
+    </div>
+
   </div>
 </div>

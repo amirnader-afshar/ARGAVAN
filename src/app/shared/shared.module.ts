@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { DevExtremeModule} from 'devextreme-angular';
 import { DocumentEditorContainerModule  } from '@syncfusion/ej2-angular-documenteditor';
-
 import { BasePage, PopupBasePage } from './BasePage';
 import { Deferred } from './Deferred';
 import { LabelComponent } from './components/label.component';
@@ -173,7 +172,6 @@ export const ROUTES: any = [
 
 @NgModule({
   declarations: [
-    
     MasterLayoutComponent,
     LoginLayoutComponent,
     LabelComponent,

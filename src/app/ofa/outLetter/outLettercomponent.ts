@@ -46,7 +46,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class outLettercomponent extends BasePage implements OnInit,AfterViewInit {
 
-  
+  lettter_panel_visible = true;
   AttachmentsFiles: FileDto = new FileDto();
   MainFile: FileDto = new FileDto();
 
@@ -63,6 +63,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
   @ViewChild(DxDataGridComponent, { static: false }) companygrid: DxDataGridComponent;
   
   GRID_SOURCE;
+  FLG_ENTERNAL;
   user;
   allcategoryItems: any[];
   categoryselected: string[]=[];
@@ -100,7 +101,7 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
       this.editItem.LETTER_ID = params['LETTER_ID'];
       this.editItem.archive = params['archive'];
       this.GRID_SOURCE = params['GRID_SOURCE'];
-      
+      this.FLG_ENTERNAL = params['FLG_ENTERNAL'];
 
   });
   
@@ -166,16 +167,20 @@ export class outLettercomponent extends BasePage implements OnInit,AfterViewInit
         text: 'انتقال به آرشیو',
         icon: "fa fa-archive",
         visible: true}
-        ,{
-          name: "cancelSent",
-          text: 'لغو ارجاع',
-          icon: "fa fa-hand-paper-o",
-          visible: true}
+      ,{
+        name: "cancelSent",
+        text: 'لغو ارجاع',
+        icon: "fa fa-hand-paper-o",
+        visible: true}
+      ,{
+          name: "copy",
+          text: 'ثبت خودکار نامه در دبیرخانه ',
+          icon: "fa fa-pencil-square-o",
+          visible: false}
     ]
       if(this.editItem.LETTER_ID)
       {
-        this.loadLetter();
-        this.loadNoteGrid();
+        this.loadLetter();        
       }
 
       this.loadCategory();
@@ -372,7 +377,8 @@ upload(): void {
   this.reciversDataSource=[...this.reciversDataSource,...data];
   }
   groupCheckboxModel: any = {};
-   loadCompanys(){
+  
+   loadCompanys(_loading=false){
 
     this.dataToPostBody = {
       'Data': {
@@ -383,14 +389,15 @@ upload(): void {
       }
       
     }
-    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: _loading }).
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.CompanydataSource=data.ReturnData.Data_Output[0].Header;
-        let Detail;
+        let Detail,Groups;
         if (data.ReturnData.Data_Output[0].Detail.Detail!='is Empty') {
             Detail = data.ReturnData.Data_Output[0].Detail;
-            this.CompanydataSource = [ ...this.CompanydataSource, ...Detail];  
+            Groups = data.ReturnData.Data_Output[0].Output_Value;
+            this.CompanydataSource = [ ...this.CompanydataSource, ...Detail,...Groups];  
             this.CompanydataSource.forEach(c => {
               c.checked = false
               this.groupCheckboxModel[c.IS_IT_CMPN_TEXT] = false;
@@ -415,7 +422,7 @@ upload(): void {
       
     }
 
-    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: false }).
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.categoryDataSource=data.ReturnData.Data_Output[0].Header; 
@@ -434,7 +441,7 @@ upload(): void {
       
     }
 
-    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+    this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: false }).
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         let ret=data.ReturnData.Data_Output[0].Header; 
@@ -532,6 +539,10 @@ upload(): void {
     if (element) {
         element.text =  this.save_sent_button;
     }
+    
+    if(!this.editItem.LETTER_ID )
+      if(this.editItem.LETTER_IN_OUT_TYPE=='in')
+        this.lettter_panel_visible=false;
  
     this.editItem.FolderID = Guid.empty;    
     this.getBookNumber();
@@ -565,6 +576,12 @@ upload(): void {
     then((data) => {     
       if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
         this.editItem=data.ReturnData.Data_Output[0].Header[0]; 
+        
+        if (this.editItem.count_Notes>0)
+          {
+            this.loadNoteGrid();
+          }
+
         this.Attachments=this.editItem.ATTACHMENTS; 
         this.MainFiles=this.editItem.MAINFILES;
         // this.reciversDataSource =  [ ...this.editItem.LETTER_CMPNY_RECIVERS_DATA? this.editItem.LETTER_CMPNY_RECIVERS_DATA:[]
@@ -597,6 +614,7 @@ upload(): void {
             this.docReadOnly=true;
             this.menuItems[1].visible=false;
             this.menuItems[0].visible=false;
+            this.menuItems[6].visible=true;
           }
         else
           {
@@ -635,6 +653,33 @@ upload(): void {
 
 
   onMenuItemClick(name) {
+    if (name=="copy")
+      {
+        this.dataToPostBody = {
+          'Data': {
+            'SPName': '[OFA].[OFA_SP_SAVE_EXISTING_LETTER]',
+            'Data_Input': { 'Mode': 0,          
+             'Header': {
+                        'LETTER_ID':this.editItem.LETTER_ID ,
+                        'LETTER_BOOK_NUMBER':this.editItem.LETTER_BOOK_NUMBER,   
+                        'LETTER_BOOK_DATE':this.editItem.LETTER_BOOK_DATE,
+                        'LETTER_SENDER_CMPN_ID':this.editItem.LETTER_SENDER_CMPN_ID,              
+                        }
+            , 'Detail': '', 'InputParams': '' }
+          }
+          
+        }
+    
+        this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+        then((data) => {     
+          if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {
+                                   
+            Notify.success('اطلاعات با موفقیت ذخیره شد');
+          }
+          
+        });  
+      }  
+
     if (name == "archive"){
       this.dataToPostBody = {
         'Data': {
@@ -663,6 +708,9 @@ upload(): void {
       if (this.GRID_SOURCE=='out')
         this.router.navigate(["ofa/outLetters"]);
       else 
+        if (this.FLG_ENTERNAL)
+          this.router.navigate(["ofa/enternal_letters"]);
+        else  
         this.router.navigate(["ofa/inLetters"]);
     }
     if (name == "save") {        
@@ -850,32 +898,25 @@ showErjaat(e){
 }
 getBlobFromUrl(url)
 {
-  return new Promise<File>((resolve, reject) => {
 
-    var json = atob(this.DOCXbase64String);
-        var ia = new Uint8Array(json.length);
-        for (var i = 0; i < json.length; i++) {
-          ia[i] = json.charCodeAt(i);
-        }
-        var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-        resolve(blob as File);
-        // var url = window.URL.createObjectURL(blob);
-        // window.open(url); 
+  var json = atob(this.DOCXbase64String);
+  var ia = new Uint8Array(json.length);
+  for (var i = 0; i < json.length; i++) {
+    ia[i] = json.charCodeAt(i);
+  }
+  var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  return (blob as File)
 
-  // this.service.get("/EDM/File/GetFileBase64?entityId=72760809-985f-ee11-9c93-f816541c96c9", (data) => {
-  //   console.log("getfile",data);
-  //     var json = atob(data.FILE_BASE64STRING);
-  //     var ia = new Uint8Array(json.length);
-  //     for (var i = 0; i < json.length; i++) {
-  //       ia[i] = json.charCodeAt(i);
-  //     }
-  //     var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-  //     resolve(blob as File);
-  //     var url = window.URL.createObjectURL(blob);
-  //     window.open(url); 
-         
-  //     });
-  });
+  // return new Promise<File>((resolve, reject) => {
+
+  //   var json = atob(this.DOCXbase64String);
+  //       var ia = new Uint8Array(json.length);
+  //       for (var i = 0; i < json.length; i++) {
+  //         ia[i] = json.charCodeAt(i);
+  //       }
+  //       var blob = new Blob([ia], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  //       resolve(blob as File);          
+  // });
 };
 
 getSignBlobFromUrl()
@@ -891,6 +932,7 @@ getSignBlobFromUrl()
   });
 };
 
+  
 async  genReport(e) {
 
   const templateFile = await this.getBlobFromUrl("");
@@ -913,11 +955,17 @@ async  genReport(e) {
   "پیوست": this.Attachments? this.Attachments.length>0?'دارد':'ندارد':'ندارد'
   };
   
-
+  try{
   const handler = new TemplateHandler();
   const doc = await handler.process(templateFile, data);
   this.saveFile(this.editItem.ID+' - signed.docx', doc);
+  } catch (error) {
+    console.error('Error processing template:', error);
+  }
+
 }
+
+
  saveFile(filename, blob) {
   var file = new File([blob], filename, {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', lastModified: Date.now()});
   let list = new DataTransfer();
@@ -1007,13 +1055,7 @@ onParentChecked(e, d) {
     }
   }
 }
-onChildChecked(e, d) {
-  
-  if (e.event) {
-      d.data.checked = e.value;
-      this.checkParent(d.data.IS_IT_CMPN_TEXT)
-  }
-}
+LO
 checkParent(IS_IT_CMPN_TEXT) {
   this.companygrid.instance.byKey([IS_IT_CMPN_TEXT]).then(group => {
       let data ;
@@ -1041,34 +1083,32 @@ LETTER_NOTE_SELECTED ;
 Note_add_checkBoxValue: boolean =false;
 
 loadNoteGrid(){
-  this.dataToPostBody = {
-    'Data': {
-      'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
-      'Data_Input': { 'Mode': 4,          
-       'Header': {'LETTER_NOTE_LETTER_ID':this.editItem.LETTER_ID
-                   }
-      , 'Detail': '', 'InputParams': '' }
-    }
-    
-  }
+      this.dataToPostBody = {
+        'Data': {
+          'SPName': '[OFA].[OFA_Sp_LETTER_NOTE]',
+          'Data_Input': { 'Mode': 4,          
+          'Header': {'LETTER_NOTE_LETTER_ID':this.editItem.LETTER_ID
+                      }
+          , 'Detail': '', 'InputParams': '' }
+        }
+        
+      }
 
-  this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
-  then((data) => {   
-    if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {  
-      this.NoteDataSource=data.ReturnData.Data_Output[0].Header;  
-      this.NoteDataSource.store = new CustomStore({
-        key: "LETTER_NOTE_ID",
-        load: (loadOptions) => {
-          let deferred: Deferred<any> = new Deferred<any>();
-          console.log("dataSource", this.NoteDataSource);
-          deferred.resolve(this.NoteDataSource);
-          return deferred.promise;        
-      },
+      this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: false }).
+      then((data) => {   
+        if (data.ReturnData.Data_Output[0].Header.Header!='is Empty') {  
+          this.NoteDataSource=data.ReturnData.Data_Output[0].Header;  
+          this.NoteDataSource.store = new CustomStore({
+            key: "LETTER_NOTE_ID",
+            load: (loadOptions) => {
+              let deferred: Deferred<any> = new Deferred<any>();
+              console.log("dataSource", this.NoteDataSource);
+              deferred.resolve(this.NoteDataSource);
+              return deferred.promise;        
+          },
+          });
+        }     
       });
-     }     
-  });
-
-
  };
 
 
@@ -1082,7 +1122,7 @@ loadNoteGrid(){
        , 'Detail': '', 'InputParams': '' }
      }      
    }    
-   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody).
+   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: false }).
    then((data) => {     
 
       let empty = [];

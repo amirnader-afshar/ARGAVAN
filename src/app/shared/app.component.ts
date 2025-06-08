@@ -5,7 +5,6 @@ import { enableProdMode } from '@angular/core';
 import { EventsService } from 'angular-event-service/dist';
 import * as fa from 'devextreme/localization/messages/fa.json';
 import { locale, loadMessages } from 'devextreme/localization';
-
 // import 'devextreme/localization/globalize/number';
 // import 'devextreme/localization/globalize/date';
 // import 'devextreme/localization/globalize/currency';
@@ -71,6 +70,7 @@ export class AppComponent {
 
         
         loadMessages(fa);
+        
         locale('fa');
 
     }

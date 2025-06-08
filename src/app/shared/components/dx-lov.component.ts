@@ -254,10 +254,10 @@ export class DXLovComponent {
     //this.initAutoComplete();
   }
 
-  getFormList(params): Promise<any> {
+  getFormList(params,_loading=false): Promise<any> {
 
     let that = this;
-    return this.service.getPromise('/SYS/Forms/List', params, { loading: false }).then(res => {
+    return this.service.getPromise('/SYS/Forms/List', params, { loading: _loading }).then(res => {
       that.fields = res.Fields;
       that.detectFields();
 

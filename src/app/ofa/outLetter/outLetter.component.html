@@ -201,15 +201,24 @@
                   <panel-box [collapsed]="true" [visible]="!docReadOnly" [caption]=" 'گیرندگان' | translate">                    
         
                     <div class="row">
-                      <div style="direction: ltr !important;" class="col-md-5 col-sm-12">
 
-                      <dx-button  (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
-                        <div  *dxTemplate="let data of 'buttonTemplate'">  
-                          <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
-                          <span style="margin: 5px;">افزودن انتخاب شده ها </span>                  
-                        </div>  
-                      </dx-button>  
-                      </div>
+                      <div style="direction: ltr !important;" class="col-md-3 col-sm-3">
+                        <dx-button  (click)="onAddAllClick($event)" [template]="'buttonTemplate'">  
+                          <div  *dxTemplate="let data of 'buttonTemplate'">  
+                            <span class="fa fa-hand-o-left" aria-hidden="true" style="margin: 5px;"></span>
+                            <span style="margin: 5px;">افزودن انتخاب شده ها </span>                  
+                          </div>  
+                        </dx-button>  
+                        </div>
+                        <div style="direction: ltr !important;" class="col-md-9 col-sm-9">
+
+                          <dx-button  (click)="loadCompanys(true)" [template]="'buttonTemplate'">  
+                            <div  *dxTemplate="let data of 'buttonTemplate'">  
+                              <span class="fa fa-refresh green" aria-hidden="true" style="margin: 5px;"></span>
+                              <span style="margin: 5px;">به روزرسانی</span>                  
+                            </div>  
+                          </dx-button>  
+                          </div>                        
                     </div>
                     <div class="row">
                       <div class="col-sm-5">
@@ -274,9 +283,9 @@
 
               </div>
 
-              <div class="row"  >
+              <div class="row"  *ngIf="lettter_panel_visible"  >
                 <div class="col-sm-12">  
-                  <panel-box [collapsed]="true" [caption]=" 'متن نامه' | translate">  
+                  <panel-box [collapsed]="false" [caption]=" 'متن نامه' | translate">  
                     
                     <div class="row" >  
                       <div class="col-sm-3">         
@@ -313,7 +322,7 @@
                       <ngx-extended-pdf-viewer  
                         [base64Src]="PDFbase64String"   backgroundColor="#ffffff"
                         [height]="'90vh'"
-                        [useBrowserLocale]="false"
+                        [useBrowserLocale]="true"
                         *ngIf="!hidePdfViewer"
                         [language]="language"
                         textLayer="false"                

@@ -4,6 +4,76 @@
     </page-toolbar>
     <page-content>
       <div class="row">
+        <div class="col-sm-6">
+          <panel-box [collapsed]="false" [caption]=" ' فیلتر تاریخ به صورت پیش فرض '+this.weekago+' هفته '">  
+            <div class="row">
+                <div   class="col-sm-3">
+                  <dx-label text="{{ 'FILTER_BEGIN_LETTER_BOOK_DATE' | translate }}">
+                    <sun_popup_datepicker  
+                        [readOnly]="false"
+                        [(ngModel)]="editItem.FILTER_BEGIN_LETTER_BOOK_DATE"                        
+                        [name]="'FILTER_BEGIN_LETTER_BOOK_DATE'" 
+                        [required]="true" 
+                        [showToday] ="false"
+                        [clearButton]="true"  > 
+                    </sun_popup_datepicker>
+                  </dx-label>
+                </div>
+
+                <div  class="col-sm-3">
+                  <dx-label text="{{ 'FILTER_END_LETTER_BOOK_DATE' | translate }}">
+                    <sun_popup_datepicker  
+                        [readOnly]="false"
+                        [(ngModel)]="editItem.FILTER_END_LETTER_BOOK_DATE"  
+                        [name]="'FILTER_END_LETTER_BOOK_DATE'" 
+                        [required]="true" 
+                        [showToday] ="false"
+                        [clearButton]="true"  > 
+                    </sun_popup_datepicker>
+                  </dx-label>
+                </div>
+
+                <div *ngIf='this.editItem.LETTER_IN_OUT_TYPE=="in"'  class="col-sm-3">
+                  <dx-label text="{{ 'OFA_FILTER_BEGIN_LETTER_DATE' | translate }}">
+                    <sun_popup_datepicker  
+                        [readOnly]="false"
+                        [(ngModel)]="editItem.FILTER_BEGIN_LETTER_DATE"                        
+                        [name]="'FILTER_BEGIN_LETTER_DATE'" 
+                        [required]="true" 
+                        [showToday] ="false"
+                        [clearButton]="true"  > 
+                    </sun_popup_datepicker>
+                  </dx-label>
+                </div>
+
+                <div *ngIf='this.editItem.LETTER_IN_OUT_TYPE=="in"' class="col-sm-3">
+                  <dx-label text="{{ 'OFA_FILTER_END_LETTER_DATE' | translate }}">
+                    <sun_popup_datepicker  
+                        [readOnly]="false"
+                        [(ngModel)]="editItem.FILTER_END_LETTER_DATE"  
+                        [name]="'FILTER_END_LETTER_DATE'" 
+                        [required]="true" 
+                        [showToday] ="false"
+                        [clearButton]="true"  > 
+                    </sun_popup_datepicker>
+                  </dx-label>
+                </div>
+
+                  <div class="col-sm-2">
+                    <dx-button
+                      stylingMode="contained"
+                      text="جستجو"
+                      type="success"              
+                      (onClick)="loadGrid()"
+                    >
+                    </dx-button>
+                </div>
+            </div>
+          </panel-box>
+        </div>
+    </div>
+      <div class="row">
+
         <div *ngIf='this.editItem.FLG_ENTERNAL==true' class="col-sm-4">
           <b> تعداد امضا نشده ها : </b>
           {{this.notSignedCount}}
@@ -15,20 +85,25 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <grid-toolbar>
+          <!-- <grid-toolbar> -->
             
-            <dx-data-grid #grid [remoteOperations]="true"  [dataSource]="dataSource" [(selectedRowKeys)]="jasem" (onSelectionChanged)="selectionChangedHandler()"
+            <dx-data-grid #grid [remoteOperations]="true"  [dataSource]="dataSource" [(selectedRowKeys)]="selectedRows" (onSelectionChanged)="selectionChangedHandler()"
             (onRowDblClick)="onMenuItemClick('Edit',$event.data.ID)"  [columnAutoWidth]="true" [height]="650" 
-            (onRowPrepared)="onRowPrepared($event)">
+            (onRowPrepared)="onRowPrepared($event)" (onExporting)="onExporting($event)">
             >              
-            
+              <dxo-export [enabled]="true" ></dxo-export>
               <dxo-sorting mode="multiple"></dxo-sorting>
-              <!-- <dxo-filter-panel [visible]="true"></dxo-filter-panel> -->
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-paging [pageSize]="15"></dxo-paging>
               <dxo-pager [visible]="true"></dxo-pager>              
               <!-- <dxo-scrolling rowRenderingMode="virtual" mode="virtual"></dxo-scrolling> -->
-              <dxo-selection mode="single"></dxo-selection>
+              <!-- <dxo-selection mode="single"></dxo-selection> -->
+              <dxo-selection
+              [selectAllMode]="'page'"
+              [showCheckBoxesMode]="'always'"
+              mode="multiple"
+            ></dxo-selection>
               <dxo-state-storing
                 [enabled]="true"
                 type="localStorage"
@@ -63,11 +138,17 @@
               </div>  
 
               <dxi-column  dataField="LETTER_TITEL"   caption="{{'OFA_LETTER_TITEL'| translate}}" [width]="150"></dxi-column>
-              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_DATE"  dataType="date" caption="{{'OFA_LETTER_DATE'| translate}}" [width]="100"></dxi-column>
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_DATE"  dataType="date" caption="{{'OFA_LETTER_DATE'| translate}}" [width]="100"
+              [allowFiltering]="false" [allowHeaderFiltering]="false">
+              </dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_NUMBER"   caption="{{'OFA_LETTER_NUMBER'| translate}}" [width]="100"></dxi-column>
               <dxi-column dataField="LETTER_BOOK_NUMBER"   caption="{{'OFA_LETTER_BOOK_NUMBER'| translate}}" [width]="140"></dxi-column>
-              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}" [width]="150"></dxi-column>
-            
+              <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="out"' dataField="LETTER_BOOK_DATE"  
+                dataType="date" caption="{{'OFA_LETTER_BOOK_DATE'| translate}}"              
+                [width]="150" [allowFiltering]="false" [allowHeaderFiltering]="false">
+              </dxi-column>
+
+    
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_CMPN_NAM"  caption="{{'OFA_LETTER_SENDER_CMPN'| translate}}" [width]="200"></dxi-column>
               <dxi-column [visible]='this.editItem.LETTER_IN_OUT_TYPE=="in"' dataField="LETTER_SENDER_SUSR_NAM_USR"   caption="{{'OFA_LETTER_SENDER_USER'| translate}}" [width]="150"></dxi-column>
               <dxi-column  dataField="LETTER_AM_I_ERJA"  dataType="boolean" caption="{{'LETTER_AM_I_ERJA'| translate}}" [width]="100"></dxi-column>
@@ -91,10 +172,9 @@
                     <span style="margin: 5px;">نمایش نامه</span>                    
                   </div> 
                 </dx-button>
-              </div>      
-              
+              </div>                      
             </dx-data-grid>
-          </grid-toolbar>
+          <!-- </grid-toolbar> -->
         </div>
 
       </div>

@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, Injectable, forwardRef, ViewChi
 import { NgbDatepickerConfig, NgbDateParserFormatter, NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbCalendarPersian, NgbCalendarGregorian, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'jalali-moment';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import dxTextBox from 'devextreme/ui/text_box';
+import { Console } from 'node:console';
 
 const Jalali_WEEKDAYS_SHORT = ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'];
 const Jalali_MONTHS = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
@@ -19,6 +21,7 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
 
 const Gregorian_weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const Gregorian_months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc']
+
 
 @Injectable()
 export class NgbDatepickerI18nGregorian extends NgbDatepickerI18n {
@@ -57,6 +60,8 @@ if (!Calender_Type){
   ]
 })
 export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterViewInit, OnInit,OnChanges {
+  
+  
 
   time = {hour: 13, minute: 30};
 
@@ -70,6 +75,9 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
   DDD: any;
 
   @Input() readOnly: boolean = false;
+
+  @Input() clearButton: boolean = false;
+
 
   @Input() showToday: boolean = false;
 
@@ -86,6 +94,7 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
 
 
   ngOnChanges(changes: SimpleChanges) {
+
     const minimumDate: SimpleChange = changes.minimumDate;
     const maximumDate: SimpleChange = changes.maximumDate;
     if (minimumDate || maximumDate) {
@@ -97,14 +106,27 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
 
 
   // Function to call when the date changes.
-  onChange = (date?: any) => { };
+  onChange = (date?: any) => { 
+  };
 
   // Function to call when the date picker is touched
   onTouched = () => { };
 
   writeValue(value: Date) {
 
-    if (!value) { return; }
+    if (!value) { 
+
+      if (this.showToday) {
+        //value = new Date();
+        this.today_click();
+        return;
+      }
+      else{
+        this.DDD='';
+        this.model='';
+        return;
+      }
+    }
     let dd;
     if (Calender_Type === 'Jalali') {
 
@@ -141,7 +163,6 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
 
   // Write change back to parent
   onDateChange(value: Date) {
-    console.log('onDateChange', this.model);
 
     const _date = (Calender_Type === 'Jalali') ? this.JalaliToGregorian(this.model.year + '-' + this.model.month + '-' + this.model.day)
       : value;
@@ -151,11 +172,18 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
 
   // Write change back to parent
   onDateSelect(value: any) {
-    console.log('onDateChange', value);
-    const _date = (Calender_Type === 'Jalali') ? this.JalaliToGregorian(value.year + '-' + value.month + '-' + value.day)
+  
+    if (value){
+     var _date = (Calender_Type === 'Jalali') ? this.JalaliToGregorian(value.year + '-' + value.month + '-' + value.day)
       : value.year + '-' + value.month + '-' + value.day;
 
     this.DDD = value.year + '-' + value.month + '-' + value.day;
+    }
+    else{
+      _date=null;
+      this.DDD='';
+    }
+
     this.onChange(_date);
     this.popup_visible = false;
     this.valueChange.emit(_date)
@@ -174,11 +202,7 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
   }
 
   ngAfterViewInit(): void {
-    if (!this.DDD && this.showToday) {
-      console.log('ddd', this.DDD);
-      this.onDateSelect(this.today);
-      this.model = this.today;
-    }
+
   }
 
   isDisabled = (date: NgbDate, current: { month: number }) => date.month !== current.month;
@@ -253,5 +277,9 @@ export class SunPopUpDatepickerComponent implements ControlValueAccessor, AfterV
     this.popup_visible = !this.popup_visible;
   }
 
+  OnClearClick(event){
+    this.onDateSelect(null) ;
+    
+  }
 
 }

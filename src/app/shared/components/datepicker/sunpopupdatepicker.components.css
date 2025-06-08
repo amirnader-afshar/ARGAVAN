@@ -17,3 +17,21 @@
 .hidden {
   display: none;
 }
+::ng-deep .ngb-dp-arrow.right .ngb-dp-navigation-chevron{
+    transform:rotate(225deg) !important;
+    margin-left:.15em;
+    margin-right:.25em
+    }
+
+::ng-deep .ngb-dp-arrow .ngb-dp-navigation-chevron{
+  transform:rotate(45deg) !important;
+  margin-left:.15em;
+  margin-right:.25em
+  }
+
+  ::ng-deep .custom-select{
+
+    background-position-x: 0.75rem !important;;
+     
+
+    }

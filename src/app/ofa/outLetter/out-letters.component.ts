@@ -68,6 +68,15 @@ import saveAs from 'file-saver';
       }      
 
 
+      if (localStorage.getItem('OFA_FILTER_BEGIN_LETTER_BOOK_DATE') )
+        this.editItem.FILTER_BEGIN_LETTER_BOOK_DATE=localStorage.getItem('OFA_FILTER_BEGIN_LETTER_BOOK_DATE');
+      if (localStorage.getItem('OFA_FILTER_END_LETTER_BOOK_DATE') )
+        this.editItem.FILTER_END_LETTER_BOOK_DATE=localStorage.getItem('OFA_FILTER_END_LETTER_BOOK_DATE');  
+      if (localStorage.getItem('OFA_FILTER_BEGIN_LETTER_DATE') ) 
+        this.editItem.FILTER_BEGIN_LETTER_DATE=localStorage.getItem('OFA_FILTER_BEGIN_LETTER_DATE');
+      if (localStorage.getItem('OFA_FILTER_END_LETTER_DATE') ) 
+        this.editItem.FILTER_END_LETTER_DATE=localStorage.getItem('OFA_FILTER_END_LETTER_DATE');  
+
 
       this.loadGrid();
     
@@ -151,6 +160,24 @@ import saveAs from 'file-saver';
         this.editItem.filter={FILTER_BEGIN_LETTER_BOOK_DATE:this.editItem.FILTER_BEGIN_LETTER_BOOK_DATE,FILTER_END_LETTER_BOOK_DATE:this.editItem.FILTER_END_LETTER_BOOK_DATE};
         this.editItem.filter={...this.editItem.filter,FILTER_BEGIN_LETTER_DATE:this.editItem.FILTER_BEGIN_LETTER_DATE
           ,FILTER_END_LETTER_DATE:this.editItem.FILTER_END_LETTER_DATE}
+
+      function setLocalStorage(key, value) {
+        if (value === "undefined" || value === undefined || value === null || value === '' || value === 'null') {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, value);
+        }
+      }
+
+        // استفاده:
+        setLocalStorage('OFA_FILTER_BEGIN_LETTER_BOOK_DATE', this.editItem.FILTER_BEGIN_LETTER_BOOK_DATE);
+        setLocalStorage('OFA_FILTER_END_LETTER_BOOK_DATE', this.editItem.FILTER_END_LETTER_BOOK_DATE);
+
+        setLocalStorage('OFA_FILTER_BEGIN_LETTER_DATE', this.editItem.FILTER_BEGIN_LETTER_DATE);
+        setLocalStorage('OFA_FILTER_END_LETTER_DATE', this.editItem.FILTER_END_LETTER_DATE);
+
+
+
 
         this.editItem.RowspPage=loadOptions.take;
         if (loadOptions.filter)

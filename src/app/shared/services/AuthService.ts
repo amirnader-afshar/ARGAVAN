@@ -76,6 +76,10 @@ export class AuthService {
             localStorage.setItem('token', data.Token);
             localStorage.setItem('Sign_FILE_BASE64STRING', data.Sign_FILE_BASE64STRING);
             localStorage.setItem('outLettersStorage',null);
+            localStorage.removeItem('OFA_FILTER_BEGIN_LETTER_BOOK_DATE');
+            localStorage.removeItem('OFA_FILTER_END_LETTER_BOOK_DATE');
+            localStorage.removeItem('OFA_FILTER_BEGIN_LETTER_DATE');
+            localStorage.removeItem('OFA_FILTER_END_LETTER_DATE');
         });
     }
 

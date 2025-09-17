@@ -937,31 +937,56 @@ async  genReport(e) {
 
   const templateFile = await this.getBlobFromUrl("");
   const imgblob = await this.getSignBlobFromUrl();
-  this.editItem.sh = this.datepipe.transform(this.editItem.LETTER_BOOK_DATE);
+  //this.editItem.sh = this.datepipe.transform(this.editItem.LETTER_BOOK_DATE);
   // 2. process the template
   var swith= +this.confService.get('OFA-USER-SIGN-WIDTH');
   var shight =+this.confService.get('OFA-USER-SIGN-HIGHT');
-  const data = {
-      "محل امضاء": {
-        _type: "image",
-        source: imgblob,
-        format: 'image/png',
-        altText: "sign", // Optional
-        width: swith,
-        height: shight
-    }
-  ,"شماره":this.editItem.LETTER_BOOK_NUMBER_REVERSE,
-  "تاریخ":this.editItem.sh,
-  "پیوست": this.Attachments? this.Attachments.length>0?'دارد':'ندارد':'ندارد'
-  };
+
+     this.dataToPostBody = {
+     'Data': {
+       'SPName': '[OFA].[OFA_Sp_LETTER_SIGNE]',
+       'Data_Input': { 'Mode': 0,          
+        'Header':{ 'LETTER_ID':this.editItem.LETTER_ID}
+       , 'Detail': '', 'InputParams': '' }
+     }      
+   }    
+   this.service.postPromise("/adm/CommenContext/Run", this.dataToPostBody,{ loading: false }).
+   then(async (data) => {     
+
+      let _response = data.ReturnData.Data_Output[0].Header[0];
+      if(_response.LETTER_IS_SIGNED)       
+        {
+          this.editItem.sh = this.datepipe.transform(_response.LETTER_BOOK_DATE);     
+          const data = {
+              "محل امضاء": {
+                _type: "image",
+                source: imgblob,
+                format: 'image/png',
+                altText: "sign", // Optional
+                width: swith,
+                height: shight
+            }
+
+          ,"شماره":this.editItem.LETTER_BOOK_NUMBER_REVERSE,
+          "تاریخ":this.editItem.sh,
+          "پیوست": this.Attachments? this.Attachments.length>0?'دارد':'ندارد':'ندارد'
+          };   
+          
+          try{
+          const handler = new TemplateHandler();
+          const doc = await handler.process(templateFile, data);
+          this.saveFile(this.editItem.ID+' - signed.docx', doc);
+          } catch (error) {
+            console.error('Error processing template:', error);
+          }          
+        }                   
+     
+     
+   });
   
-  try{
-  const handler = new TemplateHandler();
-  const doc = await handler.process(templateFile, data);
-  this.saveFile(this.editItem.ID+' - signed.docx', doc);
-  } catch (error) {
-    console.error('Error processing template:', error);
-  }
+
+  
+
 
 }
 

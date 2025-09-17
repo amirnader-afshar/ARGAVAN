@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
  //const url = "http://localhost:5576/"
- const url = "http://94.183.172.58:5576/"
+ const url = "http://94.183.56.229:5576/"
 
 //const url = "http://sjmek.ir/rsv/"
 export const environment = {
